@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/login_request.dart';
-import 'package:flutter_englearn/features/auth/page/welcome.dart';
+import 'package:flutter_englearn/features/auth/page/welcome_screen.dart';
 import 'package:flutter_englearn/routes.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -62,11 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               TextButton(
                 onPressed: () async {
-                  if (_usernameController.text == null ||
-                      _passwordController.text == null) {
+                  if (_usernameController.text.isEmpty ||
+                      _passwordController.text.isEmpty) {
                     ScaffoldMessenger.of(context).clearSnackBars();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text(
                             "Nhập đây đủ thông tin tài khoản và mật khẩu!"),
                       ),
