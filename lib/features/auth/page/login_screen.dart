@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/auth/page/reset_password_screen.dart';
 import 'package:flutter_englearn/features/auth/page/sign_up_screen.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
@@ -98,6 +99,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          ResetPasswordScreen.routeName,
+                          (route) => false,
+                        );
+                      },
+                      child: const Text("Quên mật khẩu?"))
                 ],
               ),
             ),
