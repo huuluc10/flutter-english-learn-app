@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AuthTextField extends StatefulWidget {
+class AuthTextField extends StatelessWidget {
   final String labelText;
   final bool isPassword;
   final TextEditingController controller;
@@ -12,23 +12,19 @@ class AuthTextField extends StatefulWidget {
       required this.controller});
 
   @override
-  State<AuthTextField> createState() => _AuthTextFieldState();
-}
-
-class _AuthTextFieldState extends State<AuthTextField> {
-  @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: widget.controller,
+      controller: controller,
       decoration: InputDecoration(
-        labelText: widget.labelText,
+        labelText: labelText,
+        isDense: true,
         filled: true,
-        fillColor: const Color.fromARGB(255, 228, 228, 228),
+        fillColor: Color.fromARGB(255, 233, 224, 224),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
       ),
-      obscureText: widget.isPassword,
+      obscureText: isPassword,
       enableSuggestions: false,
       autocorrect: false,
     );

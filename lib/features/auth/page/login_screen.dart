@@ -64,7 +64,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Todo: handle login
+                      // Check if username and password is not empty
+                      // If not empty, call login API
+                      // If login success, navigate to home screen
+                      // If login fail, show error message
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),

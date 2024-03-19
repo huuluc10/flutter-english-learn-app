@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/auth/page/adding_info_sign_up_screen.dart';
 import 'package:flutter_englearn/features/auth/page/login_screen.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
   static const routeName = '/signup-screen';
 
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController _usernameController = TextEditingController();
@@ -57,7 +53,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Todo: Check username and password is not empty
+                    // Todo: Check username is existed or not
+                    // If not, navigate to AddingInfoSignUpScreen
+                    // If yes, show error message
+                    Navigator.pushNamedAndRemoveUntil(context,
+                        AddingInfoSignUpScreen.routeName, (route) => false);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                   ),
