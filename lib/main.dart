@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/login_request.dart';
+import 'package:flutter_englearn/page/welcome.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade900),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const Welcome(),
     );
   }
 }
