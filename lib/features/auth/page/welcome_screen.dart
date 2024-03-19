@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/auth/page/login_screen.dart';
+import 'package:flutter_englearn/features/auth/page/sign_up_screen.dart';
 
-class Welcome extends StatelessWidget {
-  const Welcome({Key? key}) : super(key: key);
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({Key? key}) : super(key: key);
+  static const routeName = '/welcome-screen';
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,8 @@ class Welcome extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, LoginScreen.routeName, (route) => false);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -56,7 +60,8 @@ class Welcome extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/register');
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, SignUpScreen.routeName, (route) => false);
                     },
                     child: const Text("Đăng ký"),
                   ),
