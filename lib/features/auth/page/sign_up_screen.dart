@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/page/adding_info_sign_up_screen.dart';
 import 'package:flutter_englearn/features/auth/page/login_screen.dart';
-import 'package:flutter_englearn/features/auth/widgets/auth_background_widget.dart';
+import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -16,7 +16,7 @@ class SignUpScreen extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: AuthBackgroundWidget(
+        child: LineGradientBackgroundWidget(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-class AuthBackgroundWidget extends StatelessWidget {
+class LineGradientBackgroundWidget extends StatelessWidget {
   final Widget child;
 
-  const AuthBackgroundWidget({
+  const LineGradientBackgroundWidget({
     Key? key,
     required this.child,
   }) : super(key: key);
@@ -12,11 +12,10 @@ class AuthBackgroundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment(0.8, 1),
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
           colors: <Color>[
             Color.fromARGB(169, 0, 141, 211),
             Color.fromARGB(249, 255, 255, 255),
