@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/homepage/widgets/drawer_home_widget.dart';
+import 'package:flutter_englearn/features/homepage/widgets/topic_widget.dart';
 import 'package:flutter_englearn/utils/bottom_navigate_bar_widget.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
@@ -11,7 +12,29 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Get index of bottom navigation bar
     final indexBottomNavbar = ref.watch(indexBottomNavbarProvider);
+    // Get current time
+    final currentTime = DateTime.now();
+
+    // Get width of screen
+    final width = MediaQuery.of(context).size.width;
+    String image = "assets/light.png";
+    String welcome = "Chào buổi sáng,";
+    if (currentTime.hour < 18 && currentTime.hour > 12) {
+      // Good afternoon
+      welcome = "Chào buổi chiều,";
+    } else {
+      // Good evening
+      welcome = "Chào buổi tối,";
+    }
+
+    Future<void> _refresh() async {
+      // await ref.read(homeScreenProvider.notifier).getTopics();
+      print('refresh');
+      return Future.delayed(Duration(seconds: 1));
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       // extendBody: false,
@@ -20,16 +43,78 @@ class HomeScreen extends ConsumerWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: const LineGradientBackgroundWidget(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Home Screen',
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        strokeWidth: 2,
+        child: SingleChildScrollView(
+          child: LineGradientBackgroundWidget(
+            child: Stack(
+              children: [
+                Positioned(
+                  top: -60,
+                  right: -60,
+                  child: CircleAvatar(
+                    radius: 100,
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: AssetImage(image),
+                  ),
+                ),
+                Positioned(
+                  top: 50,
+                  left: 0,
+                  right: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          welcome,
+                          style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const Text(
+                          'Tiếp tục quá trình học nào!',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 40),
+
+                        // Todo: show topic below
+                        Center(
+                          child: Column(
+                            children: [
+                              for (var i = 0; i < 6; i++)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      TopicWidget(
+                                          width: width,
+                                          nameTopic: 'Topic 1: Name of topic'),
+                                      TopicWidget(
+                                          width: width,
+                                          nameTopic: 'Topic 1: Name of topic'),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

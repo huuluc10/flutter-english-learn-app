@@ -8,7 +8,7 @@ import 'dart:convert';
 
 void main() {
   runApp(const ProviderScope(
-    child: MyApp(),
+    child: SafeArea(child: MyApp()),
   ));
 }
 
