@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/login_request.dart';
 import 'package:flutter_englearn/features/auth/page/welcome_screen.dart';
 import 'package:flutter_englearn/routes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

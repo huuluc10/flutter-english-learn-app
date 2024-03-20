@@ -4,6 +4,7 @@ import 'package:flutter_englearn/features/auth/page/login_screen.dart';
 import 'package:flutter_englearn/features/auth/page/reset_password_screen.dart';
 import 'package:flutter_englearn/features/auth/page/sign_up_screen.dart';
 import 'package:flutter_englearn/features/auth/page/welcome_screen.dart';
+import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -23,6 +24,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case ResetPasswordScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => const ResetPasswordScreen());
+
+    case HomeScreen.routeName:
+      return MaterialPageRoute(builder: (context) => const HomeScreen());
   }
   return MaterialPageRoute(builder: (context) => const WelcomeScreen());
 }

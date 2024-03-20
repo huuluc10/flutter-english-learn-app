@@ -2,7 +2,7 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/widgets/auth_background_widget.dart';
+import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/gender_choose_widget.dart';
 
@@ -67,7 +67,7 @@ class _AddingInfoSignUpScreenState extends State<AddingInfoSignUpScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      body: AuthBackgroundWidget(
+      body: LineGradientBackgroundWidget(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Center(
