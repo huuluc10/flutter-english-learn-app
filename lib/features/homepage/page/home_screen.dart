@@ -33,10 +33,9 @@ class HomeScreen extends ConsumerWidget {
       return Future.delayed(const Duration(seconds: 1));
     }
 
-    final countOfColumn = 10;
+    final int countOfColumn = 10;
 
-    final height = 200 + (10 + width * 0.44) * countOfColumn;
-    print(height);
+    final height = 200 + (10 + width * 0.5) * countOfColumn;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -103,11 +102,15 @@ class HomeScreen extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 TopicWidget(
-                                    width: width,
-                                    nameTopic: 'Topic 1: Name of topic'),
+                                  width: width,
+                                  nameTopic: 'Topic 1: Name of topic',
+                                  percent: 0.5,
+                                ),
                                 TopicWidget(
-                                    width: width,
-                                    nameTopic: 'Topic 1: Name of topic'),
+                                  width: width,
+                                  nameTopic: 'Topic 1: Name of topic',
+                                  percent: 0.8,
+                                ),
                               ],
                             ),
                           ),
