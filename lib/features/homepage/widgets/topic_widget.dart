@@ -12,7 +12,7 @@ class TopicWidget extends StatelessWidget {
       height: width * 0.44,
       width: width * 0.44,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color.fromARGB(255, 248, 247, 247),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Center(
@@ -29,10 +29,15 @@ class TopicWidget extends StatelessWidget {
             ),
             Stack(
               children: [
-                Image(
-                  image: const AssetImage('assets/lesson.png'),
-                  height: width * 2 / 7,
-                  width: width * 2 / 7,
+                Opacity(
+                  opacity: 0.5,
+                  child: Image(
+                    image: const AssetImage(
+                      'assets/lesson.png',
+                    ),
+                    height: width * 2 / 7,
+                    width: width * 2 / 7,
+                  ),
                 ),
                 Positioned(
                   bottom: 5,

@@ -29,11 +29,14 @@ class HomeScreen extends ConsumerWidget {
       welcome = "Chào buổi tối,";
     }
 
-    Future<void> _refresh() async {
-      // await ref.read(homeScreenProvider.notifier).getTopics();
-      print('refresh');
-      return Future.delayed(Duration(seconds: 1));
+    Future<void> refresh() async {
+      return Future.delayed(const Duration(seconds: 1));
     }
+
+    final countOfColumn = 10;
+
+    final height = 200 + (10 + width * 0.44) * countOfColumn;
+    print(height);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -43,11 +46,10 @@ class HomeScreen extends ConsumerWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        strokeWidth: 2,
+      body: LineGradientBackgroundWidget(
         child: SingleChildScrollView(
-          child: LineGradientBackgroundWidget(
+          child: SizedBox(
+            height: height,
             child: Stack(
               children: [
                 Positioned(
@@ -83,32 +85,32 @@ class HomeScreen extends ConsumerWidget {
                               color: Colors.white,
                               fontWeight: FontWeight.w600),
                         ),
-                        const SizedBox(height: 40),
-
-                        // Todo: show topic below
-                        Center(
-                          child: Column(
-                            children: [
-                              for (var i = 0; i < 6; i++)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      TopicWidget(
-                                          width: width,
-                                          nameTopic: 'Topic 1: Name of topic'),
-                                      TopicWidget(
-                                          width: width,
-                                          nameTopic: 'Topic 1: Name of topic'),
-                                    ],
-                                  ),
-                                ),
-                            ],
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 140,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        for (var i = 0; i < countOfColumn; i++)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                TopicWidget(
+                                    width: width,
+                                    nameTopic: 'Topic 1: Name of topic'),
+                                TopicWidget(
+                                    width: width,
+                                    nameTopic: 'Topic 1: Name of topic'),
+                              ],
+                            ),
                           ),
-                        )
                       ],
                     ),
                   ),
