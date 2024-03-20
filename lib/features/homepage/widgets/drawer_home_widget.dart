@@ -1,11 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/homepage/widgets/item_drawer_widget.dart';
 
-class DrawHomeWidget extends StatelessWidget {
-  const DrawHomeWidget({super.key});
+class DrawerWidget extends StatelessWidget {
+  const DrawerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Drawer(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      width: width * 0.8,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -69,21 +75,10 @@ class DrawHomeWidget extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
-            leading: CircleAvatar(
-              radius: 14,
-              child: Image.asset('assets/user.png'),
-            ),
-            title: const Text('Thông tin tài khoản'),
-            subtitle: const Text('username'),
-          ),
-          ListTile(
-            leading: CircleAvatar(
-              radius: 14,
-              child: Image.asset('assets/add-friend.png'),
-            ),
-            title: const Text('Tìm kiếm bạn bè'),
-          ),
+          const ItemDrawerWidget(
+              title: 'Thông tin tài khoản', image: 'assets/user.png'),
+          const ItemDrawerWidget(
+              title: 'Tìm kiếm bạn bè', image: 'assets/add-friend.png'),
           Padding(
             padding: const EdgeInsets.only(left: 12, right: 12),
             child: Divider(
@@ -91,13 +86,10 @@ class DrawHomeWidget extends StatelessWidget {
               height: 1,
             ),
           ),
-          ListTile(
-            leading: CircleAvatar(
-              radius: 14,
-              child: Image.asset('assets/settings.png'),
-            ),
-            title: const Text('Cài đặt'),
-          ),
+          const ItemDrawerWidget(
+            title: "Cài đặt",
+            image: 'assets/settings.png',
+          )
         ],
       ),
     );

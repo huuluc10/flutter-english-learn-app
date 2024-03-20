@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/homepage/widgets/draw_home_widget.dart';
+import 'package:flutter_englearn/features/homepage/widgets/drawer_home_widget.dart';
 import 'package:flutter_englearn/utils/bottom_navigate_bar_widget.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
@@ -33,7 +33,7 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
       ),
-      drawer: DrawHomeWidget(),
+      drawer: const DrawerWidget(),
       bottomNavigationBar: BottomNavigateBarWidget(index: indexBottomNavbar),
     );
   }
