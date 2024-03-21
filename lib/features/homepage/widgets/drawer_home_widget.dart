@@ -1,6 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/friend/page/find_friend_screen.dart';
+import 'package:flutter_englearn/features/homepage/page/settings_screen.dart';
 import 'package:flutter_englearn/features/homepage/widgets/item_drawer_widget.dart';
+import 'package:flutter_englearn/features/mission/page/mission_screen.dart';
+import 'package:flutter_englearn/features/user_info/page/user_info_screen.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -76,9 +80,40 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           const ItemDrawerWidget(
-              title: 'Thông tin tài khoản', image: 'assets/user.png'),
+            title: 'Thông tin tài khoản',
+            image: 'assets/user.png',
+            routeName: UserInfoScreen.routeName,
+          ),
           const ItemDrawerWidget(
-              title: 'Tìm kiếm bạn bè', image: 'assets/add-friend.png'),
+            title: 'Tìm kiếm bạn bè',
+            image: 'assets/add-friend.png',
+            routeName: FindFriendScreen.routeName,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12, right: 12),
+            child: Divider(
+              color: Colors.grey[350],
+              height: 1,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(
+              left: 14,
+              top: 12,
+            ),
+            child: Text(
+              'Nhiệm vụ',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const ItemDrawerWidget(
+            title: 'Nhiệm vụ hằng ngày',
+            image: 'assets/goal.png',
+            routeName: MissionScreen.routeName,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 12, right: 12),
             child: Divider(
@@ -89,6 +124,7 @@ class DrawerWidget extends StatelessWidget {
           const ItemDrawerWidget(
             title: "Cài đặt",
             image: 'assets/settings.png',
+            routeName: SettingsScreen.routeName,
           )
         ],
       ),
