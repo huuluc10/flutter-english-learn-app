@@ -18,7 +18,7 @@ class LineGradientBackgroundWidget extends StatelessWidget {
           end: Alignment.bottomCenter,
           colors: <Color>[
             Color.fromARGB(169, 0, 141, 211),
-            Color.fromARGB(249, 255, 255, 255),
+            Color.fromARGB(248, 235, 232, 232),
           ], // Gradient from https://learnui.design/tools/gradient-generator.html
           tileMode: TileMode.mirror,
         ),

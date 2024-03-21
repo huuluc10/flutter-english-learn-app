@@ -29,15 +29,14 @@ class BottomNavigateBarWidget extends ConsumerWidget {
               ],
             ),
           ),
-          // i have found out the height of the bottom navigation bar is roughly 60
-          height: 70,
+          height: 55,
         ),
         BottomNavigationBar(
           backgroundColor: Colors.transparent,
           selectedFontSize: 16,
           unselectedFontSize: 12,
           elevation: 0,
-          iconSize: 24,
+          iconSize: 22,
           currentIndex: index,
           onTap: (value) {
             ref
@@ -54,7 +53,7 @@ class BottomNavigateBarWidget extends ConsumerWidget {
           },
           items: const [
             BottomNavigationBarItem(
-              icon: Image(image: AssetImage('assets/home.png'), width: 24),
+              icon: Image(image: AssetImage('assets/home.png'), width: 22),
               label: 'Học tập',
             ),
             BottomNavigationBarItem(
@@ -65,7 +64,7 @@ class BottomNavigateBarWidget extends ConsumerWidget {
               label: 'Từ điển',
             ),
             BottomNavigationBarItem(
-              icon: Image(image: AssetImage("assets/chat.png"), width: 24),
+              icon: Image(image: AssetImage("assets/chat.png"), width: 22),
               label: 'Trao đổi',
             ),
           ],
