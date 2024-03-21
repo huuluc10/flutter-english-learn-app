@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/homepage/widgets/drawer_home_widget.dart';
 import 'package:flutter_englearn/features/homepage/widgets/topic_widget.dart';
-import 'package:flutter_englearn/utils/bottom_navigate_bar_widget.dart';
+import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,21 +21,24 @@ class HomeScreen extends ConsumerWidget {
     final width = MediaQuery.of(context).size.width;
     String image = "assets/light.png";
     String welcome = "Chào buổi sáng,";
-    if (currentTime.hour < 18 && currentTime.hour > 12) {
+    if (currentTime.hour < 12) {
+      // Good morning
+    } else if (currentTime.hour < 18) {
       // Good afternoon
       welcome = "Chào buổi chiều,";
     } else {
       // Good evening
       welcome = "Chào buổi tối,";
+      image = "assets/night.png";
     }
 
     Future<void> refresh() async {
       return Future.delayed(const Duration(seconds: 1));
     }
 
-    final int countOfColumn = 10;
+    const int countOfColumn = 10;
 
-    final height = 200 + (10 + width * 0.5) * countOfColumn;
+    final height = 250 + (10 + width * 0.5) * countOfColumn;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -52,8 +55,8 @@ class HomeScreen extends ConsumerWidget {
             child: Stack(
               children: [
                 Positioned(
-                  top: -60,
-                  right: -60,
+                  top: -55,
+                  right: -55,
                   child: CircleAvatar(
                     radius: 100,
                     backgroundColor: Colors.transparent,
@@ -84,12 +87,23 @@ class HomeScreen extends ConsumerWidget {
                               color: Colors.white,
                               fontWeight: FontWeight.w600),
                         ),
+                        TextField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Tìm kiếm',
+                            prefixIcon: const Icon(Icons.search),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
                 Positioned(
-                  top: 140,
+                  top: 190,
                   left: 0,
                   right: 0,
                   child: Center(
