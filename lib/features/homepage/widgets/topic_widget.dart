@@ -30,7 +30,7 @@ class TopicWidget extends StatelessWidget {
               lineWidth: 6.0,
               percent: percent,
               header: const Text(
-                'Topic',
+                'Chủ đề',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,

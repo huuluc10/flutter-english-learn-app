@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/dictionary/page/dictionary_screen.dart';
+import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,22 +29,31 @@ class BottomNavigateBarWidget extends ConsumerWidget {
               ],
             ),
           ),
-          // i have found out the height of the bottom navigation bar is roughly 60
-          height: 70,
+          height: 55,
         ),
         BottomNavigationBar(
           backgroundColor: Colors.transparent,
           selectedFontSize: 16,
           unselectedFontSize: 12,
           elevation: 0,
-          iconSize: 24,
+          iconSize: 22,
           currentIndex: index,
-          onTap: (value) => ref
-              .read(indexBottomNavbarProvider.notifier)
-              .update((state) => value),
+          onTap: (value) {
+            ref
+                .read(indexBottomNavbarProvider.notifier)
+                .update((state) => value);
+            switch (value) {
+              case 0:
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomeScreen.routeName, (route) => false);
+              case 1:
+                Navigator.pushNamedAndRemoveUntil(
+                    context, DictionaryScreen.routeName, (route) => false);
+            }
+          },
           items: const [
             BottomNavigationBarItem(
-              icon: Image(image: AssetImage('assets/home.png'), width: 24),
+              icon: Image(image: AssetImage('assets/home.png'), width: 22),
               label: 'Học tập',
             ),
             BottomNavigationBarItem(
@@ -53,7 +64,7 @@ class BottomNavigateBarWidget extends ConsumerWidget {
               label: 'Từ điển',
             ),
             BottomNavigationBarItem(
-              icon: Image(image: AssetImage("assets/chat.png"), width: 24),
+              icon: Image(image: AssetImage("assets/chat.png"), width: 22),
               label: 'Trao đổi',
             ),
           ],
