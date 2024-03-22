@@ -11,6 +11,7 @@ import 'package:flutter_englearn/features/homepage/page/about_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/settings_screen.dart';
 import 'package:flutter_englearn/features/mission/page/mission_screen.dart';
+import 'package:flutter_englearn/features/user_info/page/change_password_screen.dart';
 import 'package:flutter_englearn/features/user_info/page/user_info_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -42,7 +43,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const OTPInputScreen());
 
     case UserInfoScreen.routeName:
-      return MaterialPageRoute(builder: (context) => const UserInfoScreen());
+      final arguments = settings.arguments as Map<String, bool>;
+      final isFriend = arguments['isFriend'];
+      final isMe = arguments['isMe'];
+      return MaterialPageRoute(
+        builder: (context) => UserInfoScreen(
+          isFriend: isFriend!,
+          isMe: isMe!,
+        ),
+      );
 
     case FindFriendScreen.routeName:
       return MaterialPageRoute(builder: (context) => const FindFriendScreen());
@@ -55,6 +64,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case AboutScreen.routeName:
       return MaterialPageRoute(builder: (context) => const AboutScreen());
+    case ChangePasswordScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => const ChangePasswordScreen());
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());

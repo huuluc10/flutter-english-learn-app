@@ -19,7 +19,7 @@ class AuthTextField extends StatelessWidget {
         labelText: labelText,
         isDense: true,
         filled: true,
-        fillColor: Color.fromARGB(255, 233, 224, 224),
+        fillColor: const Color.fromARGB(255, 233, 224, 224),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
