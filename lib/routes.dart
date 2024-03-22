@@ -42,7 +42,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const OTPInputScreen());
 
     case UserInfoScreen.routeName:
-      return MaterialPageRoute(builder: (context) => const UserInfoScreen());
+      final arguments = settings.arguments as Map<String, bool>;
+      final isFriend = arguments['isFriend'];
+      final isMe = arguments['isMe'];
+      return MaterialPageRoute(
+        builder: (context) => UserInfoScreen(
+          isFriend: isFriend!,
+          isMe: isMe!,
+        ),
+      );
 
     case FindFriendScreen.routeName:
       return MaterialPageRoute(builder: (context) => const FindFriendScreen());

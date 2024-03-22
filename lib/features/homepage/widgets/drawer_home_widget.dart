@@ -79,15 +79,31 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),
           ),
-          const ItemDrawerWidget(
+          ItemDrawerWidget(
             title: 'Thông tin tài khoản',
             image: 'assets/user.png',
             routeName: UserInfoScreen.routeName,
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                UserInfoScreen.routeName,
+                arguments: {
+                  'isMe': true,
+                  'isFriend': false,
+                },
+              );
+            },
           ),
-          const ItemDrawerWidget(
+          ItemDrawerWidget(
             title: 'Tìm kiếm bạn bè',
             image: 'assets/add-friend.png',
             routeName: FindFriendScreen.routeName,
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                FindFriendScreen.routeName,
+              );
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(left: 12, right: 12),
@@ -109,10 +125,16 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),
           ),
-          const ItemDrawerWidget(
+          ItemDrawerWidget(
             title: 'Nhiệm vụ hằng ngày',
             image: 'assets/goal.png',
             routeName: MissionScreen.routeName,
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                MissionScreen.routeName,
+              );
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(left: 12, right: 12),
@@ -121,10 +143,16 @@ class DrawerWidget extends StatelessWidget {
               height: 1,
             ),
           ),
-          const ItemDrawerWidget(
+          ItemDrawerWidget(
             title: "Cài đặt",
             image: 'assets/settings.png',
             routeName: SettingsScreen.routeName,
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                SettingsScreen.routeName,
+              );
+            },
           )
         ],
       ),

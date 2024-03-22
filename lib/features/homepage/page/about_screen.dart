@@ -95,6 +95,7 @@ class AboutScreen extends ConsumerWidget {
                 'http',
                 'flutter_otp_text_field',
                 'percent_indicator',
+                'fl_chart',
               ]),
               _buildResourceItem('Tài liệu:', [
                 'https://flutter.dev/docs',
