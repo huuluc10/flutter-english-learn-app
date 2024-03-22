@@ -34,6 +34,27 @@ class AvatarWidget extends StatelessWidget {
             ),
           ),
           Positioned(
+            top: 10,
+            right: 15,
+            child: InkWell(
+              onTap: () {
+                // TODO: Implement change avatar
+              },
+              child: Container(
+                padding: const EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Image.asset(
+                  'assets/change-picture.png',
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
             top: height * 0.15,
             left: width * 0.05,
             child: Container(

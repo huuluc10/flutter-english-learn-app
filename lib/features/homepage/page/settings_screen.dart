@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/page/welcome_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/about_screen.dart';
+import 'package:flutter_englearn/features/user_info/page/change_password_screen.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -43,6 +44,20 @@ class SettingsScreen extends ConsumerWidget {
             Column(
               children: <Widget>[
                 const SizedBox(height: 65),
+                ButtonSettingScreenWidget(
+                  onPressed: () {
+                    // Todo: Implement sign out
+                    // Call API to sign out
+                    // Get status code
+                    // * Important: If status code is 200, then sign out successfully by delete token and user info in local storage then navigate to welcome
+                    // If status code is 401, then token is expired
+                    Navigator.pushNamed(
+                      context,
+                      ChangePasswordScreen.routeName,
+                    );
+                  },
+                  text: 'Đổi mật khẩu',
+                ),
                 ButtonSettingScreenWidget(
                   onPressed: () {
                     // Todo: Implement sign out
