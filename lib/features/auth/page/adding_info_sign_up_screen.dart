@@ -69,95 +69,99 @@ class _AddingInfoSignUpScreenState extends State<AddingInfoSignUpScreen> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: LineGradientBackgroundWidget(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                const Text(
-                  'Bổ sung thông tin tài khoản mới',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                GenderChooseWidget(
-                  isMale: _isMale,
-                  onChanged: _updateGender,
-                ),
-                AuthTextField(
-                  labelText: 'Họ và tên',
-                  isPassword: false,
-                  controller: controller,
-                ),
-                Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        'Ngày sinh',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        _date == null
-                            ? 'Chưa chọn'
-                            : '${_date!.day}/${_date!.month}/${_date!.year}',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _openDatePicker(context);
-                      },
-                      icon: const Icon(
-                        Icons.calendar_today,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Todo: Check if name and date is not empty
-                    // If not empty, call sign up API
-                    // If sign up success, navigate to home screen
-                    // If sign up fail, show error message
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      LoginScreen.routeName,
-                      (route) => false,
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text(
-                    'Hoàn tất',
+        child: SingleChildScrollView(
+          reverse: true,
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Bổ sung thông tin tài khoản mới',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  GenderChooseWidget(
+                    isMale: _isMale,
+                    onChanged: _updateGender,
+                  ),
+                  AuthTextField(
+                    labelText: 'Họ và tên',
+                    isPassword: false,
+                    controller: controller,
+                  ),
+                  Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Ngày sinh',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          _date == null
+                              ? 'Chưa chọn'
+                              : '${_date!.day}/${_date!.month}/${_date!.year}',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          _openDatePicker(context);
+                        },
+                        icon: const Icon(
+                          Icons.calendar_today,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Todo: Check if name and date is not empty
+                      // If not empty, call sign up API
+                      // If sign up success, navigate to home screen
+                      // If sign up fail, show error message
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        LoginScreen.routeName,
+                        (route) => false,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: const Text(
+                      'Hoàn tất',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

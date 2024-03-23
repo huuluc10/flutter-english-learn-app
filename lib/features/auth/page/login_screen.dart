@@ -22,6 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        reverse: true,
         child: LineGradientBackgroundWidget(
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
