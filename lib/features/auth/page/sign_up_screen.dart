@@ -16,6 +16,7 @@ class SignUpScreen extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        reverse: true,
         child: LineGradientBackgroundWidget(
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
