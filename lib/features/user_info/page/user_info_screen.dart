@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/user_info/page/more_info_screen.dart';
 import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/streak_chart.dart';
@@ -80,7 +81,13 @@ class UserInfoScreen extends ConsumerWidget {
                             SizedBox(
                               width: double.infinity,
                               child: OutlinedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    MoreUserInfoScreen.routeName,
+                                    arguments: true,
+                                  );
+                                },
                                 style: OutlinedButton.styleFrom(
                                   backgroundColor: Colors.blueAccent,
                                   shape: RoundedRectangleBorder(
@@ -124,10 +131,10 @@ class UserInfoScreen extends ConsumerWidget {
                               thickness: 1.0,
                             ),
                             const Text(
-                              'Biểu đồ chuỗi ngày học tập',
+                              'Biểu đồ học tập 7 ngày gần nhất',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 19.5,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

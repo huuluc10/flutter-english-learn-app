@@ -12,6 +12,7 @@ import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/settings_screen.dart';
 import 'package:flutter_englearn/features/mission/page/mission_screen.dart';
 import 'package:flutter_englearn/features/user_info/page/change_password_screen.dart';
+import 'package:flutter_englearn/features/user_info/page/more_info_screen.dart';
 import 'package:flutter_englearn/features/user_info/page/user_info_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -64,9 +65,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case AboutScreen.routeName:
       return MaterialPageRoute(builder: (context) => const AboutScreen());
+
     case ChangePasswordScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => const ChangePasswordScreen());
+
+    case MoreUserInfoScreen.routeName:
+      final havePermission = settings.arguments as bool;
+      return MaterialPageRoute(
+          builder: (context) =>
+              MoreUserInfoScreen(havePermission: havePermission));
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());
