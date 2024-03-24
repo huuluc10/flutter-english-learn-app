@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/chat/page/chat_home_screen.dart';
 import 'package:flutter_englearn/features/dictionary/page/dictionary_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
@@ -49,6 +50,9 @@ class BottomNavigateBarWidget extends ConsumerWidget {
               case 1:
                 Navigator.pushNamedAndRemoveUntil(
                     context, DictionaryScreen.routeName, (route) => false);
+              default:
+                Navigator.pushNamedAndRemoveUntil(
+                    context, ChatHome.routeName, (route) => false);
             }
           },
           items: const [
