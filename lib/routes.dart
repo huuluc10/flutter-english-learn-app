@@ -5,6 +5,8 @@ import 'package:flutter_englearn/features/auth/page/otp_input_screen.dart';
 import 'package:flutter_englearn/features/auth/page/reset_password_screen.dart';
 import 'package:flutter_englearn/features/auth/page/sign_up_screen.dart';
 import 'package:flutter_englearn/features/auth/page/welcome_screen.dart';
+import 'package:flutter_englearn/features/chat/page/chat_home_screen.dart';
+import 'package:flutter_englearn/features/chat/page/chat_room_screen.dart';
 import 'package:flutter_englearn/features/dictionary/page/dictionary_screen.dart';
 import 'package:flutter_englearn/features/friend/page/find_friend_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/about_screen.dart';
@@ -75,6 +77,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) =>
               MoreUserInfoScreen(havePermission: havePermission));
+
+    case ChatHome.routeName:
+      return MaterialPageRoute(builder: (context) => const ChatHome());
+
+    case ChatRoom.routeName:
+      return MaterialPageRoute(builder: (context) => const ChatRoom());
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());
