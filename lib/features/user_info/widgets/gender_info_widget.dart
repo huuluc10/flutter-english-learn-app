@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 
 class GenderInfoWidget extends StatefulWidget {
-  int value;
-  bool isEdit;
+  final int value;
+  final bool havePermission;
 
-  GenderInfoWidget({super.key, required this.value, this.isEdit = false});
+  const GenderInfoWidget(
+      {super.key, required this.value, required this.havePermission});
 
   @override
-  _GenderWidgetState createState() => _GenderWidgetState();
+  State<GenderInfoWidget> createState() => _GenderWidgetState();
 }
 
 class _GenderWidgetState extends State<GenderInfoWidget> {
+  bool _isEdit = false;
+  int? _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.value;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,7 +43,7 @@ class _GenderWidgetState extends State<GenderInfoWidget> {
               IconButton(
                 onPressed: () {
                   setState(() {
-                    widget.isEdit = !widget.isEdit;
+                    _isEdit = !_isEdit;
                   });
                 },
                 icon: const Icon(
@@ -44,7 +54,7 @@ class _GenderWidgetState extends State<GenderInfoWidget> {
               ),
             ],
           ),
-          widget.isEdit
+          _isEdit
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -58,8 +68,8 @@ class _GenderWidgetState extends State<GenderInfoWidget> {
                     IconButton(
                       onPressed: () {
                         setState(() {
-                          widget.value = widget.value == 0 ? 1 : 0;
-                          widget.isEdit = !widget.isEdit;
+                          _value = _value == 0 ? 1 : 0;
+                          _isEdit = !_isEdit;
                         });
                       },
                       icon: const Icon(

@@ -4,20 +4,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DateAttributeWidget extends StatefulWidget {
-  DateAttributeWidget({
+  const DateAttributeWidget({
     Key? key,
     required this.value,
-    this.isEdit = false,
+    required this.havePermission,
   }) : super(key: key);
 
-  DateTime value;
-  bool isEdit;
+  final DateTime value;
+  final bool havePermission;
 
   @override
   State<DateAttributeWidget> createState() => _DateAttributeWidgetState();
 }
 
 class _DateAttributeWidgetState extends State<DateAttributeWidget> {
+  DateTime? _value;
+  bool? _isEdit = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _value = widget.value;
+  }
+
   void _openDatePicker(BuildContext context) {
     BottomPicker.date(
       title: 'Chọn ngày sinh',
@@ -43,12 +53,12 @@ class _DateAttributeWidgetState extends State<DateAttributeWidget> {
       ),
       onChange: (index) {
         setState(() {
-          widget.value = index;
+          _value = index;
         });
       },
       onSubmit: (index) {
         setState(() {
-          widget.value = index;
+          _value = index;
         });
       },
       bottomPickerTheme: BottomPickerTheme.plumPlate,
@@ -77,7 +87,7 @@ class _DateAttributeWidgetState extends State<DateAttributeWidget> {
               IconButton(
                 onPressed: () {
                   setState(() {
-                    widget.isEdit = !widget.isEdit;
+                    _isEdit = !_isEdit!;
                   });
                 },
                 icon: const Icon(
@@ -88,7 +98,7 @@ class _DateAttributeWidgetState extends State<DateAttributeWidget> {
               ),
             ],
           ),
-          widget.isEdit
+          widget.havePermission
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
