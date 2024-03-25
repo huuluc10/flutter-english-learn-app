@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/page/widgets/lesson_homepage_screen.dart';
-import 'package:flutter_englearn/features/learn/page/widgets/topic_item_details_widget.dart';
+import 'package:flutter_englearn/features/learn/page/lesson_homepage_screen.dart';
+import 'package:flutter_englearn/features/learn/widgets/topic_item_details_widget.dart';
 import 'package:flutter_englearn/model/topic_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

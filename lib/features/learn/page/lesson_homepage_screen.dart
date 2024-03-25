@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
 import 'package:flutter_englearn/model/lesson_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -186,22 +187,32 @@ class LessonHomePageScreen extends ConsumerWidget {
                                     itemCount: snapshot.data!.length,
                                     scrollDirection: Axis.vertical,
                                     itemBuilder: (context, index) {
-                                      return ListTile(
-                                        leading:
-                                            Image.asset('assets/theory.png'),
-                                        title: Text(
-                                            snapshot.data![index].lessonName),
-                                        subtitle: Text(
-                                            snapshot.data![index].levelName),
-                                        trailing:
-                                            snapshot.data![index].completed ==
-                                                    'true'
-                                                ? const Icon(
-                                                    Icons.check,
-                                                    color: Colors.green,
-                                                  )
-                                                : null,
-                                        onTap: () {},
+                                      return InkWell(
+                                        onTap: () {
+                                          print("1");
+                                          Navigator.pushNamed(
+                                            context,
+                                            LessonContentScreen.routeName,
+                                            arguments:
+                                                snapshot.data![index].lessonId,
+                                          );
+                                        },
+                                        child: ListTile(
+                                          leading:
+                                              Image.asset('assets/theory.png'),
+                                          title: Text(
+                                              snapshot.data![index].lessonName),
+                                          subtitle: Text(
+                                              snapshot.data![index].levelName),
+                                          trailing:
+                                              snapshot.data![index].completed ==
+                                                      'true'
+                                                  ? const Icon(
+                                                      Icons.check,
+                                                      color: Colors.green,
+                                                    )
+                                                  : null,
+                                        ),
                                       );
                                     },
                                   ),
