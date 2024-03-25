@@ -13,6 +13,7 @@ import 'package:flutter_englearn/features/homepage/page/about_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/settings_screen.dart';
 import 'package:flutter_englearn/features/learn/page/topic_details_screen.dart';
+import 'package:flutter_englearn/features/learn/page/widgets/lesson_homepage_screen.dart';
 import 'package:flutter_englearn/features/mission/page/mission_screen.dart';
 import 'package:flutter_englearn/features/user_info/page/change_password_screen.dart';
 import 'package:flutter_englearn/features/user_info/page/more_info_screen.dart';
@@ -89,7 +90,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case TopicDetailsScreen.routeName:
       final topicResponse = settings.arguments as TopicResponse;
       return MaterialPageRoute(
-          builder: (context) => TopicDetailsScreen(topicResponse: topicResponse));
+          builder: (context) =>
+              TopicDetailsScreen(topicResponse: topicResponse));
+
+    case LessonHomePageScreen.routeName:
+      final topicId = settings.arguments as int;
+      return MaterialPageRoute(
+          builder: (context) => LessonHomePageScreen(topicId: topicId));
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/learn/page/widgets/lesson_homepage_screen.dart';
+import 'package:flutter_englearn/features/learn/page/widgets/topic_item_details_widget.dart';
 import 'package:flutter_englearn/model/topic_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,8 +36,8 @@ class TopicDetailsScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: 50),
-                Text(
+                const SizedBox(height: 50),
+                const Text(
                   'Chi tiết ',
                   style: TextStyle(
                     fontSize: 25,
@@ -52,98 +54,30 @@ class TopicDetailsScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(14),
                     child: Column(
                       children: [
-                        InkWell(
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/theory.png',
-                                width: 50,
-                              ),
-                              const SizedBox(width: 10),
-                              const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Lý thuyết',
-                                    style: TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Đã học 0/10',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        TopicItemDetailsWidget(
+                          image: 'assets/theory.png',
+                          title: 'Lý thuyết',
+                          subTitle: 'Đã học 0/10',
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              LessonHomePageScreen.routeName,
+                              arguments: topicResponse.topicId,
+                            );
+                          },
                         ),
-                        const Divider(),
-                        InkWell(
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/exercise.png',
-                                width: 50,
-                              ),
-                              const SizedBox(width: 10),
-                              const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Bài tập',
-                                    style: TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Đã làm 0/10',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        TopicItemDetailsWidget(
+                          image: 'assets/exercise.png',
+                          title: 'Bài tập',
+                          subTitle: 'Đã làm 0/10',
+                          onTap: () {},
                         ),
-                        const Divider(),
-                        InkWell(
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/exam.png',
-                                width: 50,
-                              ),
-                              const SizedBox(width: 10),
-                              const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Bài kiểm tra',
-                                    style: TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Đã làm 0/10',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
+                        TopicItemDetailsWidget(
+                          image: 'assets/exam.png',
+                          title: 'Bài kiểm tra',
+                          subTitle: 'Đã làm 0/10',
+                          onTap: () {},
+                        ),
                       ],
                     ),
                   ),
