@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/chat/widgets/receiver_message_widget.dart';
+import 'package:flutter_englearn/features/chat/widgets/sending_message_widget.dart';
 import 'package:flutter_englearn/features/user_info/page/user_info_screen.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
@@ -44,129 +46,88 @@ class ChatRoom extends ConsumerWidget {
               borderRadius: BorderRadius.circular(30.0),
               color: const Color.fromARGB(127, 255, 255, 255),
             ),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ReceiverMessageWidget(
+            child: const Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ReceiverMessageWidget(
+                          message:
+                              'Some message here. Long message. Write more and more. Some message here. Long message. Write more and more.'),
+                      ReceiverMessageWidget(
+                          message:
+                              'Some message here. Long message. Write more and more. Some message here. Long message. Write more and more.'),
+                      SendingMessageWidget(
                         message:
-                            'Some message here. Long message. Write more and more. Some message here. Long message. Write more and more.'),
-                    ReceiverMessageWidget(
+                            'Some message here. Long message. Write more and more. Some message here. Long message. Write more and more.',
+                      ),
+                      SendingMessageWidget(
+                        message: 'Hello!',
+                      ),
+                      ReceiverMessageWidget(
+                          message:
+                              'Some message here. Long message. Write more and more. Some message here. Long message. Write more and more.'),
+                      ReceiverMessageWidget(
+                          message:
+                              'Some message here. Long message. Write more and more. Some message here. Long message. Write more and more.'),
+                      SendingMessageWidget(
                         message:
-                            'Some message here. Long message. Write more and more. Some message here. Long message. Write more and more.'),
-                    SendingMessageWidget(
-                      message:
-                          'Some message here. Long message. Write more and more. Some message here. Long message. Write more and more.',
-                    ),
-                    SendingMessageWidget(
-                      message: 'Hello!',
-                    )
-                  ],
+                            'Some message here. Long message. Write more and more. Some message here. Long message. Write more and more.',
+                      ),
+                      SendingMessageWidget(
+                        message: 'Hello!',
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigateBarWidget(
-        index: indexBottomNavbar,
-      ),
-    );
-  }
-}
-
-class ReceiverMessageWidget extends StatelessWidget {
-  const ReceiverMessageWidget({
-    super.key,
-    required this.message,
-  });
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 5,
-        bottom: 5,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+      bottomNavigationBar: Row(
         children: [
-          const CircleAvatar(
-            radius: 20,
-            backgroundImage: AssetImage('assets/male.jpg'),
-          ),
-          const SizedBox(width: 5),
-          Container(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.sizeOf(context).width * 0.6,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-            ),
+          Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                message,
-                textAlign: TextAlign.justify,
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 10,
+                bottom: 10,
+              ),
+              child: TextFormField(
+                onChanged: (value) {},
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  suffixIcon: SizedBox(
+                    width: 100,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () async {},
+                          icon: const Icon(
+                            Icons.send,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(64),
+                  ),
+                  hintText: "Aa",
+                  contentPadding: const EdgeInsets.all(5),
+                ),
               ),
             ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class SendingMessageWidget extends StatelessWidget {
-  const SendingMessageWidget({
-    super.key,
-    required this.message,
-  });
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 5,
-        bottom: 5,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.sizeOf(context).width * 0.6,
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 8,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                message,
-                textAlign: TextAlign.justify,
-              ),
-            ),
-          ),
-          const SizedBox(width: 5),
-          const CircleAvatar(
-            radius: 20,
-            backgroundImage: AssetImage('assets/female.jpg'),
           ),
         ],
       ),
