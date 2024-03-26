@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/learn/widgets/error_identification_item_widget.dart';
+import 'package:flutter_englearn/features/learn/widgets/fill_in_the_blank_item_exercise_widget.dart';
 import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
+import 'package:flutter_englearn/features/learn/widgets/listen_exercise_item_widget.dart';
+import 'package:flutter_englearn/features/learn/widgets/match_up_exercise_item_widget.dart';
+import 'package:flutter_englearn/features/learn/widgets/multichoice_exercies_item_widget.dart';
+import 'package:flutter_englearn/features/learn/widgets/sentence_unscramble_item_exercise.dart';
+import 'package:flutter_englearn/features/learn/widgets/speak_item_widget.dart';
 import 'package:flutter_englearn/model/lesson_response.dart';
+import 'package:flutter_englearn/utils/widgets/custom_alert_dialog.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LessonHomePageScreen extends ConsumerWidget {
+class LessonHomePageScreen extends ConsumerStatefulWidget {
   const LessonHomePageScreen({
     super.key,
     required this.topicId,
@@ -15,7 +23,13 @@ class LessonHomePageScreen extends ConsumerWidget {
   final int topicId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _LessonHomePageScreenState();
+}
+
+class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
+  @override
+  Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
 
@@ -178,41 +192,76 @@ class LessonHomePageScreen extends ConsumerWidget {
                                 removeTop: true,
                                 child: SizedBox(
                                   height: height - 180,
-                                  child: ListView.separated(
-                                    separatorBuilder: (context, index) =>
-                                        const Divider(),
+                                  child: ListView.builder(
                                     physics:
                                         const AlwaysScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: snapshot.data!.length,
                                     scrollDirection: Axis.vertical,
                                     itemBuilder: (context, index) {
-                                      return InkWell(
-                                        onTap: () {
-                                          print("1");
-                                          Navigator.pushNamed(
-                                            context,
-                                            LessonContentScreen.routeName,
-                                            arguments:
+                                      return ExpansionTile(
+                                        title: Text(
+                                            snapshot.data![index].lessonName),
+                                        subtitle: Text(
+                                            snapshot.data![index].levelName),
+                                        leading:
+                                            Image.asset('assets/theory.png'),
+                                        children: <Widget>[
+                                          ListTile(
+                                            title: const Text('Lý thuyết'),
+                                            trailing: snapshot.data![index]
+                                                        .completed ==
+                                                    'true'
+                                                ? const Icon(
+                                                    Icons.check,
+                                                    color: Colors.green,
+                                                  )
+                                                : null,
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                context,
+                                                LessonContentScreen.routeName,
+                                                arguments: snapshot
+                                                    .data![index].lessonId,
+                                              );
+                                            },
+                                          ),
+                                          MultichoiceExerciseWidget(
+                                            lessonId:
                                                 snapshot.data![index].lessonId,
-                                          );
-                                        },
-                                        child: ListTile(
-                                          leading:
-                                              Image.asset('assets/theory.png'),
-                                          title: Text(
-                                              snapshot.data![index].lessonName),
-                                          subtitle: Text(
-                                              snapshot.data![index].levelName),
-                                          trailing:
-                                              snapshot.data![index].completed ==
-                                                      'true'
-                                                  ? const Icon(
-                                                      Icons.check,
-                                                      color: Colors.green,
-                                                    )
-                                                  : null,
-                                        ),
+                                            isCompleted: 'no',
+                                          ),
+                                          MatchUpExerciseWidget(
+                                            lessonId:
+                                                snapshot.data![index].lessonId,
+                                            isCompleted: 'no',
+                                          ),
+                                          FillInTheBlankExerciseWidget(
+                                            lessonId:
+                                                snapshot.data![index].lessonId,
+                                            isCompleted: 'no',
+                                          ),
+                                          SentenceUnscrambleExerciseWidget(
+                                            lessonId:
+                                                snapshot.data![index].lessonId,
+                                            isCompleted: 'no',
+                                          ),
+                                          ErrorIdentificationExerciseWidget(
+                                            lessonId:
+                                                snapshot.data![index].lessonId,
+                                            isCompleted: 'no',
+                                          ),
+                                          SpeakExerciseWidget(
+                                            lessonId:
+                                                snapshot.data![index].lessonId,
+                                            isCompleted: 'no',
+                                          ),
+                                          ListenExerciseWidget(
+                                            lessonId:
+                                                snapshot.data![index].lessonId,
+                                            isCompleted: 'no',
+                                          ),
+                                        ],
                                       );
                                     },
                                   ),
@@ -221,7 +270,6 @@ class LessonHomePageScreen extends ConsumerWidget {
                             } else if (snapshot.hasError) {
                               return Text('${snapshot.error}');
                             }
-
                             return const CircularProgressIndicator();
                           },
                         ),

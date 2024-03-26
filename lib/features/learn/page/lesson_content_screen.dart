@@ -217,10 +217,12 @@ class LessonContentScreen extends ConsumerWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                         ),
-                        child: const Text("Đã học xong",
-                            style: TextStyle(
-                              color: Colors.white,
-                            )),
+                        child: const Text(
+                          "Đã học xong",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                       )
                     ],
                   );

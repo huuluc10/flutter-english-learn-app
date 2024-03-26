@@ -67,12 +67,6 @@ class TopicDetailsScreen extends ConsumerWidget {
                           },
                         ),
                         TopicItemDetailsWidget(
-                          image: 'assets/exercise.png',
-                          title: 'Bài tập',
-                          subTitle: 'Đã làm 0/10',
-                          onTap: () {},
-                        ),
-                        TopicItemDetailsWidget(
                           image: 'assets/exam.png',
                           title: 'Bài kiểm tra',
                           subTitle: 'Đã làm 0/10',
