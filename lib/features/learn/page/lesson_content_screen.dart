@@ -8,15 +8,16 @@ class LessonContentScreen extends ConsumerWidget {
   const LessonContentScreen({
     super.key,
     required this.lessonId,
+    required this.isCompleted,
   });
 
   static const String routeName = '/lesson-content-screen';
   final int lessonId;
+  final bool isCompleted;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<LessconContent> fetchLessonContent(int lessonId) async {
-      // ignore: unused_local_variable
       final response = await Future.delayed(
         const Duration(seconds: 1),
         () => LessconContent(
@@ -209,19 +210,34 @@ class LessonContentScreen extends ConsumerWidget {
                               ),
                           ],
                         ),
-                      ElevatedButton(
-                        onPressed: () {
-                          //Todo: Mark lesson as learned
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                        ),
-                        child: const Text("Đã học xong",
-                            style: TextStyle(
-                              color: Colors.white,
-                            )),
-                      )
+                      !isCompleted
+                          ? ElevatedButton(
+                              onPressed: () {
+                                //Todo: Mark lesson as learned
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                              ),
+                              child: const Text(
+                                "Đánh dấu đã học xong",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                              ),
+                              child: const Text(
+                                "Đã học xong",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                     ],
                   );
                 }
