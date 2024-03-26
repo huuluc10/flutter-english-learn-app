@@ -7,12 +7,12 @@ class AnswerChoiceWidget extends ConsumerWidget {
     super.key,
     required this.answer,
     required this.updateCurrentIndex,
-    required this.inCreaseCorrectAnswerCount,
+    required this.increaseCorrectAnswerCount,
   });
 
   final Answer answer;
   final Function() updateCurrentIndex;
-  final Function() inCreaseCorrectAnswerCount;
+  final Function() increaseCorrectAnswerCount;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +28,7 @@ class AnswerChoiceWidget extends ConsumerWidget {
           onPressed: () {
             // TODO: call API to save answer
             if (answer.answers[index].text == answer.correctAnswer) {
-              inCreaseCorrectAnswerCount();
+              increaseCorrectAnswerCount();
             }
             updateCurrentIndex();
           },

@@ -14,6 +14,7 @@ import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/settings_screen.dart';
 import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
 import 'package:flutter_englearn/features/learn/page/multichoice_questions_screen.dart';
+import 'package:flutter_englearn/features/learn/page/result_exercise_screen.dart';
 import 'package:flutter_englearn/features/learn/page/topic_details_screen.dart';
 import 'package:flutter_englearn/features/learn/page/lesson_homepage_screen.dart';
 import 'package:flutter_englearn/features/mission/page/mission_screen.dart';
@@ -114,6 +115,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final lessonId = settings.arguments as int;
       return MaterialPageRoute(
           builder: (context) => MultichoiceQuestionScreen(lessonId: lessonId));
+
+    case ResultExerciseScreen.routeName:
+      final arguments = settings.arguments as List<int>;
+      final correctAnswerCount = arguments[0];
+      final totalQuestionCount = arguments[1];
+      return MaterialPageRoute(
+          builder: (context) => ResultExerciseScreen(
+                correctAnswerCount: correctAnswerCount,
+                totalQuestionCount: totalQuestionCount,
+              ));
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());
