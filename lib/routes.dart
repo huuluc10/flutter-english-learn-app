@@ -12,10 +12,14 @@ import 'package:flutter_englearn/features/friend/page/find_friend_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/about_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/settings_screen.dart';
+import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
+import 'package:flutter_englearn/features/learn/page/topic_details_screen.dart';
+import 'package:flutter_englearn/features/learn/page/lesson_homepage_screen.dart';
 import 'package:flutter_englearn/features/mission/page/mission_screen.dart';
 import 'package:flutter_englearn/features/user_info/page/change_password_screen.dart';
 import 'package:flutter_englearn/features/user_info/page/more_info_screen.dart';
 import 'package:flutter_englearn/features/user_info/page/user_info_screen.dart';
+import 'package:flutter_englearn/model/topic_response.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -83,6 +87,22 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case ChatRoom.routeName:
       return MaterialPageRoute(builder: (context) => const ChatRoom());
+
+    case TopicDetailsScreen.routeName:
+      final topicResponse = settings.arguments as TopicResponse;
+      return MaterialPageRoute(
+          builder: (context) =>
+              TopicDetailsScreen(topicResponse: topicResponse));
+
+    case LessonHomePageScreen.routeName:
+      final topicId = settings.arguments as int;
+      return MaterialPageRoute(
+          builder: (context) => LessonHomePageScreen(topicId: topicId));
+
+    case LessonContentScreen.routeName:
+      final lessonId = settings.arguments as int;
+      return MaterialPageRoute(
+          builder: (context) => LessonContentScreen(lessonId: lessonId));
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());

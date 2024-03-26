@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/chat/widgets/receiver_message_widget.dart';
 import 'package:flutter_englearn/features/chat/widgets/sending_message_widget.dart';
 import 'package:flutter_englearn/features/user_info/page/user_info_screen.dart';
-import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
-import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +12,6 @@ class ChatRoom extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final indexBottomNavbar = ref.watch(indexBottomNavbarProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

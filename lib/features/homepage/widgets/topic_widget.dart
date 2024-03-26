@@ -4,20 +4,16 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 class TopicWidget extends StatelessWidget {
   const TopicWidget({
     super.key,
-    required this.width,
     required this.nameTopic,
     required this.percent,
   });
 
-  final double width;
   final String nameTopic;
   final double percent;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: width * 0.5,
-      width: width * 0.44,
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 248, 247, 247),
         borderRadius: BorderRadius.circular(10),
@@ -40,14 +36,12 @@ class TopicWidget extends StatelessWidget {
               ),
               center: Stack(
                 children: [
-                  Opacity(
+                  const Opacity(
                     opacity: 0.5,
                     child: Image(
-                      image: const AssetImage(
+                      image: AssetImage(
                         'assets/lesson.png',
                       ),
-                      height: width * 2 / 7,
-                      width: width * 2 / 7,
                     ),
                   ),
                   Positioned(
