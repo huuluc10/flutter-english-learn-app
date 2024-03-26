@@ -101,11 +101,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (context) => LessonHomePageScreen(topicId: topicId));
 
     case LessonContentScreen.routeName:
-      final lessonId = settings.arguments as int;
+      final arguments = settings.arguments as List<Object>;
+      final lessonId = arguments[0] as int;
+      final isCompleted = arguments[1] as bool;
       return MaterialPageRoute(
-          builder: (context) => LessonContentScreen(lessonId: lessonId));
+          builder: (context) => LessonContentScreen(
+                lessonId: lessonId,
+                isCompleted: isCompleted,
+              ));
 
-          case MultichoiceQuestionScreen.routeName:
+    case MultichoiceQuestionScreen.routeName:
       final lessonId = settings.arguments as int;
       return MaterialPageRoute(
           builder: (context) => MultichoiceQuestionScreen(lessonId: lessonId));

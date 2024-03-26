@@ -6,9 +6,9 @@ import 'package:flutter_englearn/features/learn/widgets/listen_exercise_item_wid
 import 'package:flutter_englearn/features/learn/widgets/match_up_exercise_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/multichoice_exercies_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/sentence_unscramble_item_exercise.dart';
+import 'package:flutter_englearn/features/learn/widgets/sentence_transform_exercise_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/speak_item_widget.dart';
 import 'package:flutter_englearn/model/lesson_response.dart';
-import 'package:flutter_englearn/utils/widgets/custom_alert_dialog.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -43,7 +43,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
         content: 1,
         lessonExperience: 1,
         levelId: 1,
-        completed: 'true',
+        completed: 'yes',
         contentURL: 'https://www.youtube.com/watch?v=1',
         levelName: 'Beginner',
       ));
@@ -55,7 +55,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
         content: 2,
         lessonExperience: 2,
         levelId: 1,
-        completed: 'true',
+        completed: 'yes',
         contentURL: 'https://www.youtube.com/watch?v=2',
         levelName: 'Beginner',
       ));
@@ -67,7 +67,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
         content: 3,
         lessonExperience: 3,
         levelId: 1,
-        completed: 'false',
+        completed: 'no',
         contentURL: 'https://www.youtube.com/watch?v=3',
         levelName: 'Beginner',
       ));
@@ -79,7 +79,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
         content: 1,
         lessonExperience: 1,
         levelId: 1,
-        completed: 'false',
+        completed: 'no',
         contentURL: 'https://www.youtube.com/watch?v=1',
         levelName: 'Beginner',
       ));
@@ -91,7 +91,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
         content: 2,
         lessonExperience: 2,
         levelId: 1,
-        completed: 'false',
+        completed: 'no',
         contentURL: 'https://www.youtube.com/watch?v=2',
         levelName: 'Beginner',
       ));
@@ -103,7 +103,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
         content: 3,
         lessonExperience: 3,
         levelId: 1,
-        completed: 'false',
+        completed: 'no',
         contentURL: 'https://www.youtube.com/watch?v=3',
         levelName: 'Beginner',
       ));
@@ -115,7 +115,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
         content: 1,
         lessonExperience: 1,
         levelId: 1,
-        completed: 'false',
+        completed: 'no',
         contentURL: 'https://www.youtube.com/watch?v=1',
         levelName: 'Beginner',
       ));
@@ -127,7 +127,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
         content: 2,
         lessonExperience: 2,
         levelId: 1,
-        completed: 'false',
+        completed: 'no',
         contentURL: 'https://www.youtube.com/watch?v=2',
         levelName: 'Beginner',
       ));
@@ -139,7 +139,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
         content: 3,
         lessonExperience: 3,
         levelId: 1,
-        completed: 'false',
+        completed: 'no',
         contentURL: 'https://www.youtube.com/watch?v=3',
         levelName: 'Beginner',
       ));
@@ -211,19 +211,22 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                             title: const Text('Lý thuyết'),
                                             trailing: snapshot.data![index]
                                                         .completed ==
-                                                    'true'
+                                                    'yes'
                                                 ? const Icon(
                                                     Icons.check,
                                                     color: Colors.green,
                                                   )
                                                 : null,
                                             onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                LessonContentScreen.routeName,
-                                                arguments: snapshot
-                                                    .data![index].lessonId,
-                                              );
+                                              Navigator.pushNamed(context,
+                                                  LessonContentScreen.routeName,
+                                                  arguments: [
+                                                    snapshot
+                                                        .data![index].lessonId,
+                                                    snapshot.data![index]
+                                                            .completed ==
+                                                        'yes',
+                                                  ]);
                                             },
                                           ),
                                           MultichoiceExerciseWidget(
@@ -232,6 +235,11 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                             isCompleted: 'no',
                                           ),
                                           MatchUpExerciseWidget(
+                                            lessonId:
+                                                snapshot.data![index].lessonId,
+                                            isCompleted: 'no',
+                                          ),
+                                          SenntenceTransformExcerciseWidget(
                                             lessonId:
                                                 snapshot.data![index].lessonId,
                                             isCompleted: 'no',
@@ -251,12 +259,12 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                                 snapshot.data![index].lessonId,
                                             isCompleted: 'no',
                                           ),
-                                          SpeakExerciseWidget(
+                                          SpeakingExerciseWidget(
                                             lessonId:
                                                 snapshot.data![index].lessonId,
                                             isCompleted: 'no',
                                           ),
-                                          ListenExerciseWidget(
+                                          ListeningExerciseWidget(
                                             lessonId:
                                                 snapshot.data![index].lessonId,
                                             isCompleted: 'no',

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/utils/widgets/custom_alert_dialog.dart';
 
-class ListenExerciseWidget extends StatelessWidget {
-  const ListenExerciseWidget({
+class ListeningExerciseWidget extends StatelessWidget {
+  const ListeningExerciseWidget({
     super.key,
     required this.lessonId,
     required this.isCompleted,
