@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/learn/page/result_exercise_screen.dart';
 import 'package:flutter_englearn/features/learn/widgets/multichoice_widget.dart';
-import 'package:flutter_englearn/model/answer.dart';
-import 'package:flutter_englearn/model/answer_choice.dart';
 import 'package:flutter_englearn/model/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -46,7 +45,14 @@ class _MultichoiceQuestionScreenState
         _currentIndex++;
       });
     } else {
-      Navigator.of(context).pop();
+      Navigator.pushNamed(
+        context,
+        ResultExerciseScreen.routeName,
+        arguments: [
+          _correctAnswerCount,
+          _totalQuestionCount,
+        ],
+      );
     }
   }
 
@@ -126,6 +132,3 @@ class _MultichoiceQuestionScreenState
     );
   }
 }
-
-
-

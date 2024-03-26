@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/page/multichoice_questions_screen.dart';
 import 'package:flutter_englearn/features/learn/widgets/answer_choice_widget.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/answer_choice.dart';
@@ -15,7 +14,7 @@ class MultichoiceWidget extends ConsumerWidget {
     required this.inCreaseCorrectAnswerCount,
   });
 
-  final height;
+  final double height;
   final Question question;
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
@@ -109,7 +108,7 @@ class MultichoiceWidget extends ConsumerWidget {
                           return AnswerChoiceWidget(
                             answer: answer,
                             updateCurrentIndex: updateCurrentIndex,
-                            inCreaseCorrectAnswerCount:
+                            increaseCorrectAnswerCount:
                                 inCreaseCorrectAnswerCount,
                           );
                         },

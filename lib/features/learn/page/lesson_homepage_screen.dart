@@ -147,6 +147,10 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
       return lessons;
     }
 
+    initState() {
+      print("1");
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
