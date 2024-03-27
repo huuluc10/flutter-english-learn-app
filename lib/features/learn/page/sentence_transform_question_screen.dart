@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/learn/page/result_exercise_screen.dart';
+import 'package:flutter_englearn/features/learn/widgets/sentence_transform_widget.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class SentenceTransformQuestionScreen extends ConsumerStatefulWidget {
-  const SentenceTransformQuestionScreen({super.key});
+  const SentenceTransformQuestionScreen({
+    super.key,
+    required this.lessonId,
+  });
+
+  static const String routeName = '/sentence-transform-question-screen';
+  final int lessonId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -33,23 +41,32 @@ class _SentenceTransformQuestionScreenState
 
   void updateCurrentIndex() {
     if (_currentIndex < _totalQuestionCount - 1) {
-      setState(() {
-        _currentIndex++;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _currentIndex++;
+        });
       });
     } else {
-      Navigator.pushNamed(
-        context,
-        ResultExerciseScreen.routeName,
-        arguments: [
-          _correctAnswerCount,
-          _totalQuestionCount,
-        ],
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamed(
+          context,
+          ResultExerciseScreen.routeName,
+          arguments: [
+            _correctAnswerCount,
+            _totalQuestionCount,
+            _explanationQuestions,
+          ],
+        );
+      });
     }
   }
 
   void inCreaseCorrectAnswerCount() {
     _correctAnswerCount++;
+  }
+
+  void addExplanationQuestion(ExplanationQuestion explanationQuestion) {
+    _explanationQuestions.add(explanationQuestion);
   }
 
   int _currentIndex = 0;
@@ -59,6 +76,7 @@ class _SentenceTransformQuestionScreenState
   List<ExplanationQuestion> _explanationQuestions = [];
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.sizeOf(context).height;
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -70,7 +88,56 @@ class _SentenceTransformQuestionScreenState
           backgroundColor: Colors.transparent,
         ),
         body: Column(
-          children: [],
+          children: [
+            FutureBuilder<List<Question>>(
+              future: _fetchQuestions(widget.lessonId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('Error'),
+                  );
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: LinearPercentIndicator(
+                          lineHeight: 22.0,
+                          percent: _currentIndex / snapshot.data!.length,
+                          center: Text(
+                            "${_currentIndex / snapshot.data!.length * 100}%",
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          barRadius: const Radius.circular(20),
+                          backgroundColor: Colors.grey,
+                          progressColor: Colors.blue,
+                        ),
+                      ),
+                    ),
+                    SentenceTransformWidget(
+                      height: height,
+                      question: snapshot.data![_currentIndex],
+                      updateCurrentIndex: updateCurrentIndex,
+                      inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
+                      addExplanationQuestion: addExplanationQuestion,
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

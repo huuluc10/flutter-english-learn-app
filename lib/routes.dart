@@ -16,6 +16,7 @@ import 'package:flutter_englearn/features/learn/page/explantion_result_screen.da
 import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
 import 'package:flutter_englearn/features/learn/page/multichoice_questions_screen.dart';
 import 'package:flutter_englearn/features/learn/page/result_exercise_screen.dart';
+import 'package:flutter_englearn/features/learn/page/sentence_transform_question_screen.dart';
 import 'package:flutter_englearn/features/learn/page/topic_details_screen.dart';
 import 'package:flutter_englearn/features/learn/page/lesson_homepage_screen.dart';
 import 'package:flutter_englearn/features/mission/page/mission_screen.dart';
@@ -136,6 +137,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => ExplanationResultScreen(
               explanationQuestions: explanationQuestions));
+
+    case SentenceTransformQuestionScreen.routeName:
+      final lessonId = settings.arguments as int;
+      return MaterialPageRoute(
+          builder: (context) => SentenceTransformQuestionScreen(
+                lessonId: lessonId,
+              ));
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());
