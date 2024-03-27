@@ -14,7 +14,7 @@ class SentenceUnscrambleExerciseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: const Text('Bài tập điền từ vào chỗ trống'),
+      title: const Text('Bài tập xếp từ thành câu'),
       trailing: isCompleted == 'true'
           ? const Icon(
               Icons.check,

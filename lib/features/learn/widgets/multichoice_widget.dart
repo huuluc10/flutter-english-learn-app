@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/learn/widgets/answer_choice_widget.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/answer_choice.dart';
+import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,12 +13,14 @@ class MultichoiceWidget extends ConsumerWidget {
     required this.question,
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
+    required this.addExplanationQuestion,
   });
 
   final double height;
   final Question question;
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
+  final Function(ExplanationQuestion) addExplanationQuestion;
 
   Future<Answer> _fetchAnswer(int questionId) async {
     return await Future.delayed(
@@ -31,7 +34,8 @@ class MultichoiceWidget extends ConsumerWidget {
                 AnswerChoice(text: 'Answer 4'),
               ],
               correctAnswer: 'Answer 2',
-              explanation: null,
+              explanation:
+                  'Explanation Answer 2 Explanation Answer 2.\nExplanation Answer 2 Explanation Answer 2  ',
             ));
   }
 
@@ -110,6 +114,13 @@ class MultichoiceWidget extends ConsumerWidget {
                             updateCurrentIndex: updateCurrentIndex,
                             increaseCorrectAnswerCount:
                                 inCreaseCorrectAnswerCount,
+                            addExplanationQuestion:
+                                (ExplanationQuestion explanationQuestion) {
+                              ExplanationQuestion explanation =
+                                  explanationQuestion;
+                              explanation.question = question.questionContent;
+                              addExplanationQuestion(explanation);
+                            },
                           );
                         },
                       ),

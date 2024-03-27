@@ -1,14 +1,14 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/page/lesson_homepage_screen.dart';
+import 'package:flutter_englearn/features/learn/page/explantion_result_screen.dart';
+import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 
-class ResultExerciseScreen extends StatelessWidget {
+class ResultExerciseScreen extends StatefulWidget {
   const ResultExerciseScreen({
     super.key,
     required this.correctAnswerCount,
     required this.totalQuestionCount,
+    required this.explanationQuestions,
   });
 
   static const routeName = '/result-exercise-screen';
@@ -16,9 +16,17 @@ class ResultExerciseScreen extends StatelessWidget {
   final int correctAnswerCount;
   final int totalQuestionCount;
 
+  final List<ExplanationQuestion> explanationQuestions;
+
+  @override
+  State<ResultExerciseScreen> createState() => _ResultExerciseScreenState();
+}
+
+class _ResultExerciseScreenState extends State<ResultExerciseScreen> {
   int caculateResult() {
     return int.parse(
-        ((correctAnswerCount / totalQuestionCount) * 100).toStringAsFixed(0));
+        ((widget.correctAnswerCount / widget.totalQuestionCount) * 100)
+            .toStringAsFixed(0));
   }
 
   String getComment() {
@@ -64,7 +72,7 @@ class ResultExerciseScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'Bạn đã trả lời đúng $correctAnswerCount câu trong tổng $totalQuestionCount câu',
+                'Bạn đã trả lời đúng ${widget.correctAnswerCount} câu trong tổng ${widget.totalQuestionCount} câu',
                 style: const TextStyle(
                   fontSize: 20,
                   color: Colors.white,
@@ -73,7 +81,7 @@ class ResultExerciseScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'Số điểm của bạn là ${caculateResult()}',
+                'Số điểm của bạn là ${caculateResult()}/100',
                 style: const TextStyle(
                   fontSize: 20,
                   color: Colors.white,
@@ -89,7 +97,22 @@ class ResultExerciseScreen extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
+              if (widget.correctAnswerCount < widget.totalQuestionCount)
+                Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          ExplanationResultScreen.routeName,
+                          arguments: widget.explanationQuestions,
+                        );
+                      },
+                      child: const Text('Xem lời giải'),
+                    ),
+                  ],
+                ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
