@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/learn/page/result_exercise_screen.dart';
 import 'package:flutter_englearn/features/learn/widgets/multichoice_widget.dart';
+import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -51,6 +52,7 @@ class _MultichoiceQuestionScreenState
         arguments: [
           _correctAnswerCount,
           _totalQuestionCount,
+          _explanationQuestions,
         ],
       );
     }
@@ -60,9 +62,14 @@ class _MultichoiceQuestionScreenState
     _correctAnswerCount++;
   }
 
+  void addExplanationQuestion(ExplanationQuestion explanationQuestion) {
+    _explanationQuestions.add(explanationQuestion);
+  }
+
   int _currentIndex = 0;
   int _correctAnswerCount = 0;
   int _totalQuestionCount = 0;
+  List<ExplanationQuestion> _explanationQuestions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +128,7 @@ class _MultichoiceQuestionScreenState
                       question: snapshot.data![_currentIndex],
                       updateCurrentIndex: updateCurrentIndex,
                       inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
+                      addExplanationQuestion: addExplanationQuestion,
                     ),
                   ],
                 );

@@ -3,7 +3,6 @@ import 'package:flutter_englearn/features/learn/widgets/error_identification_ite
 import 'package:flutter_englearn/features/learn/widgets/fill_in_the_blank_item_exercise_widget.dart';
 import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
 import 'package:flutter_englearn/features/learn/widgets/listen_exercise_item_widget.dart';
-import 'package:flutter_englearn/features/learn/widgets/match_up_exercise_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/multichoice_exercies_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/sentence_unscramble_item_exercise.dart';
 import 'package:flutter_englearn/features/learn/widgets/sentence_transform_exercise_item_widget.dart';
@@ -147,10 +146,6 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
       return lessons;
     }
 
-    initState() {
-      print("1");
-    }
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -234,11 +229,6 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                             },
                                           ),
                                           MultichoiceExerciseWidget(
-                                            lessonId:
-                                                snapshot.data![index].lessonId,
-                                            isCompleted: 'no',
-                                          ),
-                                          MatchUpExerciseWidget(
                                             lessonId:
                                                 snapshot.data![index].lessonId,
                                             isCompleted: 'no',
