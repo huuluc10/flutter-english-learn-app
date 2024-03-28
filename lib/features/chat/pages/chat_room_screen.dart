@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/chat/widgets/receiver_message_widget.dart';
 import 'package:flutter_englearn/features/chat/widgets/sending_message_widget.dart';
-import 'package:flutter_englearn/features/user_info/page/user_info_screen.dart';
+import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

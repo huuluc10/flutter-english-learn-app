@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/user_info/page/more_info_screen.dart';
+import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart';
 import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/streak_chart.dart';
