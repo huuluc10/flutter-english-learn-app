@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/learn/widgets/fill_in_the_blank_item_exercise_widget.dart';
-import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
+import 'package:flutter_englearn/features/learn/pages/lesson_content_screen.dart';
 import 'package:flutter_englearn/features/learn/widgets/listening_exercise_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/multichoice_exercies_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/sentence_unscramble_item_exercise.dart';

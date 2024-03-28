@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/page/login_screen.dart';
-import 'package:flutter_englearn/features/auth/page/sign_up_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/login_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/sign_up_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);

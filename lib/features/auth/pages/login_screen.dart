@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/page/adding_info_sign_up_screen.dart';
-import 'package:flutter_englearn/features/auth/page/login_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/reset_password_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/sign_up_screen.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
+import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
-  static const routeName = '/signup-screen';
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+  static const routeName = '/login-screen';
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController _usernameController = TextEditingController();
@@ -16,6 +22,7 @@ class SignUpScreen extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         reverse: true,
         child: LineGradientBackgroundWidget(
           child: SizedBox(
@@ -26,22 +33,26 @@ class SignUpScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/sign_up.png',
+                    'assets/login.png',
                     width: 200,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   const Text(
-                    'Đăng ký tài khoản mới',
+                    'Đăng nhập',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: AuthTextField(
-                      labelText: 'Tên đăng nhập',
+                      labelText: 'Tên đăng nhập hoặc email',
                       isPassword: false,
                       controller: _usernameController,
                     ),
@@ -54,38 +65,60 @@ class SignUpScreen extends StatelessWidget {
                       controller: _passwordController,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   ElevatedButton(
                     onPressed: () {
-                      // Todo: Check username and password is not empty
-                      // Todo: Check username is existed or not
-                      // If not, navigate to AddingInfoSignUpScreen
-                      // If yes, show error message
-                      Navigator.pushNamedAndRemoveUntil(context,
-                          AddingInfoSignUpScreen.routeName, (route) => false);
+                      // Todo: handle login
+                      // Check if username and password is not empty
+                      // If not empty, call login API
+                      // If login success, navigate to home screen
+                      // If login fail, show error message
+
+                      // Navigate to home screen
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        HomeScreen.routeName,
+                        (route) => false,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),
                     child: const Text(
-                      'Đăng ký',
+                      'Đăng nhập',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Đã có tài khoản?'),
+                      const Text('Chưa có tài khoản?'),
                       TextButton(
                         onPressed: () {
                           Navigator.pushNamedAndRemoveUntil(
-                              context, LoginScreen.routeName, (route) => false);
+                            context,
+                            SignUpScreen.routeName,
+                            (route) => false,
+                          );
                         },
-                        child: const Text('Đăng nhập'),
+                        child: const Text('Đăng ký'),
                       ),
                     ],
                   ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          ResetPasswordScreen.routeName,
+                          (route) => false,
+                        );
+                      },
+                      child: const Text("Quên mật khẩu?"))
                 ],
               ),
             ),

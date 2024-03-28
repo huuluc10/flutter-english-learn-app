@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/homepage/widgets/drawer_home_widget.dart';
 import 'package:flutter_englearn/features/homepage/widgets/topic_widget.dart';
-import 'package:flutter_englearn/features/learn/page/topic_details_screen.dart';
+import 'package:flutter_englearn/features/learn/pages/topic_details_screen.dart';
 import 'package:flutter_englearn/model/topic_response.dart';
 import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';

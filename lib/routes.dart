@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/page/adding_info_sign_up_screen.dart';
-import 'package:flutter_englearn/features/auth/page/login_screen.dart';
-import 'package:flutter_englearn/features/auth/page/otp_input_screen.dart';
-import 'package:flutter_englearn/features/auth/page/reset_password_screen.dart';
-import 'package:flutter_englearn/features/auth/page/sign_up_screen.dart';
-import 'package:flutter_englearn/features/auth/page/welcome_screen.dart';
-import 'package:flutter_englearn/features/chat/page/chat_home_screen.dart';
-import 'package:flutter_englearn/features/chat/page/chat_room_screen.dart';
-import 'package:flutter_englearn/features/dictionary/page/dictionary_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/adding_info_sign_up_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/login_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/otp_input_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/reset_password_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/sign_up_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
+import 'package:flutter_englearn/features/chat/pages/chat_home_screen.dart';
+import 'package:flutter_englearn/features/chat/pages/chat_room_screen.dart';
+import 'package:flutter_englearn/features/dictionary/pages/dictionary_screen.dart';
+import 'package:flutter_englearn/features/exercise/pages/exam_homepage_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/explantion_result_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/full_in_the_blank_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/listening_question_screen.dart';
@@ -15,18 +16,18 @@ import 'package:flutter_englearn/features/exercise/pages/multichoice_questions_s
 import 'package:flutter_englearn/features/exercise/pages/sentence_transform_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/sentence_unscramble_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/speaking_question_screen.dart';
-import 'package:flutter_englearn/features/friend/page/find_friend_screen.dart';
-import 'package:flutter_englearn/features/homepage/page/about_screen.dart';
-import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
-import 'package:flutter_englearn/features/homepage/page/settings_screen.dart';
-import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
+import 'package:flutter_englearn/features/friend/pages/find_friend_screen.dart';
+import 'package:flutter_englearn/features/homepage/pages/about_screen.dart';
+import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
+import 'package:flutter_englearn/features/homepage/pages/settings_screen.dart';
+import 'package:flutter_englearn/features/learn/pages/lesson_content_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/result_exercise_screen.dart';
-import 'package:flutter_englearn/features/learn/page/topic_details_screen.dart';
-import 'package:flutter_englearn/features/learn/page/lesson_homepage_screen.dart';
-import 'package:flutter_englearn/features/mission/page/mission_screen.dart';
-import 'package:flutter_englearn/features/user_info/page/change_password_screen.dart';
-import 'package:flutter_englearn/features/user_info/page/more_info_screen.dart';
-import 'package:flutter_englearn/features/user_info/page/user_info_screen.dart';
+import 'package:flutter_englearn/features/learn/pages/topic_details_screen.dart';
+import 'package:flutter_englearn/features/learn/pages/lesson_homepage_screen.dart';
+import 'package:flutter_englearn/features/mission/pages/mission_screen.dart';
+import 'package:flutter_englearn/features/user_info/pages/change_password_screen.dart';
+import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart';
+import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/topic_response.dart';
 
@@ -176,6 +177,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (context) => ListeningQuestionScreen(
                 lessonId: lessonId,
               ));
+
+    case ExamHomePageScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => const ExamHomePageScreen());
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());

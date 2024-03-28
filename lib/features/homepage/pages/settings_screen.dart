@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/page/welcome_screen.dart';
-import 'package:flutter_englearn/features/homepage/page/about_screen.dart';
-import 'package:flutter_englearn/features/user_info/page/change_password_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
+import 'package:flutter_englearn/features/homepage/pages/about_screen.dart';
+import 'package:flutter_englearn/features/user_info/pages/change_password_screen.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

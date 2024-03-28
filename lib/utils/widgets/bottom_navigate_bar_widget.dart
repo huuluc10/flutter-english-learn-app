@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/chat/page/chat_home_screen.dart';
-import 'package:flutter_englearn/features/dictionary/page/dictionary_screen.dart';
-import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
+import 'package:flutter_englearn/features/chat/pages/chat_home_screen.dart';
+import 'package:flutter_englearn/features/dictionary/pages/dictionary_screen.dart';
+import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
