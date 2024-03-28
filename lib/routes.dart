@@ -13,6 +13,7 @@ import 'package:flutter_englearn/features/homepage/page/about_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/settings_screen.dart';
 import 'package:flutter_englearn/features/learn/page/explantion_result_screen.dart';
+import 'package:flutter_englearn/features/learn/page/full_in_the_blank_question_screen.dart';
 import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
 import 'package:flutter_englearn/features/learn/page/multichoice_questions_screen.dart';
 import 'package:flutter_englearn/features/learn/page/result_exercise_screen.dart';
@@ -142,6 +143,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final lessonId = settings.arguments as int;
       return MaterialPageRoute(
           builder: (context) => SentenceTransformQuestionScreen(
+                lessonId: lessonId,
+              ));
+
+    case FillInTheBlankQuestionScreen.routeName:
+      final lessonId = settings.arguments as int;
+      return MaterialPageRoute(
+          builder: (context) => FillInTheBlankQuestionScreen(
                 lessonId: lessonId,
               ));
 

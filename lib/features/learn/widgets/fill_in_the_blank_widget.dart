@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/answer.dart';
+import 'package:flutter_englearn/model/answer_choice.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SentenceTransformWidget extends ConsumerStatefulWidget {
-  const SentenceTransformWidget({
+class FillInTheBlankWidget extends ConsumerStatefulWidget {
+  const FillInTheBlankWidget({
     super.key,
     required this.height,
     required this.question,
@@ -22,34 +23,37 @@ class SentenceTransformWidget extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SentenceTransformWidgetState();
+      _FillInTheBlankWidgetState();
 }
 
-class _SentenceTransformWidgetState
-    extends ConsumerState<SentenceTransformWidget> {
+class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
   Future<Answer> _fetchAnswer(int questionId) async {
     return await Future.delayed(
         const Duration(seconds: 0),
         () => Answer(
-              answers: [],
-              correctAnswer: 'xin chào',
+              answers: [
+                AnswerChoice(text: 'Where'),
+                AnswerChoice(text: 'Do'),
+                AnswerChoice(text: 'What'),
+                AnswerChoice(text: 'How'),
+                AnswerChoice(text: 'When'),
+              ],
+              correctAnswer: 'Do',
               explanation:
                   'Explanation Answer 2 Explanation Answer 2.\nExplanation Answer 2 Explanation Answer 2  ',
             ));
   }
 
-  List<String> getWords(String sentence) {
-    return sentence.split(' ');
-  }
-
-  List<String> listWordIsChosen = [];
+  String? wordIsChosen;
+  String? correctAnswer;
+  String? explanation;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const Text(
-          'Sắp xếp từ để tạo thành câu đúng nghĩa',
+          'Điền từ còn thiếu vào chỗ trống',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -87,47 +91,38 @@ class _SentenceTransformWidgetState
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const Row(
+                          Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Câu trả lời: ',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 20,
                                 ),
                               ),
-                            ],
-                          ),
-                          Expanded(
-                            child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 5,
-                              ),
-                              itemCount: listWordIsChosen.length,
-                              itemBuilder: (context, index) {
-                                String word = listWordIsChosen[index];
-                                return Container(
-                                  margin: const EdgeInsets.only(left: 3),
-                                  padding: const EdgeInsets.all(3),
-                                  height: 80, // Add this
-                                  width: 80,
+                              InkWell(
+                                onTap: () => setState(() {
+                                  wordIsChosen = null;
+                                }),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-                                    color: Colors.blue,
+                                    color: Colors.white,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Center(
                                     child: Text(
-                                      word,
+                                      wordIsChosen ?? '',
                                       style: const TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.black,
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -142,7 +137,7 @@ class _SentenceTransformWidgetState
                     right: 10,
                   ),
                   child: SizedBox(
-                    height: widget.height * 0.35,
+                    height: widget.height * 0.28,
                     child: MediaQuery.removePadding(
                       context: context,
                       removeTop: true,
@@ -161,43 +156,29 @@ class _SentenceTransformWidgetState
                             );
                           }
                           Answer answer = snapshot.data!;
-                          List<String> words = getWords(answer.correctAnswer);
+                          correctAnswer = answer.correctAnswer;
+                          explanation = answer.explanation;
+
                           // Remove word is chosen
-                          for (String word in listWordIsChosen) {
-                            words.remove(word);
+                          if (wordIsChosen != null) {
+                            answer.answers.removeWhere(
+                                (element) => element.text == wordIsChosen);
                           }
 
-                          // Shuffle words
-                          words.shuffle();
-
-                          if (words.isEmpty) {
-                            // Concat list word is chosen to create answer
-                            String stringAnswer = listWordIsChosen.join(' ');
-                            if (stringAnswer == answer.correctAnswer) {
-                              widget.inCreaseCorrectAnswerCount();
-                            } else {
-                              widget.addExplanationQuestion(
-                                ExplanationQuestion(
-                                  question: widget.question.questionContent,
-                                  answer: answer.correctAnswer,
-                                  explanation: answer.explanation,
-                                ),
-                              );
-                            }
-                            widget.updateCurrentIndex();
-                          }
                           return GridView.count(
                             crossAxisCount: 3,
-                            childAspectRatio: 3,
+                            childAspectRatio: 3.2,
+                            mainAxisSpacing: 5,
                             children: List.of(
-                              words.map(
+                              answer.answers.map(
                                 (e) {
                                   return InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        words.remove(e);
-                                        listWordIsChosen.add(e);
-                                      });
+                                      if (wordIsChosen == null) {
+                                        setState(() {
+                                          wordIsChosen = e.text;
+                                        });
+                                      }
                                     },
                                     child: Container(
                                       margin: const EdgeInsets.only(left: 5),
@@ -208,7 +189,7 @@ class _SentenceTransformWidgetState
                                       ),
                                       child: Center(
                                         child: Text(
-                                          e,
+                                          e.text,
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
@@ -224,6 +205,42 @@ class _SentenceTransformWidgetState
                         },
                       ),
                     ),
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (wordIsChosen == null || wordIsChosen == '') {
+                        // show SnackBar
+                        ScaffoldMessenger.of(context).clearSnackBars();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Vui lòng chọn câu trả lời',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            backgroundColor: Color.fromARGB(255, 233, 233, 233),
+                          ),
+                        );
+                      } else {
+                        if (wordIsChosen == correctAnswer) {
+                          widget.inCreaseCorrectAnswerCount();
+                        } else {
+                          widget.addExplanationQuestion(
+                            ExplanationQuestion(
+                              question: widget.question.questionContent,
+                              answer: correctAnswer!,
+                              explanation: explanation,
+                            ),
+                          );
+                        }
+                        widget.updateCurrentIndex();
+                      }
+                    },
+                    child: const Text('Tiếp tục'),
                   ),
                 ),
               ],
