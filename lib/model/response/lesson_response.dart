@@ -24,20 +24,6 @@ class LessonResponse {
     required this.levelName,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'lessonId': lessonId,
-      'lessonName': lessonName,
-      'topicId': topicId,
-      'content': content,
-      'lessonExperience': lessonExperience,
-      'levelId': levelId,
-      'completed': completed,
-      'contentURL': contentURL,
-      'levelName': levelName,
-    };
-  }
-
   factory LessonResponse.fromMap(Map<String, dynamic> map) {
     return LessonResponse(
       lessonId: map['lessonId'] as int,
@@ -51,8 +37,6 @@ class LessonResponse {
       levelName: map['levelName'] as String,
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory LessonResponse.fromJson(String source) =>
       LessonResponse.fromMap(json.decode(source) as Map<String, dynamic>);
