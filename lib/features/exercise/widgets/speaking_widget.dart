@@ -33,6 +33,9 @@ class SpeakingWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    String _selectedAnswer = 'Answer 2';
+    String? correctAnswer;
+    String? explanation;
     return Column(
       children: [
         const Text(
@@ -110,6 +113,7 @@ class SpeakingWidget extends ConsumerWidget {
                             );
                           }
                           Answer answer = snapshot.data!;
+                          correctAnswer = answer.correctAnswer;
                           return Padding(
                             padding: const EdgeInsets.all(14),
                             child: Center(
@@ -136,20 +140,24 @@ class SpeakingWidget extends ConsumerWidget {
                                   Row(
                                     children: [
                                       Expanded(
-                                        child: RichText(
-                                          text: TextSpan(
-                                            text: 'Từ phát âm của bạn: ',
-                                            style: DefaultTextStyle.of(context)
-                                                .style,
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text:
-                                                      '${answer.answers.isEmpty ? 'Chưa có' : answer.answers.first}',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ],
-                                          ),
+                                        child: Consumer(
+                                          builder: (context, ref, child) {
+                                            return RichText(
+                                              text: TextSpan(
+                                                text: 'Từ phát âm của bạn: ',
+                                                style:
+                                                    DefaultTextStyle.of(context)
+                                                        .style,
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text: _selectedAnswer,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ],
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                       IconButton(
@@ -165,6 +173,42 @@ class SpeakingWidget extends ConsumerWidget {
                         },
                       ),
                     ),
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_selectedAnswer == '') {
+                        // show SnackBar
+                        ScaffoldMessenger.of(context).clearSnackBars();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Vui lòng nói từ bạn đã nghe',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            backgroundColor: Color.fromARGB(255, 233, 233, 233),
+                          ),
+                        );
+                      } else {
+                        if (_selectedAnswer == correctAnswer) {
+                          inCreaseCorrectAnswerCount();
+                        } else {
+                          addExplanationQuestion(
+                            ExplanationQuestion(
+                              question: question.questionContent,
+                              answer: correctAnswer!,
+                              explanation: explanation,
+                            ),
+                          );
+                        }
+                        updateCurrentIndex();
+                      }
+                    },
+                    child: const Text('Tiếp tục'),
                   ),
                 ),
               ],
