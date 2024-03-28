@@ -6,7 +6,7 @@ import 'package:flutter_englearn/features/learn/widgets/multichoice_exercies_ite
 import 'package:flutter_englearn/features/learn/widgets/sentence_unscramble_item_exercise.dart';
 import 'package:flutter_englearn/features/learn/widgets/sentence_transform_exercise_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/speaking_item_widget.dart';
-import 'package:flutter_englearn/model/lesson_response.dart';
+import 'package:flutter_englearn/model/response/lesson_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
