@@ -4,9 +4,10 @@ import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SentenceTransformWidget extends ConsumerStatefulWidget {
-  const SentenceTransformWidget({
+class SentenceWidget extends ConsumerStatefulWidget {
+  const SentenceWidget({
     super.key,
+    required this.isUnscrambl,
     required this.height,
     required this.question,
     required this.updateCurrentIndex,
@@ -14,6 +15,7 @@ class SentenceTransformWidget extends ConsumerStatefulWidget {
     required this.addExplanationQuestion,
   });
 
+  final bool isUnscrambl;
   final double height;
   final Question question;
   final Function() updateCurrentIndex;
@@ -21,25 +23,31 @@ class SentenceTransformWidget extends ConsumerStatefulWidget {
   final Function(ExplanationQuestion) addExplanationQuestion;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SentenceTransformWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SentenceWidgetState();
 }
 
-class _SentenceTransformWidgetState
-    extends ConsumerState<SentenceTransformWidget> {
+class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
   Future<Answer> _fetchAnswer(int questionId) async {
     return await Future.delayed(
         const Duration(seconds: 0),
         () => Answer(
               answers: [],
-              correctAnswer: 'xin chào',
+              correctAnswer: 'Nice to meet you 0',
               explanation:
                   'Explanation Answer 2 Explanation Answer 2.\nExplanation Answer 2 Explanation Answer 2  ',
             ));
   }
 
-  List<String> getWords(String sentence) {
+  List<String> getWordsTransform(String sentence) {
+    List<String> words = sentence.split(' ');
+    words.shuffle();
     return sentence.split(' ');
+  }
+
+  List<String> getWordsUnscramble(String sentence) {
+    List<String> words = sentence.split('/');
+    words.shuffle();
+    return words;
   }
 
   List<String> listWordIsChosen = [];
@@ -161,14 +169,14 @@ class _SentenceTransformWidgetState
                             );
                           }
                           Answer answer = snapshot.data!;
-                          List<String> words = getWords(answer.correctAnswer);
+                          List<String> words = widget.isUnscrambl
+                              ? getWordsUnscramble(
+                                  widget.question.questionContent)
+                              : getWordsTransform(answer.correctAnswer);
                           // Remove word is chosen
                           for (String word in listWordIsChosen) {
                             words.remove(word);
                           }
-
-                          // Shuffle words
-                          words.shuffle();
 
                           if (words.isEmpty) {
                             // Concat list word is chosen to create answer

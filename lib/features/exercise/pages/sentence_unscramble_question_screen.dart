@@ -6,28 +6,28 @@ import 'package:flutter_englearn/model/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class SentenceTransformQuestionScreen extends ConsumerStatefulWidget {
-  const SentenceTransformQuestionScreen({
+class SentenceUnscrambleQuestionScreen extends ConsumerStatefulWidget {
+  const SentenceUnscrambleQuestionScreen({
     super.key,
     required this.lessonId,
   });
 
-  static const String routeName = '/sentence-transform-question-screen';
+  static const String routeName = '/sentence-unscramble-question-screen';
   final int lessonId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SentenceTransformQuestionScreenState();
+      _SentenceUnscrambleQuestionScreenState();
 }
 
-class _SentenceTransformQuestionScreenState
-    extends ConsumerState<SentenceTransformQuestionScreen> {
+class _SentenceUnscrambleQuestionScreenState
+    extends ConsumerState<SentenceUnscrambleQuestionScreen> {
   Future<List<Question>> _fetchQuestions(int lessonId) async {
     List<Question> elements = [];
     for (int i = 0; i < 10; i++) {
       elements.add(Question(
         questionId: i,
-        questionContent: 'Question $i',
+        questionContent: 'Nice/to/meet/you $i',
         questionType: 'multichoice',
         lessonId: lessonId,
         answerUrl: 'Answer $i',
@@ -76,7 +76,7 @@ class _SentenceTransformQuestionScreenState
   List<ExplanationQuestion> _explanationQuestions = [];
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.sizeOf(context).height;
+    final height = MediaQuery.of(context).size.height;
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -125,7 +125,7 @@ class _SentenceTransformQuestionScreenState
                   ),
                 ),
                 SentenceWidget(
-                  isUnscrambl: false,
+                  isUnscrambl: true,
                   height: height,
                   question: snapshot.data![_currentIndex],
                   updateCurrentIndex: updateCurrentIndex,

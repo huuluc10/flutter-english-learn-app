@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/widgets/error_identification_item_widget.dart';
-import 'package:flutter_englearn/features/exercise/widgets/fill_in_the_blank_item_exercise_widget.dart';
+import 'package:flutter_englearn/features/learn/widgets/fill_in_the_blank_item_exercise_widget.dart';
 import 'package:flutter_englearn/features/learn/page/lesson_content_screen.dart';
-import 'package:flutter_englearn/features/learn/widgets/listen_exercise_item_widget.dart';
+import 'package:flutter_englearn/features/learn/widgets/listening_exercise_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/multichoice_exercies_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/sentence_unscramble_item_exercise.dart';
 import 'package:flutter_englearn/features/learn/widgets/sentence_transform_exercise_item_widget.dart';
-import 'package:flutter_englearn/features/learn/widgets/speak_item_widget.dart';
+import 'package:flutter_englearn/features/learn/widgets/speaking_item_widget.dart';
 import 'package:flutter_englearn/model/lesson_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -244,11 +243,6 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                             isCompleted: 'no',
                                           ),
                                           SentenceUnscrambleExerciseWidget(
-                                            lessonId:
-                                                snapshot.data![index].lessonId,
-                                            isCompleted: 'no',
-                                          ),
-                                          ErrorIdentificationExerciseWidget(
                                             lessonId:
                                                 snapshot.data![index].lessonId,
                                             isCompleted: 'no',

@@ -10,8 +10,11 @@ import 'package:flutter_englearn/features/chat/page/chat_room_screen.dart';
 import 'package:flutter_englearn/features/dictionary/page/dictionary_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/explantion_result_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/full_in_the_blank_question_screen.dart';
+import 'package:flutter_englearn/features/exercise/pages/listening_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/multichoice_questions_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/sentence_transform_question_screen.dart';
+import 'package:flutter_englearn/features/exercise/pages/sentence_unscramble_question_screen.dart';
+import 'package:flutter_englearn/features/exercise/pages/speaking_question_screen.dart';
 import 'package:flutter_englearn/features/friend/page/find_friend_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/about_screen.dart';
 import 'package:flutter_englearn/features/homepage/page/home_screen.dart';
@@ -150,6 +153,27 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final lessonId = settings.arguments as int;
       return MaterialPageRoute(
           builder: (context) => FillInTheBlankQuestionScreen(
+                lessonId: lessonId,
+              ));
+
+    case SentenceUnscrambleQuestionScreen.routeName:
+      final lessonId = settings.arguments as int;
+      return MaterialPageRoute(
+          builder: (context) => SentenceUnscrambleQuestionScreen(
+                lessonId: lessonId,
+              ));
+
+    case SpeakingQuestionScreen.routeName:
+      final lessonId = settings.arguments as int;
+      return MaterialPageRoute(
+          builder: (context) => SpeakingQuestionScreen(
+                lessonId: lessonId,
+              ));
+
+    case ListeningQuestionScreen.routeName:
+      final lessonId = settings.arguments as int;
+      return MaterialPageRoute(
+          builder: (context) => ListeningQuestionScreen(
                 lessonId: lessonId,
               ));
 

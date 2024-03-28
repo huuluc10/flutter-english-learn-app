@@ -20,7 +20,6 @@ class HomeScreen extends ConsumerWidget {
     final currentTime = DateTime.now();
 
     // Get width of screen
-    final width = MediaQuery.of(context).size.width;
     String image = "assets/light.png";
     String welcome = "Chào buổi sáng,";
     if (currentTime.hour < 12) {
