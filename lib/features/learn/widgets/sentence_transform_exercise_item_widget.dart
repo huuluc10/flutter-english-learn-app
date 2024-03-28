@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/page/sentence_transform_question_screen.dart';
+import 'package:flutter_englearn/features/exercise/pages/sentence_transform_question_screen.dart';
 import 'package:flutter_englearn/utils/widgets/custom_alert_dialog.dart';
 
 class SenntenceTransformExcerciseWidget extends StatelessWidget {

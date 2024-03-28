@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/page/multichoice_questions_screen.dart';
+import 'package:flutter_englearn/features/exercise/pages/multichoice_questions_screen.dart';
 import 'package:flutter_englearn/utils/widgets/custom_alert_dialog.dart';
 
 class MultichoiceExerciseWidget extends StatelessWidget {

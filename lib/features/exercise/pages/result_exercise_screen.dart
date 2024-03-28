@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/page/explantion_result_screen.dart';
+import 'package:flutter_englearn/features/exercise/pages/explantion_result_screen.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 

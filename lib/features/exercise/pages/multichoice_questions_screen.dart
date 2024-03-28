@@ -1,35 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/page/result_exercise_screen.dart';
-import 'package:flutter_englearn/features/learn/widgets/fill_in_the_blank_item_exercise_widget.dart';
-import 'package:flutter_englearn/features/learn/widgets/fill_in_the_blank_widget.dart';
-import 'package:flutter_englearn/features/learn/widgets/sentence_transform_widget.dart';
+import 'package:flutter_englearn/features/exercise/pages/result_exercise_screen.dart';
+import 'package:flutter_englearn/features/exercise/widgets/multichoice_widget.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class FillInTheBlankQuestionScreen extends ConsumerStatefulWidget {
-  const FillInTheBlankQuestionScreen({
+class MultichoiceQuestionScreen extends ConsumerStatefulWidget {
+  const MultichoiceQuestionScreen({
     super.key,
     required this.lessonId,
   });
 
-  static const String routeName = '/fill-in-the-blank-question-screen';
+  static const String routeName = '/multichoice-question-screen';
+
   final int lessonId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _FillInTheBlankQuestionScreenState();
+      _MultichoiceQuestionScreenState();
 }
 
-class _FillInTheBlankQuestionScreenState
-    extends ConsumerState<FillInTheBlankQuestionScreen> {
+class _MultichoiceQuestionScreenState
+    extends ConsumerState<MultichoiceQuestionScreen> {
   Future<List<Question>> _fetchQuestions(int lessonId) async {
     List<Question> elements = [];
     for (int i = 0; i < 10; i++) {
       elements.add(Question(
         questionId: i,
-        questionContent: '______ you know the answer?  $i',
+        questionContent: 'Question $i',
         questionType: 'multichoice',
         lessonId: lessonId,
         answerUrl: 'Answer $i',
@@ -43,23 +42,19 @@ class _FillInTheBlankQuestionScreenState
 
   void updateCurrentIndex() {
     if (_currentIndex < _totalQuestionCount - 1) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          _currentIndex++;
-        });
+      setState(() {
+        _currentIndex++;
       });
     } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushNamed(
-          context,
-          ResultExerciseScreen.routeName,
-          arguments: [
-            _correctAnswerCount,
-            _totalQuestionCount,
-            _explanationQuestions,
-          ],
-        );
-      });
+      Navigator.pushNamed(
+        context,
+        ResultExerciseScreen.routeName,
+        arguments: [
+          _correctAnswerCount,
+          _totalQuestionCount,
+          _explanationQuestions,
+        ],
+      );
     }
   }
 
@@ -74,7 +69,6 @@ class _FillInTheBlankQuestionScreenState
   int _currentIndex = 0;
   int _correctAnswerCount = 0;
   int _totalQuestionCount = 0;
-
   List<ExplanationQuestion> _explanationQuestions = [];
 
   @override
@@ -129,7 +123,7 @@ class _FillInTheBlankQuestionScreenState
                         ),
                       ),
                     ),
-                    FillInTheBlankWidget(
+                    MultichoiceWidget(
                       height: height,
                       question: snapshot.data![_currentIndex],
                       updateCurrentIndex: updateCurrentIndex,

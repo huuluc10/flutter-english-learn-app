@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/page/result_exercise_screen.dart';
-import 'package:flutter_englearn/features/learn/widgets/sentence_transform_widget.dart';
+import 'package:flutter_englearn/features/exercise/pages/result_exercise_screen.dart';
+import 'package:flutter_englearn/features/exercise/widgets/sentence_transform_widget.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
