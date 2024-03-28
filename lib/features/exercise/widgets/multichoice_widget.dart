@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/widgets/answer_choice_widget.dart';
+import 'package:flutter_englearn/features/exercise/widgets/answer_choice_widget.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/answer_choice.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
