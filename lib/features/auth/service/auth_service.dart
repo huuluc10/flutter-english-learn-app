@@ -1,8 +1,11 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_englearn/features/auth/pages/adding_info_sign_up_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/login_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 import 'package:flutter_englearn/model/login_request.dart';
+import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/response/jwt_response.dart';
 import 'package:flutter_englearn/utils/helper/helper.dart';
 
@@ -64,6 +67,33 @@ class AuthService {
       );
     } else {
       showSnackBar(context, "Đăng xuất không thành công!");
+    }
+  }
+
+  Future<void> signUp(BuildContext context, SignUpRequest request) async {
+    final result = await authRepository.signUp(request.toJson());
+    if (result == false) {
+      showSnackBar(context, "Không đăng ký thành công! Vui lòng thử lại!");
+    } else {
+      // Navigate to home screen
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        LoginScreen.routeName,
+        (route) => false,
+      );
+    }
+  }
+
+  Future<void> checkUsernameExists(
+      BuildContext context, SignUpRequest request) async {
+    bool check = await authRepository.checkUsernameExists(request.username);
+
+    if (check) {
+      showSnackBar(context, "Tên đăng nhập đã tồn tại!");
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+          context, AddingInfoSignUpScreen.routeName, (route) => false,
+          arguments: request);
     }
   }
 }

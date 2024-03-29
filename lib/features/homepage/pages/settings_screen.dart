@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/homepage/pages/about_screen.dart';
 import 'package:flutter_englearn/features/user_info/pages/change_password_screen.dart';

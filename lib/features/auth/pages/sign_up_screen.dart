@@ -1,17 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/pages/adding_info_sign_up_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/login_screen.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
+import 'package:flutter_englearn/model/request/sign_up_request.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
   static const routeName = '/signup-screen';
 
   @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void signUp() async {
+    // Check if username and password is not empty
+    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+      showSnackBar(context, "Nhập đầy đủ thông tin tài khoản và mật khẩu!");
+    } else if (isHTML(_usernameController.text) ||
+        isHTML(_passwordController.text)) {
+      showSnackBar(context, "Vui lòng không chèn ký tự đặc biệt!");
+    } else {
+      SignUpRequest signUpRequest = SignUpRequest(
+        username: _usernameController.text.trim(),
+        password: _passwordController.text.trim(),
+        gender: true,
+        dateOfBirth: DateTime.now(),
+        fullName: "",
+      );
+      ref
+          .watch(authServiceProvicer)
+          .checkUsernameExists(context, signUpRequest);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController _usernameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -57,12 +87,7 @@ class SignUpScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // Todo: Check username and password is not empty
-                      // Todo: Check username is existed or not
-                      // If not, navigate to AddingInfoSignUpScreen
-                      // If yes, show error message
-                      Navigator.pushNamedAndRemoveUntil(context,
-                          AddingInfoSignUpScreen.routeName, (route) => false);
+                      signUp();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,

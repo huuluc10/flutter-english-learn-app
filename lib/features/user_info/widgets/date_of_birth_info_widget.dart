@@ -23,7 +23,6 @@ class _DateAttributeWidgetState extends State<DateAttributeWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _value = widget.value;
   }
