@@ -7,4 +7,5 @@ class APIUrl {
   static const String baseUrlSocket = "ws://$ip:$portSocket";
 
   static const String pathLogin = "auth/signin";
+  static const String pathLogout = "auth/logout";
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 import 'package:flutter_englearn/model/login_request.dart';
@@ -49,6 +50,20 @@ class AuthService {
         HomeScreen.routeName,
         (route) => false,
       );
+    }
+  }
+
+  Future<void> logout(BuildContext context) async {
+    bool result = await authRepository.logout();
+
+    if (result) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        WelcomeScreen.routeName,
+        (route) => false,
+      );
+    } else {
+      showSnackBar(context, "Đăng xuất không thành công!");
     }
   }
 }

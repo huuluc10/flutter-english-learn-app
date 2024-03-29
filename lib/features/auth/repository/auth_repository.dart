@@ -80,4 +80,29 @@ class AuthRepository {
       return null;
     }
   }
+
+  Future<bool> logout() async {
+    //Get jwto token current
+    String jwt = (await getJWTCurrent())!.token;
+    print(jwt);
+
+    // Get URL, header
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    headers['Authorization'] = 'Bearer $jwt';
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathLogout;
+
+    // Call logo API
+    var response = await http.post(
+      Uri.http(authority, unencodedPath),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      await removeJWT();
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
