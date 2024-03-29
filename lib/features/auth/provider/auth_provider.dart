@@ -19,7 +19,7 @@ final userDataAuthProvider = FutureProvider((ref) {
 
 final isJWTExistProvider = FutureProvider((ref) async {
   final authController = ref.watch(authServiceProvicer);
-  Duration duration = const Duration(seconds: 5);
+  Duration duration = const Duration(seconds: 1);
   await Future.delayed(duration);
   return authController.isJWTExist();
 });

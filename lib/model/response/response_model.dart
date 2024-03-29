@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-class ResponseModel<T> {
+class ResponseModel {
   String status;
   String message;
-  T data;
+  Map<String, dynamic> data;
 
   ResponseModel({
     required this.status,
@@ -13,22 +13,19 @@ class ResponseModel<T> {
 
   factory ResponseModel.fromMap(
     Map<String, dynamic> map,
-    T Function(Object? json) fromJsonT,
   ) {
     return ResponseModel(
       status: map['status'] as String,
       message: map['message'] as String,
-      data: fromJsonT(map['data']),
+      data: (map['data']),
     );
   }
 
   factory ResponseModel.fromJson(
     String source,
-    T Function(Object? json) fromJsonT,
   ) =>
       ResponseModel.fromMap(
         json.decode(source) as Map<String, dynamic>,
-        fromJsonT,
       );
 }
 

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class JwtResponse {
@@ -18,7 +19,7 @@ class JwtResponse {
       token: map['token'] as String,
       type: map['type'] as String,
       username: map['username'] as String,
-      roles: List<String>.from((map['roles'] as List<String>)),
+      roles: List<String>.from((map['roles'] as List<dynamic>)),
     );
   }
 
@@ -28,5 +29,10 @@ class JwtResponse {
   // function check jwt or username or roles is empty
   bool isEmpty() {
     return token.isEmpty || username.isEmpty || roles.isEmpty;
+  }
+
+  @override
+  String toString() {
+    return 'JwtResponse(token: $token, type: $type, username: $username, roles: $roles)';
   }
 }
