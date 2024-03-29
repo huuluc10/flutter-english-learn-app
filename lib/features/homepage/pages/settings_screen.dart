@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/homepage/pages/about_screen.dart';
 import 'package:flutter_englearn/features/user_info/pages/change_password_screen.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
@@ -60,16 +61,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 ButtonSettingScreenWidget(
                   onPressed: () {
-                    // Todo: Implement sign out
-                    // Call API to sign out
-                    // Get status code
-                    // * Important: If status code is 200, then sign out successfully by delete token and user info in local storage then navigate to welcome
-                    // If status code is 401, then token is expired
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      WelcomeScreen.routeName,
-                      (route) => false,
-                    );
+                    ref.watch(authServiceProvicer).logout(context);
                   },
                   text: 'Đăng xuất',
                 ),

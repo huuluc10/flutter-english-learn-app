@@ -1,28 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/reset_password_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/sign_up_screen.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
+import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
-import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
   static const routeName = '/login-screen';
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+  }
+
+  void login() async {
+    // Check if username and password is not empty
+    if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
+      showSnackBar(context, "Nhập đây đủ thông tin tài khoản và mật khẩu!");
+    } else if (isHTML(usernameController.text) ||
+        isHTML(passwordController.text)) {
+      showSnackBar(context, "Vui lòng không chèn ký tự đặc biệt!");
+    } else {
+      // Call login API
+      ref.watch(authServiceProvicer).login(
+            context,
+            usernameController.text.trim(),
+            passwordController.text.trim(),
+          );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _usernameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         reverse: true,
         child: LineGradientBackgroundWidget(
           child: SizedBox(
@@ -54,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: AuthTextField(
                       labelText: 'Tên đăng nhập hoặc email',
                       isPassword: false,
-                      controller: _usernameController,
+                      controller: usernameController,
                     ),
                   ),
                   Padding(
@@ -62,27 +90,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: AuthTextField(
                       labelText: 'Mật khẩu',
                       isPassword: true,
-                      controller: _passwordController,
+                      controller: passwordController,
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      // Todo: handle login
-                      // Check if username and password is not empty
-                      // If not empty, call login API
-                      // If login success, navigate to home screen
-                      // If login fail, show error message
-
-                      // Navigate to home screen
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        HomeScreen.routeName,
-                        (route) => false,
-                      );
-                    },
+                    onPressed: login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),

@@ -30,6 +30,7 @@ import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart'
 import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/topic_response.dart';
+import 'package:flutter_englearn/utils/pages/error_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -181,6 +182,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case ExamHomePageScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => const ExamHomePageScreen());
+
+    case ErrorScreen.routeName:
+      return MaterialPageRoute(builder: (context) => ErrorScreen());
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());
