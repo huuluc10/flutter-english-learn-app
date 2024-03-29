@@ -30,4 +30,26 @@ class AuthRepository {
 
     return jwtResponse;
   }
+
+  Future<void> saveJWT(JwtResponse jwtResponse) async {
+    // Init SharedPreferences instance
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Save JWT to SharedPreferences
+    await prefs.setString('jwt', jwtResponse.token);
+    await prefs.setString('type-jwt', jwtResponse.type);
+    await prefs.setString('username-jwt', jwtResponse.username);
+    await prefs.setStringList('roles-jwt', jwtResponse.roles);
+  }
+
+  Future<void> removeJWT() async {
+    // Init SharedPreferences instance
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Remove JWT from SharedPreferences
+    await prefs.remove('jwt');
+    await prefs.remove('type-jwt');
+    await prefs.remove('username-jwt');
+    await prefs.remove('roles-jwt');
+  }
 }

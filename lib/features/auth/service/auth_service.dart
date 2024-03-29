@@ -1,4 +1,4 @@
-import 'package:flutter_englearn/features/auth/repositories/auth_repository.dart';
+import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/model/response/jwt_response.dart';
 
 class AuthService {
@@ -8,7 +8,7 @@ class AuthService {
     required this.authRepository,
   });
 
-  Future<bool> isAuth() async {
+  Future<bool> isJWTExist() async {
     final jwtResponse = await authRepository.getJWTCurrent();
     return jwtResponse != null;
   }
@@ -19,5 +19,13 @@ class AuthService {
       throw Exception('JWT is null');
     }
     return jwtResponse;
+  }
+
+  Future<void> saveJWT(JwtResponse jwtResponse) async {
+    await authRepository.saveJWT(jwtResponse);
+  }
+
+  Future<void> removeJWT() async {
+    await authRepository.removeJWT();
   }
 }
