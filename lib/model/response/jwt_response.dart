@@ -24,4 +24,9 @@ class JwtResponse {
 
   factory JwtResponse.fromJson(String source) =>
       JwtResponse.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  // function check jwt or username or roles is empty
+  bool isEmpty() {
+    return token.isEmpty || username.isEmpty || roles.isEmpty;
+  }
 }
