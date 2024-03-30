@@ -76,7 +76,6 @@ class AuthRepository {
       ResponseModel responseModel = ResponseModel.fromJson(response.body);
       JwtResponse jwtResponse = JwtResponse.fromMap(responseModel.data);
       await saveJWT(jwtResponse);
-      print(jwtResponse.toString());
       return jwtResponse;
     } else {
       return null;
@@ -86,7 +85,6 @@ class AuthRepository {
   Future<bool> logout() async {
     //Get jwto token current
     String jwt = (await getJWTCurrent())!.token;
-    print(jwt);
 
     // Get URL, header
     Map<String, String> headers = BaseHeaderHttp.headers;
@@ -173,6 +171,52 @@ class AuthRepository {
     final response = await http.post(
       url,
       headers: headers,
+    );
+
+    int httpStatusCode = response.statusCode;
+
+    bool check = httpStatusCode == 200;
+    return check;
+  }
+
+  Future<String> verifyOTP(String body) async {
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathVerifyOTP;
+
+    final url = Uri.http(authority, unencodedPath);
+
+    // Call api to check
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+
+    int httpStatusCode = response.statusCode;
+
+    if (httpStatusCode == 200) {
+      return 'Code is correct';
+    }
+    if (httpStatusCode == 404) {
+      return 'Code is expired';
+    } else {
+      return 'Code is incorrect';
+    }
+  }
+
+  Future<bool> changeResetPassword(String body) async {
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathChangeResetPassword;
+
+    final url = Uri.http(authority, unencodedPath);
+
+    // Call api to check
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: body,
     );
 
     int httpStatusCode = response.statusCode;
