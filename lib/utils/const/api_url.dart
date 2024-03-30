@@ -15,7 +15,13 @@ class APIUrl {
   static const String pathChangeResetPassword =
       "auth/resetPassword/setNewPassword";
 
-  //path otp api
+  // path otp api
   static const String pathResetPassword = "otp/forgot-password/";
   static const String pathVerifyOTP = "otp/verifyCodeOTP";
+
+  // path lesson api
+  static const String pathSummaryOfTopic = "api/v1/lessons/topic/";
+
+  // path topic api
+  static const String pathAllTopic = "api/v1/topic/";
 }

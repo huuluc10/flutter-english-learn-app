@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/homepage/service/control_source_dictionary.dart';
+import 'package:flutter_englearn/features/homepage/provider/control_source_dictionary.dart';
 import 'package:flutter_englearn/features/homepage/widgets/button_choose_source_dictionary_widget.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';

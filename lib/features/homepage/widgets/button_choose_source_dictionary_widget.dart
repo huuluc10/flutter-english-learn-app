@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/homepage/service/control_source_dictionary.dart';
+import 'package:flutter_englearn/features/homepage/provider/control_source_dictionary.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ButtonChooseSourceDictionary extends ConsumerWidget {
