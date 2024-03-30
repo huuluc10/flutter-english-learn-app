@@ -45,9 +45,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const SignUpScreen());
 
     case AddingInfoSignUpScreen.routeName:
-    final SignUpRequest signUpRequest = settings.arguments as SignUpRequest;
+      final SignUpRequest signUpRequest = settings.arguments as SignUpRequest;
       return MaterialPageRoute(
-          builder: (context) =>  AddingInfoSignUpScreen(signUpRequest: signUpRequest));
+          builder: (context) =>
+              AddingInfoSignUpScreen(signUpRequest: signUpRequest));
 
     case ResetPasswordScreen.routeName:
       return MaterialPageRoute(
@@ -60,7 +61,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const DictionaryScreen());
 
     case OTPInputScreen.routeName:
-      return MaterialPageRoute(builder: (context) => const OTPInputScreen());
+      final email = settings.arguments as String;
+      return MaterialPageRoute(
+          builder: (context) => OTPInputScreen(email: email));
 
     case UserInfoScreen.routeName:
       final arguments = settings.arguments as Map<String, bool>;

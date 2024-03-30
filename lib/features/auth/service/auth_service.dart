@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_englearn/features/auth/pages/adding_info_sign_up_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/login_screen.dart';
+import 'package:flutter_englearn/features/auth/pages/otp_input_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
@@ -94,6 +95,22 @@ class AuthService {
       Navigator.pushNamedAndRemoveUntil(
           context, AddingInfoSignUpScreen.routeName, (route) => false,
           arguments: request);
+    }
+  }
+
+  Future<void> resetPassword(BuildContext context, String email) async {
+    bool check = await authRepository.checkEmailExists(email);
+
+    if (!check) {
+      showSnackBar(context, "Email này chưa được đăng ký! Vui lòng thử lại!");
+    } else {
+      await authRepository.resetPassword(email);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        OTPInputScreen.routeName,
+        (route) => false,
+        arguments: email,
+      );
     }
   }
 }

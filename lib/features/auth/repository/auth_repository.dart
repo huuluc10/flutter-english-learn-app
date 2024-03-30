@@ -144,4 +144,40 @@ class AuthRepository {
     bool check = jsonDecode(response.body)['data'];
     return check;
   }
+
+  Future<bool> checkEmailExists(String email) async {
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathCheckEmail;
+
+    final url = Uri.http(authority, unencodedPath, {'email': email});
+
+    // Call api to check
+    final response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    bool check = jsonDecode(response.body)['data'];
+    return check;
+  }
+
+  Future<bool> resetPassword(String email) async {
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathResetPassword + email;
+
+    final url = Uri.http(authority, unencodedPath);
+
+    // Call api to check
+    final response = await http.post(
+      url,
+      headers: headers,
+    );
+
+    int httpStatusCode = response.statusCode;
+
+    bool check = httpStatusCode == 200;
+    return check;
+  }
 }
