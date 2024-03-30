@@ -49,9 +49,11 @@ class AuthService {
     );
     final jwtResponse = await authRepository.login(body.toJson());
     if (jwtResponse == null) {
+      if (!context.mounted) return;
       showSnackBar(context, "Tài khoản hoặc mật khẩu không đúng!");
     } else {
       // Navigate to home screen
+      if (!context.mounted) return;
       Navigator.pushNamedAndRemoveUntil(
         context,
         HomeScreen.routeName,
@@ -64,12 +66,14 @@ class AuthService {
     bool result = await authRepository.logout();
 
     if (result) {
+      if (!context.mounted) return;
       Navigator.pushNamedAndRemoveUntil(
         context,
         WelcomeScreen.routeName,
         (route) => false,
       );
     } else {
+      if (!context.mounted) return;
       showSnackBar(context, "Đăng xuất không thành công!");
     }
   }
@@ -77,8 +81,10 @@ class AuthService {
   Future<void> signUp(BuildContext context, SignUpRequest request) async {
     final result = await authRepository.signUp(request.toJson());
     if (result == false) {
+      if (!context.mounted) return;
       showSnackBar(context, "Không đăng ký thành công! Vui lòng thử lại!");
     } else {
+      if (!context.mounted) return;
       // Navigate to home screen
       Navigator.pushNamedAndRemoveUntil(
         context,
@@ -93,8 +99,10 @@ class AuthService {
     bool check = await authRepository.checkUsernameExists(request.username);
 
     if (check) {
+      if (!context.mounted) return;
       showSnackBar(context, "Tên đăng nhập đã tồn tại!");
     } else {
+      if (!context.mounted) return;
       Navigator.pushNamedAndRemoveUntil(
           context, AddingInfoSignUpScreen.routeName, (route) => false,
           arguments: request);
@@ -105,8 +113,10 @@ class AuthService {
     bool check = await authRepository.checkEmailExists(email);
 
     if (!check) {
+      if (!context.mounted) return;
       showSnackBar(context, "Email này chưa được đăng ký! Vui lòng thử lại!");
     } else {
+      if (!context.mounted) return;
       // show loader dialog
       showDialog(
         context: context,
@@ -127,6 +137,7 @@ class AuthService {
         }
       });
 
+      if (!context.mounted) return;
       // Close the loader dialog
       Navigator.pop(context); // Close the loader dialog
 
