@@ -1,15 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/pages/otp_input_screen.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 
-class ResetPasswordScreen extends StatelessWidget {
+class ResetPasswordScreen extends ConsumerStatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
   static const routeName = '/reset-password-screen';
 
   @override
+  ConsumerState<ResetPasswordScreen> createState() =>
+      _ResetPasswordScreenState();
+}
+
+class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
+  final TextEditingController _emailController = TextEditingController();
+
+  final String regrexEmail = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+
+  void createResetPassword() {
+    String email = _emailController.text.trim();
+
+    if (email.isNotEmpty) {
+      //check valid email
+      if (RegExp(regrexEmail).hasMatch(email)) {
+        ref.watch(authServiceProvicer).resetPassword(context, email);
+        
+      } else {
+        showSnackBar(context, 'Email không hợp lệ');
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController _emailController = TextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -46,14 +71,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      // Todo: Check username and password is not empty
-                      // Todo: Check email is existed or not
-                      // If not, navigate to OTPInputScreen
-                      // If yes, show error message
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, OTPInputScreen.routeName, (route) => false);
-                    },
+                    onPressed: createResetPassword,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),

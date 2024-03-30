@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_englearn/model/response/jwt_response.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
@@ -104,5 +106,78 @@ class AuthRepository {
     } else {
       return false;
     }
+  }
+
+  Future<bool> signUp(String body) async {
+    // Get URL, header
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathSignUp;
+
+    // Call sign up API
+    var response = await http.post(
+      Uri.http(authority, unencodedPath),
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> checkUsernameExists(String username) async {
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathCheckUsername;
+
+    final url = Uri.http(authority, unencodedPath, {'username': username});
+
+    // Call api to check
+    final response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    bool check = jsonDecode(response.body)['data'];
+    return check;
+  }
+
+  Future<bool> checkEmailExists(String email) async {
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathCheckEmail;
+
+    final url = Uri.http(authority, unencodedPath, {'email': email});
+
+    // Call api to check
+    final response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    bool check = jsonDecode(response.body)['data'];
+    return check;
+  }
+
+  Future<bool> resetPassword(String email) async {
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathResetPassword + email;
+
+    final url = Uri.http(authority, unencodedPath);
+
+    // Call api to check
+    final response = await http.post(
+      url,
+      headers: headers,
+    );
+
+    int httpStatusCode = response.statusCode;
+
+    bool check = httpStatusCode == 200;
+    return check;
   }
 }

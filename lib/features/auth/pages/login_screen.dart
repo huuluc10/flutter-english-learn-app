@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/reset_password_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/sign_up_screen.dart';
 import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
-import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';

@@ -29,6 +29,7 @@ import 'package:flutter_englearn/features/user_info/pages/change_password_screen
 import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart';
 import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
+import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/topic_response.dart';
 import 'package:flutter_englearn/utils/pages/error_screen.dart';
 
@@ -44,8 +45,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const SignUpScreen());
 
     case AddingInfoSignUpScreen.routeName:
+      final SignUpRequest signUpRequest = settings.arguments as SignUpRequest;
       return MaterialPageRoute(
-          builder: (context) => const AddingInfoSignUpScreen());
+          builder: (context) =>
+              AddingInfoSignUpScreen(signUpRequest: signUpRequest));
 
     case ResetPasswordScreen.routeName:
       return MaterialPageRoute(
@@ -58,7 +61,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const DictionaryScreen());
 
     case OTPInputScreen.routeName:
-      return MaterialPageRoute(builder: (context) => const OTPInputScreen());
+      final email = settings.arguments as String;
+      return MaterialPageRoute(
+          builder: (context) => OTPInputScreen(email: email));
 
     case UserInfoScreen.routeName:
       final arguments = settings.arguments as Map<String, bool>;
@@ -184,7 +189,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (context) => const ExamHomePageScreen());
 
     case ErrorScreen.routeName:
-      return MaterialPageRoute(builder: (context) => ErrorScreen());
+      return MaterialPageRoute(builder: (context) => const ErrorScreen());
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());

@@ -3,9 +3,13 @@ import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.d
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class OTPInputScreen extends StatelessWidget {
-  const OTPInputScreen({super.key});
+  const OTPInputScreen({
+    super.key,
+    required this.email,
+  });
 
   static const String routeName = '/otp_input_screen';
+  final String email;
 
   @override
   Widget build(BuildContext context) {

@@ -2,22 +2,52 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/pages/login_screen.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
+import 'package:flutter_englearn/model/request/sign_up_request.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
-import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/gender_choose_widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddingInfoSignUpScreen extends StatefulWidget {
-  const AddingInfoSignUpScreen({Key? key}) : super(key: key);
+class AddingInfoSignUpScreen extends ConsumerStatefulWidget {
+  const AddingInfoSignUpScreen({Key? key, required this.signUpRequest})
+      : super(key: key);
   static const routeName = '/adding-info-signup-screen';
 
+  final SignUpRequest signUpRequest;
+
   @override
-  State<AddingInfoSignUpScreen> createState() => _AddingInfoSignUpScreenState();
+  ConsumerState<AddingInfoSignUpScreen> createState() =>
+      _AddingInfoSignUpScreenState();
 }
 
-class _AddingInfoSignUpScreenState extends State<AddingInfoSignUpScreen> {
+class _AddingInfoSignUpScreenState
+    extends ConsumerState<AddingInfoSignUpScreen> {
   DateTime? _date;
   bool _isMale = true;
+  final TextEditingController textController = TextEditingController();
+
+  void signUp() {
+    // Check if name and date is not empty
+    if (textController.text.isEmpty || _date == null) {
+      showSnackBar(context, 'Nhập đầy đủ thông tin!');
+    }
+
+    // Check date of birth > 3 years or in the future
+    if (_date!.isAfter(DateTime.now())) {
+      showSnackBar(context, "Ngày sinh không hợp lệ!");
+    } else if (DateTime.now().difference(_date!).inDays < 3 * 365) {
+      showSnackBar(context, 'Trẻ quá nhỏ để học nhiều!');
+    } else {
+      // Call sign up API
+      SignUpRequest request = widget.signUpRequest;
+      request.fullName = textController.text.trim();
+      request.dateOfBirth = _date!;
+      request.gender = _isMale;
+
+      ref.watch(authServiceProvicer).signUp(context, request);
+    }
+  }
 
   void _openDatePicker(BuildContext context) {
     BottomPicker.date(
@@ -64,7 +94,6 @@ class _AddingInfoSignUpScreenState extends State<AddingInfoSignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -93,10 +122,17 @@ class _AddingInfoSignUpScreenState extends State<AddingInfoSignUpScreen> {
                     isMale: _isMale,
                     onChanged: _updateGender,
                   ),
-                  AuthTextField(
-                    labelText: 'Họ và tên',
-                    isPassword: false,
-                    controller: controller,
+                  TextField(
+                    controller: textController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 233, 224, 224),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                      hintText: 'Họ và tên',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
                   ),
                   Row(
                     children: [
@@ -133,17 +169,7 @@ class _AddingInfoSignUpScreenState extends State<AddingInfoSignUpScreen> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      // Todo: Check if name and date is not empty
-                      // If not empty, call sign up API
-                      // If sign up success, navigate to home screen
-                      // If sign up fail, show error message
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        LoginScreen.routeName,
-                        (route) => false,
-                      );
-                    },
+                    onPressed: signUp,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       padding: const EdgeInsets.symmetric(
