@@ -100,7 +100,7 @@ class _AddingInfoSignUpScreenState
       body: LineGradientBackgroundWidget(
         child: SingleChildScrollView(
           reverse: true,
-          child: Container(
+          child: SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

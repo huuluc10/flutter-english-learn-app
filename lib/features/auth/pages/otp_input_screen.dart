@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OTPInputScreen extends StatelessWidget {
+class OTPInputScreen extends ConsumerWidget {
   const OTPInputScreen({
     super.key,
     required this.email,
@@ -12,7 +14,7 @@ class OTPInputScreen extends StatelessWidget {
   final String email;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: LineGradientBackgroundWidget(
         child: Padding(
@@ -60,14 +62,9 @@ class OTPInputScreen extends StatelessWidget {
                   },
                   //runs when every textfield is filled
                   onSubmit: (String verificationCode) {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Verification Code"),
-                            content: Text('Code entered is $verificationCode'),
-                          );
-                        });
+                    ref
+                        .read(authServiceProvicer)
+                        .verifyOTP(context, email, verificationCode);
                   }, // end onSubmit
                 ),
               ],

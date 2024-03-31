@@ -16,7 +16,7 @@ class AuthRepository {
     // Get JWT from SharedPreferences
     final String? jwt = prefs.getString('jwt');
     final String? type = prefs.getString('type-jwt');
-    final String? username = prefs.getString('username-jwt');
+    final String? username = prefs.getString('username');
     final List<String>? roles = prefs.getStringList('roles-jwt');
 
     jwtResponse = JwtResponse(
@@ -29,12 +29,22 @@ class AuthRepository {
       // clear all jwt data
       await prefs.remove('jwt');
       await prefs.remove('type-jwt');
-      await prefs.remove('username-jwt');
+      await prefs.remove('username-');
       await prefs.remove('roles-jwt');
       jwtResponse = null;
     }
 
     return jwtResponse;
+  }
+
+  Future<String> getUserName() async {
+    // Init SharedPreferences instance
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Get JWT from SharedPreferences
+    final String? username = prefs.getString('username');
+
+    return username ?? '';
   }
 
   Future<void> saveJWT(JwtResponse jwtResponse) async {
@@ -44,7 +54,7 @@ class AuthRepository {
     // Save JWT to SharedPreferences
     await prefs.setString('jwt', jwtResponse.token);
     await prefs.setString('type-jwt', jwtResponse.type);
-    await prefs.setString('username-jwt', jwtResponse.username);
+    await prefs.setString('username', jwtResponse.username);
     await prefs.setStringList('roles-jwt', jwtResponse.roles);
   }
 
@@ -55,7 +65,7 @@ class AuthRepository {
     // Remove JWT from SharedPreferences
     await prefs.remove('jwt');
     await prefs.remove('type-jwt');
-    await prefs.remove('username-jwt');
+    await prefs.remove('username');
     await prefs.remove('roles-jwt');
   }
 
@@ -74,9 +84,9 @@ class AuthRepository {
 
     if (response.statusCode == 200) {
       ResponseModel responseModel = ResponseModel.fromJson(response.body);
-      JwtResponse jwtResponse = JwtResponse.fromMap(responseModel.data);
+      JwtResponse jwtResponse =
+          JwtResponse.fromMap(responseModel.data as Map<String, dynamic>);
       await saveJWT(jwtResponse);
-      print(jwtResponse.toString());
       return jwtResponse;
     } else {
       return null;
@@ -86,7 +96,6 @@ class AuthRepository {
   Future<bool> logout() async {
     //Get jwto token current
     String jwt = (await getJWTCurrent())!.token;
-    print(jwt);
 
     // Get URL, header
     Map<String, String> headers = BaseHeaderHttp.headers;
@@ -173,6 +182,52 @@ class AuthRepository {
     final response = await http.post(
       url,
       headers: headers,
+    );
+
+    int httpStatusCode = response.statusCode;
+
+    bool check = httpStatusCode == 200;
+    return check;
+  }
+
+  Future<String> verifyOTP(String body) async {
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathVerifyOTP;
+
+    final url = Uri.http(authority, unencodedPath);
+
+    // Call api to check
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+
+    int httpStatusCode = response.statusCode;
+
+    if (httpStatusCode == 200) {
+      return 'Code is correct';
+    }
+    if (httpStatusCode == 404) {
+      return 'Code is expired';
+    } else {
+      return 'Code is incorrect';
+    }
+  }
+
+  Future<bool> changeResetPassword(String body) async {
+    Map<String, String> headers = BaseHeaderHttp.headers;
+    String authority = APIUrl.baseUrl;
+    String unencodedPath = APIUrl.pathChangeResetPassword;
+
+    final url = Uri.http(authority, unencodedPath);
+
+    // Call api to check
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: body,
     );
 
     int httpStatusCode = response.statusCode;

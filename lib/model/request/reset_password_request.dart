@@ -12,7 +12,7 @@ class ResetPasswordRequest {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'email': email,
-      'password': newPassword,
+      'newPassword': newPassword,
     };
   }
 

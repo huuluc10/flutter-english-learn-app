@@ -1,5 +1,5 @@
 class APIUrl {
-  static const String ip = "192.168.1.202";
+  static const String ip = "huuluc.ddns.net";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -12,7 +12,16 @@ class APIUrl {
   static const String pathSignUp = "auth/signup";
   static const String pathCheckUsername = "auth/checkUsername";
   static const String pathCheckEmail = "auth/checkEmail";
+  static const String pathChangeResetPassword =
+      "auth/resetPassword/setNewPassword";
 
-  //path otp api
+  // path otp api
   static const String pathResetPassword = "otp/forgot-password/";
+  static const String pathVerifyOTP = "otp/verifyCodeOTP";
+
+  // path lesson api
+  static const String pathSummaryOfTopic = "api/v1/lessons/topic/";
+
+  // path topic api
+  static const String pathAllTopic = "api/v1/topic/";
 }

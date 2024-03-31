@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/homepage/provider/homepage_provider.dart';
 import 'package:flutter_englearn/features/homepage/widgets/drawer_home_widget.dart';
 import 'package:flutter_englearn/features/homepage/widgets/topic_widget.dart';
 import 'package:flutter_englearn/features/learn/pages/topic_details_screen.dart';
-import 'package:flutter_englearn/model/topic_response.dart';
 import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../model/response/history_learn_topic_response.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,23 +35,10 @@ class HomeScreen extends ConsumerWidget {
       image = "assets/night.png";
     }
 
-    Future<void> refresh() async {
-      return Future.delayed(const Duration(seconds: 1));
-    }
+    Future<List<HistoryLearnTopicResponse>> getListTopic() async {
+      final List<HistoryLearnTopicResponse> listTopic =
+          await ref.watch(homepageServiceProvider).fetchTopic(context);
 
-    const int countOfColumn = 10;
-
-    Future<List<TopicResponse>> getListTopic() {
-      final List<TopicResponse> listTopic = [];
-      for (var i = 0; i < countOfColumn; i++) {
-        listTopic.add(
-          TopicResponse(
-            topicId: i,
-            topicName: 'Topic $i',
-            successRate: 0.5,
-          ),
-        );
-      }
       return Future.value(listTopic);
     }
 
@@ -115,17 +104,18 @@ class HomeScreen extends ConsumerWidget {
               top: 185,
               left: 7,
               right: 7,
-              child: SizedBox(
-                height: MediaQuery.sizeOf(context).height - 285,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      FutureBuilder<List<TopicResponse>>(
-                        future: getListTopic(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            List<TopicResponse> listTopic = snapshot.data!;
-                            return MediaQuery.removePadding(
+              child: Column(
+                children: [
+                  FutureBuilder<List<HistoryLearnTopicResponse>>(
+                    future: getListTopic(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<HistoryLearnTopicResponse> listTopic =
+                            snapshot.data!;
+                        return SingleChildScrollView(
+                          child: SizedBox(
+                            height: MediaQuery.sizeOf(context).height - 285,
+                            child: MediaQuery.removePadding(
                               context: context,
                               removeTop: true,
                               child: GridView.count(
@@ -133,6 +123,7 @@ class HomeScreen extends ConsumerWidget {
                                 mainAxisSpacing: 7,
                                 crossAxisSpacing: 7,
                                 childAspectRatio: 0.44 / 0.5,
+                                scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 children: List.generate(
                                   listTopic.length,
@@ -143,22 +134,22 @@ class HomeScreen extends ConsumerWidget {
                                     child: TopicWidget(
                                       nameTopic:
                                           'Topic ${listTopic[index].topicId}: ${listTopic[index].topicName}',
-                                      percent: 0.5,
+                                      percent: listTopic[index].successRate,
                                     ),
                                   ),
                                 ),
                               ),
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
-                      ),
-                    ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
                   ),
-                ),
+                ],
               ),
             ),
           ],
