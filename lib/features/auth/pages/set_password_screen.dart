@@ -17,13 +17,13 @@ class SetPasswordScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController _passwordController = TextEditingController();
-    final TextEditingController _confirmPasswordController =
+    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController confirmPasswordController =
         TextEditingController();
 
-    void _resetPassword() async {
-      final String password = _passwordController.text;
-      final String confirmPassword = _confirmPasswordController.text;
+    void resetPassword() async {
+      final String password = passwordController.text;
+      final String confirmPassword = confirmPasswordController.text;
       if (password.isEmpty || confirmPassword.isEmpty) {
         showSnackBar(context, 'Vui lòng nhập đầy đủ thông tin');
         return;
@@ -63,15 +63,15 @@ class SetPasswordScreen extends ConsumerWidget {
                     AuthTextField(
                         labelText: 'Nhập mật khẩu mới',
                         isPassword: true,
-                        controller: _passwordController),
+                        controller: passwordController),
                     const SizedBox(height: 20),
                     AuthTextField(
                         labelText: 'Nhập lại mật khẩu mới',
                         isPassword: true,
-                        controller: _confirmPasswordController),
+                        controller: confirmPasswordController),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: _resetPassword,
+                      onPressed: resetPassword,
                       child: const Text('Xác nhận'),
                     ),
                   ],

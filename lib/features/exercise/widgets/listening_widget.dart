@@ -127,17 +127,17 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                               });
                             },
                             child: Padding(
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               child: _selectedAnswer != ''
                                   ? Container(
-                                      padding: EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
                                         color: Colors.blue,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Text(
                                         _selectedAnswer,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),

@@ -31,7 +31,7 @@ import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart'
 import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/request/sign_up_request.dart';
-import 'package:flutter_englearn/model/topic_response.dart';
+import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
 import 'package:flutter_englearn/utils/pages/error_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -106,7 +106,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const ChatRoom());
 
     case TopicDetailsScreen.routeName:
-      final topicResponse = settings.arguments as TopicResponse;
+      final topicResponse = settings.arguments as HistoryLearnTopicResponse;
       return MaterialPageRoute(
           builder: (context) =>
               TopicDetailsScreen(topicResponse: topicResponse));

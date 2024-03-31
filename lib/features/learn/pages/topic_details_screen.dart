@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/pages/exam_homepage_screen.dart';
 import 'package:flutter_englearn/features/learn/pages/lesson_homepage_screen.dart';
 import 'package:flutter_englearn/features/learn/widgets/topic_item_details_widget.dart';
-import 'package:flutter_englearn/model/topic_response.dart';
+import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,7 +13,7 @@ class TopicDetailsScreen extends ConsumerWidget {
   });
   static const String routeName = '/topic-details-screen';
 
-  final TopicResponse topicResponse;
+  final HistoryLearnTopicResponse topicResponse;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

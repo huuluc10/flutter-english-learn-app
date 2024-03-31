@@ -105,7 +105,7 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
                                   wordIsChosen = null;
                                 }),
                                 child: Container(
-                                  padding: EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(8),

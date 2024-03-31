@@ -25,7 +25,7 @@ class ChangePasswordScreen extends ConsumerWidget {
               left: 14,
               right: 14,
             ),
-            padding: EdgeInsets.symmetric(horizontal: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.black54.withOpacity(0.5),
@@ -125,9 +125,9 @@ class ChangePasswordScreen extends ConsumerWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {},
-                  child: Text('Xác nhận'),
+                  child: const Text('Xác nhận'),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),

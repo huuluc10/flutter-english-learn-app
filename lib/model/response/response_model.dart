@@ -1,9 +1,8 @@
 import 'dart:convert';
-
 class ResponseModel {
   String status;
   String message;
-  Map<String, dynamic> data;
+  Object data;
 
   ResponseModel({
     required this.status,
@@ -27,6 +26,13 @@ class ResponseModel {
       ResponseModel.fromMap(
         json.decode(source) as Map<String, dynamic>,
       );
+
+  // factory ResponseModel.fromJsonUTF8(
+  //   Uint8List source,
+  // ) =>
+  //     ResponseModel.fromMap(
+  //       json.decode(source) as Map<String, dynamic>,
+  //     );
 }
 
 
