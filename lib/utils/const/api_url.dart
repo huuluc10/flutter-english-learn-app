@@ -1,5 +1,5 @@
 class APIUrl {
-  static const String ip = "huuluc.ddns.net";
+  static const String ip = "192.168.1.202";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
