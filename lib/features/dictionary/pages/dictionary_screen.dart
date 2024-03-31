@@ -111,7 +111,6 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                             vocabulary = word;
                             isSearch = true;
                           });
-                          print(vocabulary?.ipa);
                         },
                       ),
                       border: OutlineInputBorder(
