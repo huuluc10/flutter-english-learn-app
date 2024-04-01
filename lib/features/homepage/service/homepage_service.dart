@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/homepage/repository/homepage_repository.dart';
 import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
+import 'dart:developer';
 
 class HomepageService {
   final HomepageRepository homepageRepository;
@@ -8,7 +9,7 @@ class HomepageService {
   HomepageService({required this.homepageRepository});
 
   Future<List<HistoryLearnTopicResponse>> fetchTopic(BuildContext context) async {
-    // show loader dialog
+    log("fetchTopic", name: "HomepageService");
     return await homepageRepository.fetchTopic();
   }
 }

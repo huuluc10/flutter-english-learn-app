@@ -1,6 +1,6 @@
 class APIUrl {
   // ip and port
-  static const String ip = "192.168.1.202";
+  static const String ip = "192.168.52.22";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -9,8 +9,8 @@ class APIUrl {
   static const String baseUrlSocket = "ws://$ip:$portSocket";
 
   // path dictionary api
-  static const String pathDictionary =
-      "https://api.dictionaryapi.dev/api/v2/entries/en/";
+  static const String rootDictionaryAPI = "api.dictionaryapi.dev";
+  static const String pathDictionary = "api/v2/entries/en/";
 
   // path auth api
   static const String pathLogin = "auth/signin";

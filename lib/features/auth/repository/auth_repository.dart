@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'dart:developer';
 import 'package:flutter_englearn/model/response/jwt_response.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
@@ -9,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 class AuthRepository {
   Future<JwtResponse?> getJWTCurrent() async {
+    log("getJWTCurrent", name: "AuthRepository");
     // Init SharedPreferences instance
     SharedPreferences prefs = await SharedPreferences.getInstance();
     JwtResponse? jwtResponse;
@@ -38,6 +40,7 @@ class AuthRepository {
   }
 
   Future<String> getUserName() async {
+    log("getUserName", name: "AuthRepository");
     // Init SharedPreferences instance
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -48,6 +51,7 @@ class AuthRepository {
   }
 
   Future<void> saveJWT(JwtResponse jwtResponse) async {
+    log("saveJWT", name: "AuthRepository");
     // Init SharedPreferences instance
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -70,6 +74,7 @@ class AuthRepository {
   }
 
   Future<JwtResponse?> login(String body) async {
+    log("login", name: "AuthRepository");
     // Get URL, header
     Map<String, String> headers = BaseHeaderHttp.headers;
     String authority = APIUrl.baseUrl;
@@ -94,6 +99,7 @@ class AuthRepository {
   }
 
   Future<bool> logout() async {
+    log("logout", name: "AuthRepository");
     //Get jwto token current
     String jwt = (await getJWTCurrent())!.token;
 
@@ -118,6 +124,7 @@ class AuthRepository {
   }
 
   Future<bool> signUp(String body) async {
+    log("signUp", name: "AuthRepository");
     // Get URL, header
     Map<String, String> headers = BaseHeaderHttp.headers;
     String authority = APIUrl.baseUrl;
@@ -138,6 +145,7 @@ class AuthRepository {
   }
 
   Future<bool> checkUsernameExists(String username) async {
+    log("checkUsernameExists", name: "AuthRepository");
     Map<String, String> headers = BaseHeaderHttp.headers;
     String authority = APIUrl.baseUrl;
     String unencodedPath = APIUrl.pathCheckUsername;
@@ -155,6 +163,7 @@ class AuthRepository {
   }
 
   Future<bool> checkEmailExists(String email) async {
+    log("checkEmailExists", name: "AuthRepository");
     Map<String, String> headers = BaseHeaderHttp.headers;
     String authority = APIUrl.baseUrl;
     String unencodedPath = APIUrl.pathCheckEmail;
@@ -172,6 +181,7 @@ class AuthRepository {
   }
 
   Future<bool> resetPassword(String email) async {
+    log("resetPassword", name: "AuthRepository");
     Map<String, String> headers = BaseHeaderHttp.headers;
     String authority = APIUrl.baseUrl;
     String unencodedPath = APIUrl.pathResetPassword + email;
@@ -191,6 +201,7 @@ class AuthRepository {
   }
 
   Future<String> verifyOTP(String body) async {
+    log("verifyOTP", name: "AuthRepository");
     Map<String, String> headers = BaseHeaderHttp.headers;
     String authority = APIUrl.baseUrl;
     String unencodedPath = APIUrl.pathVerifyOTP;
@@ -217,6 +228,7 @@ class AuthRepository {
   }
 
   Future<bool> changeResetPassword(String body) async {
+    log("changeResetPassword", name: "AuthRepository");
     Map<String, String> headers = BaseHeaderHttp.headers;
     String authority = APIUrl.baseUrl;
     String unencodedPath = APIUrl.pathChangeResetPassword;

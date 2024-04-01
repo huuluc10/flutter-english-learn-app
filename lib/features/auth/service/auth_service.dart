@@ -12,6 +12,7 @@ import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/request/verify_code_request.dart';
 import 'package:flutter_englearn/model/response/jwt_response.dart';
 import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'dart:developer';
 
 class AuthService {
   final AuthRepository authRepository;
@@ -21,6 +22,7 @@ class AuthService {
   });
 
   Future<bool> isJWTExist() async {
+    log("isJWTExist", name: "AuthService");
     final jwtResponse = await authRepository.getJWTCurrent();
     return jwtResponse != null;
   }
@@ -28,16 +30,19 @@ class AuthService {
   Future<JwtResponse> getJWT() async {
     final jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
+      log("JWT is null", name: "AuthService");
       throw Exception('JWT is null');
     }
     return jwtResponse;
   }
 
   Future<void> saveJWT(JwtResponse jwtResponse) async {
+    log("saveJWT", name: "AuthService");
     await authRepository.saveJWT(jwtResponse);
   }
 
   Future<void> removeJWT() async {
+    log("removeJWT", name: "AuthService");
     await authRepository.removeJWT();
   }
 
@@ -47,13 +52,16 @@ class AuthService {
       username: username,
       password: password,
     );
+    log("login", name: "AuthService");
     final jwtResponse = await authRepository.login(body.toJson());
     if (jwtResponse == null) {
       if (!context.mounted) return;
+      log("Username or password is incorrect", name: "AuthService");
       showSnackBar(context, "Tài khoản hoặc mật khẩu không đúng!");
     } else {
       // Navigate to home screen
       if (!context.mounted) return;
+      log("Login successfully", name: "AuthService");
       Navigator.pushNamedAndRemoveUntil(
         context,
         HomeScreen.routeName,
@@ -63,10 +71,12 @@ class AuthService {
   }
 
   Future<void> logout(BuildContext context) async {
+    log("logout", name: "AuthService");
     bool result = await authRepository.logout();
 
     if (result) {
       if (!context.mounted) return;
+      log("Logout successfully", name: "AuthService");
       Navigator.pushNamedAndRemoveUntil(
         context,
         WelcomeScreen.routeName,
@@ -74,18 +84,22 @@ class AuthService {
       );
     } else {
       if (!context.mounted) return;
+      log("Logout failed", name: "AuthService");
       showSnackBar(context, "Đăng xuất không thành công!");
     }
   }
 
   Future<void> signUp(BuildContext context, SignUpRequest request) async {
+    log("signUp", name: "AuthService");
     final result = await authRepository.signUp(request.toJson());
     if (result == false) {
       if (!context.mounted) return;
+      log("Sign up failed", name: "AuthService");
       showSnackBar(context, "Không đăng ký thành công! Vui lòng thử lại!");
     } else {
       if (!context.mounted) return;
       // Navigate to home screen
+      log("Sign up successfully", name: "AuthService");
       Navigator.pushNamedAndRemoveUntil(
         context,
         LoginScreen.routeName,
@@ -96,13 +110,16 @@ class AuthService {
 
   Future<void> checkUsernameExists(
       BuildContext context, SignUpRequest request) async {
+    log("checkUsernameExists", name: "AuthService");
     bool check = await authRepository.checkUsernameExists(request.username);
 
     if (check) {
       if (!context.mounted) return;
+      log("Username already exists", name: "AuthService");
       showSnackBar(context, "Tên đăng nhập đã tồn tại!");
     } else {
       if (!context.mounted) return;
+      log("Username is available", name: "AuthService");
       Navigator.pushNamedAndRemoveUntil(
           context, AddingInfoSignUpScreen.routeName, (route) => false,
           arguments: request);
@@ -110,14 +127,17 @@ class AuthService {
   }
 
   Future<void> resetPassword(BuildContext context, String email) async {
+    log("resetPassword", name: "AuthService");
     bool check = await authRepository.checkEmailExists(email);
 
     if (!check) {
       if (!context.mounted) return;
+      log("Email is not registered", name: "AuthService");
       showSnackBar(context, "Email này chưa được đăng ký! Vui lòng thử lại!");
     } else {
       if (!context.mounted) return;
       // show loader dialog
+      log("Send OTP", name: "AuthService");
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -130,9 +150,11 @@ class AuthService {
 
       await authRepository.resetPassword(email).then((value) {
         if (value == false) {
+          log("Send OTP failed", name: "AuthService");
           showSnackBar(
               context, "Gửi mã OTP không thành công! Vui lòng thử lại!");
         } else {
+          log("Send OTP successfully", name: "AuthService");
           showSnackBar(context, "Gửi mã OTP thành công!");
         }
       });
@@ -142,6 +164,7 @@ class AuthService {
       Navigator.pop(context); // Close the loader dialog
 
       // Navigate to OTP input screen
+      log("Navigate to OTP input screen", name: "AuthService");
       Navigator.pushNamedAndRemoveUntil(
         context,
         OTPInputScreen.routeName,
@@ -156,6 +179,7 @@ class AuthService {
       email: email,
       code: otp,
     );
+    log("verifyOTP", name: "AuthService");
 
     // show loader dialog
     showDialog(
@@ -182,6 +206,7 @@ class AuthService {
               }
             else if (value == 'Code is incorrect')
               {
+                log("OTP is incorrect", name: "AuthService"),
                 Navigator.pop(context),
                 showDialog(
                     context: context,
@@ -193,6 +218,7 @@ class AuthService {
               }
             else
               {
+                log("OTP is expired", name: "AuthService"),
                 Navigator.pop(context),
                 showDialog(
                     context: context,
@@ -208,6 +234,7 @@ class AuthService {
 
   Future<void> changeResetPassword(
       BuildContext context, String email, String password) async {
+    log("changeResetPassword", name: "AuthService");
     // show loader dialog
     showDialog(
       context: context,
@@ -230,6 +257,7 @@ class AuthService {
           (value) => {
             if (value)
               {
+                log("Change password successfully", name: "AuthService"),
                 showSnackBar(context, "Đổi mật khẩu thành công!"),
                 Navigator.pushNamedAndRemoveUntil(
                   context,
@@ -239,6 +267,7 @@ class AuthService {
               }
             else
               {
+                log("Change password failed", name: "AuthService"),
                 showSnackBar(context, "Đổi mật khẩu không thành công!"),
                 Navigator.pushNamedAndRemoveUntil(
                   context,
