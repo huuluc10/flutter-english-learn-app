@@ -42,6 +42,7 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       body: LineGradientBackgroundWidget(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -132,43 +133,39 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                     },
                   ),
                 ),
+                // SizedBox(height: 5),
                 Container(
-                  height: height - 260,
+                  height: height - 255,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: SingleChildScrollView(
-                    child: SizedBox(
-                      height: height - 265,
-                      width: width,
-                      child: Consumer(builder: (context, ref, child) {
-                        //Get source dictionary
-                        sourceDictionary = ref.watch(controlSourceDictionary);
-                        if (sourceDictionary ==
-                            ControlSourceDictionary.enViDic) {
-                          return EnViDicWidget(
-                            vocabulary: vocabulary,
-                            isSearch: isSearch!,
-                          );
-                        } else {
-                          return Column(
-                            children: [
-                              for (var i = 0; i < 5; i++)
-                                const ListTile(
-                                  title: Text('Hello'),
-                                  subtitle: Text('Xin chào'),
-                                ),
-                              for (var i = 0; i < 5; i++)
-                                const ListTile(
-                                  title: Text('Bye'),
-                                  subtitle: Text('Tạm biệt'),
-                                ),
-                            ],
-                          );
-                        }
-                      }),
-                    ),
+                    child: Consumer(builder: (context, ref, child) {
+                      //Get source dictionary
+                      sourceDictionary = ref.watch(controlSourceDictionary);
+                      if (sourceDictionary == ControlSourceDictionary.enViDic) {
+                        return EnViDicWidget(
+                          vocabulary: vocabulary,
+                          isSearch: isSearch!,
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            for (var i = 0; i < 5; i++)
+                              const ListTile(
+                                title: Text('Hello'),
+                                subtitle: Text('Xin chào'),
+                              ),
+                            for (var i = 0; i < 5; i++)
+                              const ListTile(
+                                title: Text('Bye'),
+                                subtitle: Text('Tạm biệt'),
+                              ),
+                          ],
+                        );
+                      }
+                    }),
                   ),
                 ),
               ],

@@ -38,7 +38,11 @@ class _EnViDicWidgetState extends State<EnViDicWidget> {
                 ),
               )
             : Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(
+                  left: 10,
+                  right: 10,
+                  bottom: 10,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
