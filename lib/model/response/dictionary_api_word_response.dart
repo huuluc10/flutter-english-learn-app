@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter_englearn/model/response/dictionary_api_license_response.dart';
@@ -6,11 +7,11 @@ import 'package:flutter_englearn/model/response/dictionary_api_phonetics_respons
 
 class DictionaryAPIWordResponse {
   String word;
-  String phonetic;
-  List<Phonetics> phonetics;
-  List<Meaning> meanings;
-  License license;
-  List<String> sourceUrls;
+  String? phonetic;
+  List<Phonetics>? phonetics;
+  List<Meaning>? meanings;
+  License? license;
+  List<String>? sourceUrls;
 
   DictionaryAPIWordResponse({
     required this.word,
@@ -24,14 +25,27 @@ class DictionaryAPIWordResponse {
   factory DictionaryAPIWordResponse.fromMap(Map<String, dynamic> map) {
     return DictionaryAPIWordResponse(
       word: map['word'] as String,
-      phonetic: map['phonetic'] as String,
-      phonetics: List<Phonetics>.from(map['phonetics']
-              ?.map((x) => Phonetics.fromMap(x as Map<String, dynamic>))
-          as Iterable),
-      meanings: List<Meaning>.from(map['meanings']
-          ?.map((x) => Meaning.fromMap(x as Map<String, dynamic>))),
-      license: License.fromMap(map['license'] as Map<String, dynamic>),
-      sourceUrls: List<String>.from(map['sourceUrls'] as Iterable),
+      phonetic: map['phonetic'] != null ? map['phonetic'] as String : null,
+      phonetics: map['phonetics'] != null
+          ? List<Phonetics>.from(
+              map['phonetics'].map<Phonetics?>(
+                (x) => Phonetics.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
+      meanings: map['meanings'] != null
+          ? List<Meaning>.from(
+              map['meanings'].map<Meaning?>(
+                (x) => Meaning.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
+      license: map['license'] != null
+          ? License.fromMap(map['license'] as Map<String, dynamic>)
+          : null,
+      sourceUrls: map['sourceUrls'] != null
+          ? List<String>.from(map['sourceUrls'])
+          : null,
     );
   }
 

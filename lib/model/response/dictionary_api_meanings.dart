@@ -5,8 +5,8 @@ import 'package:flutter_englearn/model/response/dictionary_api_meanings_definiti
 class Meaning {
   String partOfSpeech;
   List<Definitions> definitions;
-  List<String> synonyms;
-  List<String> antonyms;
+  List<String>? synonyms;
+  List<String>? antonyms;
 
   Meaning({
     required this.partOfSpeech,

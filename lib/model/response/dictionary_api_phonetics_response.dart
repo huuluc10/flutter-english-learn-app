@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:flutter_englearn/model/response/dictionary_api_license_response.dart';
 
 class Phonetics {
-  String text;
-  String audio;
-  String sourceUrl;
-  License license;
+  String? text;
+  String? audio;
+  String? sourceUrl;
+  License? license;
 
   Phonetics({
     required this.text,
@@ -18,10 +18,12 @@ class Phonetics {
 
   factory Phonetics.fromMap(Map<String, dynamic> map) {
     return Phonetics(
-      text: map['text'] as String,
-      audio: map['audio'] as String,
-      sourceUrl: map['sourceUrl'] as String,
-      license: License.fromMap(map['license'] as Map<String, dynamic>),
+      text: map['text'] != null ? map['text'] as String : null,
+      audio: map['audio'] != null ? map['audio'] as String : null,
+      sourceUrl: map['sourceUrl'] != null ? map['sourceUrl'] as String : null,
+      license: map['license'] != null
+          ? License.fromMap(map['license'] as Map<String, dynamic>)
+          : null,
     );
   }
 

@@ -3,9 +3,9 @@ import 'dart:convert';
 
 class Definitions {
   String definition;
-  List<String> synonyms;
-  List<String> antonyms;
-  String example;
+  List<String>? synonyms;
+  List<String>? antonyms;
+  String? example;
 
   Definitions({
     required this.definition,
@@ -17,9 +17,11 @@ class Definitions {
   factory Definitions.fromMap(Map<String, dynamic> map) {
     return Definitions(
       definition: map['definition'] as String,
-      synonyms: List<String>.from(map['synonyms'] as Iterable),
-      antonyms: List<String>.from(map['antonyms'] as Iterable),
-      example: map['example'] as String,
+      synonyms:
+          map['synonyms'] != null ? List<String>.from(map['synonyms']) : null,
+      antonyms:
+          map['antonyms'] != null ? List<String>.from(['antonyms']) : null,
+      example: map['example'] != null ? map['example'] as String : null,
     );
   }
 

@@ -2,8 +2,8 @@
 import 'dart:convert';
 
 class License {
-  String name;
-  String url;
+  String? name;
+  String? url;
 
   License({
     required this.name,
@@ -12,8 +12,8 @@ class License {
 
   factory License.fromMap(Map<String, dynamic> map) {
     return License(
-      name: map['name'] as String,
-      url: map['url'] as String,
+      name: map['name'] ?? '',
+      url: map['url'] ?? '',
     );
   }
 
