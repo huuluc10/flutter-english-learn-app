@@ -5,6 +5,7 @@ import 'package:flutter_englearn/model/response/dictionary_api_word_response.dar
 import 'package:flutter_englearn/utils/const/api_url.dart';
 import 'package:flutter_englearn/utils/const/base_header_http.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer';
 
 class DictionaryRepository {
   Future<Vocabulary?> getWordsFromEnViDic(String text) async {
@@ -12,27 +13,33 @@ class DictionaryRepository {
       if (!EnViDic().hasInit) {
         await EnViDic().init();
       }
+      log("Get word from EnViDic: $text", name: "DictionaryRepository");
       return EnViDic().lookUp(text);
     } catch (e) {
       return null;
     }
   }
 
-  Future<void> getWordFromAPI(String text) async {
-    final authority = APIUrl.rootDictionaryAPI;
+  Future<List<DictionaryAPIWordResponse>> getWordFromAPI(String text) async {
+    log("Get word from API: $text", name: "DictionaryRepository");
+    const authority = APIUrl.rootDictionaryAPI;
     final unencodedPath = APIUrl.pathDictionary + text;
     Map<String, String> headers = BaseHeaderHttp.headers;
     final uri = Uri.https(authority, unencodedPath);
     final response = await http.get(uri, headers: headers);
 
+    List<DictionaryAPIWordResponse> words = [];
+
     if (response.statusCode == 200) {
+      log('Load words from API successfully', name: 'DictionaryRepository');
       final List jsonResponse = jsonDecode(response.body);
-      final List<DictionaryAPIWordResponse> words = jsonResponse
+      words = jsonResponse
           .map((item) => DictionaryAPIWordResponse.fromMap(item))
           .toList();
-      print(words[0].word);
     } else {
+      log('Failed to load words from API', name: 'DictionaryRepository');
       throw Exception('Failed to load words from API');
     }
+    return words;
   }
 }

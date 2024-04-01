@@ -1,7 +1,7 @@
 import 'package:en_vi_dic/en_vi_dic.dart';
 import 'package:flutter/material.dart';
 
-class EnViDicWidget extends StatefulWidget {
+class EnViDicWidget extends StatelessWidget {
   const EnViDicWidget({
     super.key,
     required this.vocabulary,
@@ -12,14 +12,9 @@ class EnViDicWidget extends StatefulWidget {
   final bool isSearch;
 
   @override
-  State<EnViDicWidget> createState() => _EnViDicWidgetState();
-}
-
-class _EnViDicWidgetState extends State<EnViDicWidget> {
-  @override
   Widget build(BuildContext context) {
-    return widget.isSearch
-        ? widget.vocabulary == null
+    return isSearch
+        ? vocabulary == null
             ? const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +43,7 @@ class _EnViDicWidgetState extends State<EnViDicWidget> {
                   children: [
                     Center(
                       child: Text(
-                        widget.vocabulary!.vocabulary,
+                        vocabulary!.vocabulary,
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -66,7 +61,7 @@ class _EnViDicWidgetState extends State<EnViDicWidget> {
                           ),
                         ),
                         Text(
-                          widget.vocabulary!.ipa,
+                          vocabulary!.ipa,
                           style: const TextStyle(
                             fontSize: 20,
                           ),
@@ -74,7 +69,7 @@ class _EnViDicWidgetState extends State<EnViDicWidget> {
                       ],
                     ),
                     const Divider(thickness: 2),
-                    widget.vocabulary!.details.isNotEmpty
+                    vocabulary!.details.isNotEmpty
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -85,7 +80,7 @@ class _EnViDicWidgetState extends State<EnViDicWidget> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              for (Detail detail in widget.vocabulary!.details)
+                              for (Detail detail in vocabulary!.details)
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   margin: const EdgeInsets.only(top: 10),

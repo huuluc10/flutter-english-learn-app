@@ -2,8 +2,10 @@ import 'package:en_vi_dic/en_vi_dic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/dictionary/providers/control_source_dictionary.dart';
 import 'package:flutter_englearn/features/dictionary/providers/dictionary_provider.dart';
+import 'package:flutter_englearn/features/dictionary/widgets/api_dictionary_widget.dart';
 import 'package:flutter_englearn/features/homepage/widgets/button_choose_source_dictionary_widget.dart';
-import 'package:flutter_englearn/features/user_info/widgets/en_vi_dic_widget.dart';
+import 'package:flutter_englearn/features/dictionary/widgets/en_vi_dic_widget.dart';
+import 'package:flutter_englearn/model/response/dictionary_api_word_response.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
@@ -21,7 +23,9 @@ class DictionaryScreen extends ConsumerStatefulWidget {
 class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
   dynamic sourceDictionary;
   Vocabulary? vocabulary;
+  List<DictionaryAPIWordResponse>? vocabularyAPI;
   bool? isSearch;
+  bool isUseEnViDic = true;
 
   TextEditingController textEditingController = TextEditingController();
 
@@ -31,6 +35,28 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
     isSearch = false;
   }
 
+  void search(String value) async {
+    bool isUseEnViDic =
+        ref.watch(controlSourceDictionary) == ControlSourceDictionary.enViDic;
+
+    if (isUseEnViDic) {
+      var word = await ref
+          .watch(dictionaryServiceProvider)
+          .getWordEnViDic(textEditingController.text.trim());
+      setState(() {
+        vocabulary = word;
+        isSearch = true;
+      });
+    } else {
+      var words =
+          await ref.watch(dictionaryServiceProvider).getWordFromAPI(value);
+      setState(() {
+        vocabularyAPI = words;
+        isSearch = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Get index of bottom navigation bar
@@ -38,7 +64,6 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
 
     //Get height and width of screen
     final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -103,15 +128,8 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                       hintText: 'Tìm kiếm',
                       prefixIcon: IconButton(
                         icon: const Icon(Icons.search),
-                        onPressed: () async {
-                          var word = await ref
-                              .watch(dictionaryServiceProvider)
-                              .getWordEnViDic(
-                                  textEditingController.text.trim());
-                          setState(() {
-                            vocabulary = word;
-                            isSearch = true;
-                          });
+                        onPressed: () {
+                          search(textEditingController.text.trim());
                         },
                       ),
                       border: OutlineInputBorder(
@@ -123,17 +141,11 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                       ),
                     ),
                     onSubmitted: (value) async {
-                      var word = await ref
-                          .watch(dictionaryServiceProvider)
-                          .getWordEnViDic(value.trim());
-                      setState(() {
-                        vocabulary = word;
-                        isSearch = true;
-                      });
+                      search(textEditingController.text.trim());
                     },
                   ),
                 ),
-                // SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Container(
                   height: height - 255,
                   decoration: BoxDecoration(
@@ -150,19 +162,10 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                           isSearch: isSearch!,
                         );
                       } else {
-                        return Column(
-                          children: [
-                            for (var i = 0; i < 5; i++)
-                              const ListTile(
-                                title: Text('Hello'),
-                                subtitle: Text('Xin chào'),
-                              ),
-                            for (var i = 0; i < 5; i++)
-                              const ListTile(
-                                title: Text('Bye'),
-                                subtitle: Text('Tạm biệt'),
-                              ),
-                          ],
+                        return APIDictionaryWidget(
+                          vocabulary: vocabularyAPI,
+                          isSearch: isSearch!,
+                          height: height - 255,
                         );
                       }
                     }),
