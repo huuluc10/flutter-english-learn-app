@@ -123,7 +123,6 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                         icon: const Icon(Icons.search),
                         onPressed: () {
                           search(textEditingController.text.trim());
-                          isSearch = false;
                         },
                       ),
                       border: OutlineInputBorder(
@@ -136,7 +135,6 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                     ),
                     onSubmitted: (value) async {
                       search(textEditingController.text.trim());
-                      isSearch = false;
                     },
                   ),
                 ),

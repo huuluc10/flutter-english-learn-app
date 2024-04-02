@@ -76,7 +76,6 @@ class _APIDictionaryWidgetState extends State<APIDictionaryWidget> {
                             ),
                           ),
                           const Divider(),
-
                           if (word!.phonetic != null)
                             Row(
                               children: [
@@ -93,17 +92,17 @@ class _APIDictionaryWidgetState extends State<APIDictionaryWidget> {
                                 ),
                               ],
                             ),
-
                           if (word!.phonetics != null ||
                               word!.phonetics!.isNotEmpty) ...[
                             PhoneticsItemWidget(word: word),
                           ],
-
                           if (word!.meanings != null) ...[
                             const SizedBox(height: 10),
                             MeaningDictionaryWidget(word: word),
                           ],
-                          // const SizedBox(height: 80),
+                          widget.vocabulary!.length > 1
+                              ? const SizedBox(height: 50)
+                              : const SizedBox(),
                         ],
                       ),
                     ),

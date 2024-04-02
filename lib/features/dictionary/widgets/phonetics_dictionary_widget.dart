@@ -27,8 +27,6 @@ class PhoneticsItemWidget extends StatelessWidget {
           children: List.generate(
             word!.phonetics!.length,
             (index) => Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
               children: [
                 (word!.phonetics![index].audio != null &&
                         word!.phonetics![index].audio != "")
@@ -68,8 +66,6 @@ class PhoneticsItemWidget extends StatelessWidget {
                         ],
                       )
                     : Container(),
-                // Sized
-                //Box(width: 6),
                 if (word!.phonetics![index].text != null)
                   Text(
                     word!.phonetics![index].text!,
