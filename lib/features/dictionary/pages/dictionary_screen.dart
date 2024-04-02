@@ -39,13 +39,10 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
     var word = await ref
         .watch(dictionaryServiceProvider)
         .getWordEnViDic(textEditingController.text.trim());
-    setState(() {
-      vocabulary = word;
-      isSearch = true;
-    });
-
+    setState(() {});
     var words =
         await ref.watch(dictionaryServiceProvider).getWordFromAPI(value);
+
     setState(() {
       vocabularyAPI = words;
       vocabulary = word;
