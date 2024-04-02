@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/response/dictionary_api_word_response.dart';
+import 'package:just_audio/just_audio.dart';
 
 class PhoneticsItemWidget extends StatelessWidget {
   const PhoneticsItemWidget({
@@ -11,6 +12,7 @@ class PhoneticsItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final player = AudioPlayer();
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -33,9 +35,17 @@ class PhoneticsItemWidget extends StatelessWidget {
                     ? Row(
                         children: [
                           IconButton(
-                            onPressed: () {
-                              print(
-                                  'Play audio: ${word!.phonetics![index].audio}');
+                            onPressed: () async {
+                              player.stop();
+                              await player
+                                  .setUrl(word!.phonetics![index].audio!);
+                              await player.play();
+                              player.playerStateStream.listen((event) {
+                                if (event.processingState ==
+                                    ProcessingState.completed) {
+                                  player.stop();
+                                }
+                              });
                             },
                             icon: const Icon(Icons.volume_up),
                           ),

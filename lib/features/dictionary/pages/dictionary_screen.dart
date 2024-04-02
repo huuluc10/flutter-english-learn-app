@@ -36,25 +36,18 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
   }
 
   void search(String value) async {
-    bool isUseEnViDic =
-        ref.watch(controlSourceDictionary) == ControlSourceDictionary.enViDic;
+    var word = await ref
+        .watch(dictionaryServiceProvider)
+        .getWordEnViDic(textEditingController.text.trim());
+    setState(() {});
+    var words =
+        await ref.watch(dictionaryServiceProvider).getWordFromAPI(value);
 
-    if (isUseEnViDic) {
-      var word = await ref
-          .watch(dictionaryServiceProvider)
-          .getWordEnViDic(textEditingController.text.trim());
-      setState(() {
-        vocabulary = word;
-        isSearch = true;
-      });
-    } else {
-      var words =
-          await ref.watch(dictionaryServiceProvider).getWordFromAPI(value);
-      setState(() {
-        vocabularyAPI = words;
-        isSearch = true;
-      });
-    }
+    setState(() {
+      vocabularyAPI = words;
+      vocabulary = word;
+      isSearch = true;
+    });
   }
 
   @override

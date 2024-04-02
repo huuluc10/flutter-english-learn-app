@@ -3,7 +3,6 @@ import 'package:flutter_englearn/features/dictionary/widgets/dictionary_api_numb
 import 'package:flutter_englearn/features/dictionary/widgets/meaning_dictionary_widget.dart';
 import 'package:flutter_englearn/features/dictionary/widgets/phonetics_dictionary_widget.dart';
 import 'package:flutter_englearn/model/response/dictionary_api_word_response.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
 
 class APIDictionaryWidget extends StatefulWidget {
   const APIDictionaryWidget({
@@ -27,8 +26,7 @@ class _APIDictionaryWidgetState extends State<APIDictionaryWidget> {
   @override
   Widget build(BuildContext context) {
     if (widget.vocabulary != null) {
-      if (widget.vocabulary!.length > 0) {
-        print(widget.vocabulary!.length);
+      if (widget.vocabulary!.isNotEmpty) {
         word = widget.vocabulary![currentIndex];
       }
     }
