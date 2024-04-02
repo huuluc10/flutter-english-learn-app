@@ -84,6 +84,7 @@ class EnViDicWidget extends StatelessWidget {
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   margin: const EdgeInsets.only(top: 10),
+                                  width: MediaQuery.sizeOf(context).width,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors.grey,
@@ -103,7 +104,6 @@ class EnViDicWidget extends StatelessWidget {
                                             style: TextStyle(
                                               fontSize: 17,
                                               fontWeight: FontWeight.bold,
-                                              // fontFamily: 'Roboto',
                                             ),
                                           ),
                                           Text(
@@ -111,6 +111,7 @@ class EnViDicWidget extends StatelessWidget {
                                             style: const TextStyle(
                                               fontSize: 17,
                                             ),
+                                            softWrap: true,
                                           ),
                                         ],
                                       ),
@@ -127,13 +128,18 @@ class EnViDicWidget extends StatelessWidget {
                                                   style: TextStyle(
                                                     fontSize: 17,
                                                     fontWeight: FontWeight.bold,
-                                                    // fontFamily: 'Roboto',
                                                   ),
                                                 ),
-                                                Text(
-                                                  mean.mean,
-                                                  style: const TextStyle(
-                                                    fontSize: 17,
+                                                SizedBox(width: 10),
+                                                Flexible(
+                                                  child: Text(
+                                                    mean.mean,
+                                                    style: const TextStyle(
+                                                      fontSize: 17,
+                                                    ),
+                                                    softWrap: true,
+                                                    textAlign:
+                                                        TextAlign.justify,
                                                   ),
                                                 ),
                                               ],

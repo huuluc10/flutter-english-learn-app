@@ -38,7 +38,6 @@ class DictionaryRepository {
           .toList();
     } else {
       log('Failed to load words from API', name: 'DictionaryRepository');
-      throw Exception('Failed to load words from API');
     }
     return words;
   }

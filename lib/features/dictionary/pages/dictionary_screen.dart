@@ -130,6 +130,7 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                         icon: const Icon(Icons.search),
                         onPressed: () {
                           search(textEditingController.text.trim());
+                          isSearch = false;
                         },
                       ),
                       border: OutlineInputBorder(
@@ -142,6 +143,7 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                     ),
                     onSubmitted: (value) async {
                       search(textEditingController.text.trim());
+                      isSearch = false;
                     },
                   ),
                 ),
@@ -152,24 +154,24 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: SingleChildScrollView(
-                    child: Consumer(builder: (context, ref, child) {
-                      //Get source dictionary
-                      sourceDictionary = ref.watch(controlSourceDictionary);
-                      if (sourceDictionary == ControlSourceDictionary.enViDic) {
-                        return EnViDicWidget(
+                  child: Consumer(builder: (context, ref, child) {
+                    //Get source dictionary
+                    sourceDictionary = ref.watch(controlSourceDictionary);
+                    if (sourceDictionary == ControlSourceDictionary.enViDic) {
+                      return SingleChildScrollView(
+                        child: EnViDicWidget(
                           vocabulary: vocabulary,
                           isSearch: isSearch!,
-                        );
-                      } else {
-                        return APIDictionaryWidget(
-                          vocabulary: vocabularyAPI,
-                          isSearch: isSearch!,
-                          height: height - 255,
-                        );
-                      }
-                    }),
-                  ),
+                        ),
+                      );
+                    } else {
+                      return APIDictionaryWidget(
+                        vocabulary: vocabularyAPI,
+                        isSearch: isSearch!,
+                        height: height - 255,
+                      );
+                    }
+                  }),
                 ),
               ],
             ),
