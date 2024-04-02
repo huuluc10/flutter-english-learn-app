@@ -3,7 +3,6 @@ import 'package:flutter_englearn/features/dictionary/widgets/dictionary_api_numb
 import 'package:flutter_englearn/features/dictionary/widgets/meaning_dictionary_widget.dart';
 import 'package:flutter_englearn/features/dictionary/widgets/phonetics_dictionary_widget.dart';
 import 'package:flutter_englearn/model/response/dictionary_api_word_response.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
 
 class APIDictionaryWidget extends StatefulWidget {
   const APIDictionaryWidget({
@@ -27,8 +26,7 @@ class _APIDictionaryWidgetState extends State<APIDictionaryWidget> {
   @override
   Widget build(BuildContext context) {
     if (widget.vocabulary != null) {
-      if (widget.vocabulary!.length > 0) {
-        print(widget.vocabulary!.length);
+      if (widget.vocabulary!.isNotEmpty) {
         word = widget.vocabulary![currentIndex];
       }
     }
@@ -78,7 +76,6 @@ class _APIDictionaryWidgetState extends State<APIDictionaryWidget> {
                             ),
                           ),
                           const Divider(),
-
                           if (word!.phonetic != null)
                             Row(
                               children: [
@@ -95,17 +92,17 @@ class _APIDictionaryWidgetState extends State<APIDictionaryWidget> {
                                 ),
                               ],
                             ),
-
                           if (word!.phonetics != null ||
                               word!.phonetics!.isNotEmpty) ...[
                             PhoneticsItemWidget(word: word),
                           ],
-
                           if (word!.meanings != null) ...[
                             const SizedBox(height: 10),
                             MeaningDictionaryWidget(word: word),
                           ],
-                          // const SizedBox(height: 80),
+                          widget.vocabulary!.length > 1
+                              ? const SizedBox(height: 50)
+                              : const SizedBox(),
                         ],
                       ),
                     ),

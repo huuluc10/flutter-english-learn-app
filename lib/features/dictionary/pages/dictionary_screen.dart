@@ -36,25 +36,21 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
   }
 
   void search(String value) async {
-    bool isUseEnViDic =
-        ref.watch(controlSourceDictionary) == ControlSourceDictionary.enViDic;
+    var word = await ref
+        .watch(dictionaryServiceProvider)
+        .getWordEnViDic(textEditingController.text.trim());
+    setState(() {
+      vocabulary = word;
+      isSearch = true;
+    });
 
-    if (isUseEnViDic) {
-      var word = await ref
-          .watch(dictionaryServiceProvider)
-          .getWordEnViDic(textEditingController.text.trim());
-      setState(() {
-        vocabulary = word;
-        isSearch = true;
-      });
-    } else {
-      var words =
-          await ref.watch(dictionaryServiceProvider).getWordFromAPI(value);
-      setState(() {
-        vocabularyAPI = words;
-        isSearch = true;
-      });
-    }
+    var words =
+        await ref.watch(dictionaryServiceProvider).getWordFromAPI(value);
+    setState(() {
+      vocabularyAPI = words;
+      vocabulary = word;
+      isSearch = true;
+    });
   }
 
   @override
@@ -130,7 +126,6 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                         icon: const Icon(Icons.search),
                         onPressed: () {
                           search(textEditingController.text.trim());
-                          isSearch = false;
                         },
                       ),
                       border: OutlineInputBorder(
@@ -143,7 +138,6 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                     ),
                     onSubmitted: (value) async {
                       search(textEditingController.text.trim());
-                      isSearch = false;
                     },
                   ),
                 ),
