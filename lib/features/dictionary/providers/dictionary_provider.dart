@@ -10,3 +10,4 @@ final dictionaryServiceProvider = Provider((ref) {
   final dictionaryRepository = ref.watch(dictionaryRepositoryProvider);
   return DictionaryService(dictionaryRepository);
 });
+

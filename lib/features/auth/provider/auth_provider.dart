@@ -11,15 +11,10 @@ final authServiceProvicer = Provider((ref) {
 
 final userDataAuthProvider = FutureProvider((ref) {
   final authController = ref.watch(authServiceProvicer);
-  // delay 1s to get JWT
-  Duration duration = const Duration(seconds: 1);
-  Future.delayed(duration);
   return authController.getJWT();
 });
 
 final isJWTExistProvider = FutureProvider((ref) async {
   final authController = ref.watch(authServiceProvicer);
-  Duration duration = const Duration(seconds: 1);
-  await Future.delayed(duration);
   return authController.isJWTExist();
 });
