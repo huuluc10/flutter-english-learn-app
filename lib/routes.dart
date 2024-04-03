@@ -32,6 +32,7 @@ import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart'
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
+import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/utils/pages/error_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -94,10 +95,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (context) => const ChangePasswordScreen());
 
     case MoreUserInfoScreen.routeName:
-      final havePermission = settings.arguments as bool;
+      final arguments = settings.arguments as List<Object>;
+      final havePermission = arguments[0] as bool;
+      final userInfo = arguments[1] as UserInfoResponse;
       return MaterialPageRoute(
-          builder: (context) =>
-              MoreUserInfoScreen(havePermission: havePermission));
+          builder: (context) => MoreUserInfoScreen(
+                havePermission: havePermission,
+                userInfo: userInfo,
+              ));
 
     case ChatHome.routeName:
       return MaterialPageRoute(builder: (context) => const ChatHome());

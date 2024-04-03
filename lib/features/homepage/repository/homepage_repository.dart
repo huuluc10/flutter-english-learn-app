@@ -18,7 +18,6 @@ class HomepageRepository {
     await authRepository.getJWTCurrent().then((value) => jwt = value?.token);
     if (jwt == null) {
       log("JWT is null", name: "HomepageRepository");
-      throw Exception('JWT is null');
     }
     Map<String, String> headers = BaseHeaderHttp.headers;
     headers['Authorization'] = 'Bearer $jwt';
