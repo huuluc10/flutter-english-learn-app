@@ -20,7 +20,7 @@ class AvatarWidget extends StatelessWidget {
         alignment: AlignmentDirectional.topCenter,
         children: [
           Image(
-            image: AssetImage(avatarUrl),
+            image: NetworkImage(avatarUrl),
             height: height * 0.3,
             width: width,
             filterQuality: FilterQuality.high,
@@ -67,7 +67,7 @@ class AvatarWidget extends StatelessWidget {
               ),
               child: CircleAvatar(
                 radius: 80,
-                backgroundImage: AssetImage(avatarUrl),
+                backgroundImage: NetworkImage(avatarUrl),
               ),
             ),
           ),

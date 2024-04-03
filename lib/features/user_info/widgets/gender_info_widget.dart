@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GenderInfoWidget extends StatefulWidget {
-  final int value;
+  final bool value;
   final bool havePermission;
 
   const GenderInfoWidget(
@@ -13,7 +13,7 @@ class GenderInfoWidget extends StatefulWidget {
 
 class _GenderWidgetState extends State<GenderInfoWidget> {
   bool _isEdit = false;
-  int? _value;
+  bool? _value;
 
   @override
   void initState() {
@@ -68,7 +68,7 @@ class _GenderWidgetState extends State<GenderInfoWidget> {
                     IconButton(
                       onPressed: () {
                         setState(() {
-                          _value = _value == 0 ? 1 : 0;
+                          _value = _value == false ? true : false;
                           _isEdit = !_isEdit;
                         });
                       },

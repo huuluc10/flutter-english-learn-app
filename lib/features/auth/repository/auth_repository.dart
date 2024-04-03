@@ -88,12 +88,14 @@ class AuthRepository {
     );
 
     if (response.statusCode == 200) {
+      log("Login success", name: "AuthRepository");
       ResponseModel responseModel = ResponseModel.fromJson(response.body);
       JwtResponse jwtResponse =
           JwtResponse.fromMap(responseModel.data as Map<String, dynamic>);
       await saveJWT(jwtResponse);
       return jwtResponse;
     } else {
+      log("Login failed", name: "AuthRepository");
       return null;
     }
   }

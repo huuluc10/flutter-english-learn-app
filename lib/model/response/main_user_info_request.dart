@@ -20,8 +20,8 @@ class MainUserInfoResponse {
       username: map['username'] as String,
       gender: map['gender'] as bool,
       urlAvatar: map['urlAvatar'] as String,
-      streak: map['streak'] as int,
-      experience: map['experience'] as int,
+      streak: int.parse(map['streak'].toString()),
+      experience: int.parse(map['experience'].toString()),
     );
   }
 

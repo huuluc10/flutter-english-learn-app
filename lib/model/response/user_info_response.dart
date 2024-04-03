@@ -6,7 +6,7 @@ import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 class UserInfoResponse extends MainUserInfoResponse {
   String fullName;
   DateTime dateOfBirth;
-  String email;
+  String? email;
   String level;
 
   UserInfoResponse({
@@ -26,11 +26,10 @@ class UserInfoResponse extends MainUserInfoResponse {
       username: map['username'] as String,
       gender: map['gender'] as bool,
       urlAvatar: map['urlAvatar'] as String,
-      streak: map['streak'] as int,
-      experience: map['experience'] as int,
+      streak: int.parse(map['streak'].toString()),
+      experience: int.parse(map['experience'].toString()),
       fullName: map['fullName'] as String,
-      dateOfBirth:
-          DateTime.fromMillisecondsSinceEpoch(map['dateOfBirth'] as int),
+      dateOfBirth: DateTime.parse(map['dateOfBirth']),
       email: map['email'] as String,
       level: map['level'] as String,
     );

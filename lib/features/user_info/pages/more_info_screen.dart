@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/user_info/widgets/date_of_birth_info_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/gender_info_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/normal_info_widget.dart';
+import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 
 class MoreUserInfoScreen extends ConsumerWidget {
-  const MoreUserInfoScreen({super.key, required this.havePermission});
+  const MoreUserInfoScreen({
+    super.key,
+    required this.havePermission,
+    required this.userInfo,
+  });
   static const String routeName = '/more-user-info-screen';
 
   final bool havePermission;
+  final UserInfoResponse userInfo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,23 +60,23 @@ class MoreUserInfoScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const NormalInfoAttributeWidget(
+                     NormalInfoAttributeWidget(
                       title: 'Họ và tên',
-                      value: 'Nguyễn Hữu Lực',
-                      havePermission: true,
+                      value: userInfo.fullName,
+                      havePermission: havePermission,
                     ),
-                    const NormalInfoAttributeWidget(
+                    NormalInfoAttributeWidget(
                       title: 'Email',
-                      value: '',
-                      havePermission: true,
+                      value: userInfo.email ?? '',
+                      havePermission: havePermission,
                     ),
                     DateAttributeWidget(
-                      value: DateTime.now(),
-                      havePermission: true,
+                      value: userInfo.dateOfBirth,
+                      havePermission: havePermission,
                     ),
-                    const GenderInfoWidget(
-                      value: 1,
-                      havePermission: true,
+                     GenderInfoWidget(
+                      value: userInfo.gender,
+                      havePermission: havePermission,
                     ),
                   ],
                 ),
