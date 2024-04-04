@@ -7,10 +7,12 @@ class StatisticsWidget extends StatelessWidget {
     super.key,
     required this.width,
     required this.userInfo,
+    required this.countHistoryLearnedLesson,
   });
 
   final double width;
   final UserInfoResponse userInfo;
+  final int countHistoryLearnedLesson;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class StatisticsWidget extends StatelessWidget {
               width: width,
               icon: 'assets/lesson.png',
               title: 'Bài học',
-              value: 'Chưa có',
+              value: countHistoryLearnedLesson.toString(),
             ),
             StatisticsItemWidget(
               width: width,

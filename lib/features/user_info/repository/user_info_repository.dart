@@ -201,4 +201,42 @@ class UserInfoRepository {
       }
     }
   }
+
+  Future<ResultReturn> countHistoryLearnedLesson() async {
+    JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
+    if (jwtResponse == null) {
+      log('Token is null', name: 'UserInfoRepository');
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Count history learned lesson', name: 'UserInfoRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = BaseHeaderHttp.headers;
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath =
+          APIUrl.pathCountHistoryLearnedLesson + jwtResponse.username;
+
+      var response = await http.get(
+        Uri.http(authority, unencodedPath),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        log('Count history learned lesson successfully',
+            name: 'UserInfoRepository');
+        ResponseModel responseModel = ResponseModel.fromJson(response.body);
+        int count = responseModel.data as int;
+
+        return ResultReturn<int>(httpStatusCode: 200, data: count);
+      } else if (response.statusCode == 401) {
+        log('Token is expired', name: 'UserInfoRepository');
+        return ResultReturn(httpStatusCode: 401, data: null);
+      } else {
+        log('Count history learned lesson failed', name: 'UserInfoRepository');
+        return ResultReturn(httpStatusCode: 400, data: null);
+      }
+    }
+  }
 }

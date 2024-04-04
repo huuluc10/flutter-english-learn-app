@@ -5,6 +5,7 @@ import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/streak_chart.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
+import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,14 +25,21 @@ class UserInfoScreen extends ConsumerWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    Future<UserInfoResponse> getUserInfo() async {
+    Future<Map<String, Object>> getUserInfo() async {
       try {
         final userInfo =
             await ref.read(userInfoServiceProvider).getUserInfo(context);
-        return userInfo;
+        final countHistoryLearnedLesson =
+            await ref.read(userInfoServiceProvider).countHistoryLearnedLesson();
+
+        Map<String, Object> result = {
+          'userInfo': userInfo,
+          'countHistoryLearnedLesson': countHistoryLearnedLesson,
+        };
+
+        return result;
       } catch (e) {
-        print('Error: $e');
-        throw e;
+        rethrow;
       }
     }
 
@@ -50,7 +58,7 @@ class UserInfoScreen extends ConsumerWidget {
         child: SizedBox(
           height: height,
           width: width,
-          child: FutureBuilder<UserInfoResponse>(
+          child: FutureBuilder<Map<String, Object>>(
               future: getUserInfo(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -66,7 +74,9 @@ class UserInfoScreen extends ConsumerWidget {
                 }
 
                 final UserInfoResponse userInfo =
-                    snapshot.data as UserInfoResponse;
+                    snapshot.data!['userInfo'] as UserInfoResponse;
+                final ResultReturn countHistoryLearnedLesson =
+                    snapshot.data!['countHistoryLearnedLesson'] as ResultReturn;
 
                 return Column(
                   children: <Widget>[
@@ -163,6 +173,8 @@ class UserInfoScreen extends ConsumerWidget {
                                   StatisticsWidget(
                                     width: width,
                                     userInfo: userInfo,
+                                    countHistoryLearnedLesson:
+                                        countHistoryLearnedLesson.data as int,
                                   ),
                                   const Divider(
                                     color: Colors.white,

@@ -193,4 +193,9 @@ class UserInfoService {
           },
         );
   }
+
+  Future<ResultReturn> countHistoryLearnedLesson() {
+    log('Count history learned lesson', name: 'UserInfoService');
+    return userInfoRepository.countHistoryLearnedLesson();
+  }
 }

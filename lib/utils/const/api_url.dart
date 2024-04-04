@@ -39,4 +39,8 @@ class APIUrl {
 
   // path storage api
   static const String pathGetFile = "storage/getfile";
+
+  //path get history learn lesson api
+  static const String pathSaveHistoryLearnLesson = "/api/v1/user-lesson/";
+  static const String pathCountHistoryLearnedLesson = "/api/v1/user-lesson/count-lesson-learned/";
 }
