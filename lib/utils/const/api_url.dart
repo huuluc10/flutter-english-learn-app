@@ -42,5 +42,12 @@ class APIUrl {
 
   //path get history learn lesson api
   static const String pathSaveHistoryLearnLesson = "/api/v1/user-lesson/";
-  static const String pathCountHistoryLearnedLesson = "/api/v1/user-lesson/count-lesson-learned/";
+  static const String pathCountHistoryLearnedLesson =
+      "/api/v1/user-lesson/count-lesson-learned/";
+
+  //path get history do exercise api
+  static const String pathGetExerciseLessonHistory =
+      "/api/v1/user-question/count-lesson-have-exercises-done";
+  static const String pathGetExerciseExamHistory =
+      "/api/v1/user-question/count-exam-have-exercises-done";
 }

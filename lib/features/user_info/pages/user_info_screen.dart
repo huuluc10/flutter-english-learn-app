@@ -5,7 +5,6 @@ import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/streak_chart.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
-import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,9 +31,16 @@ class UserInfoScreen extends ConsumerWidget {
         final countHistoryLearnedLesson =
             await ref.read(userInfoServiceProvider).countHistoryLearnedLesson();
 
+        final countLessonExercisesDone =
+            await ref.read(userInfoServiceProvider).getLessonExerciseDone();
+        final countExamExercisesDone =
+            await ref.read(userInfoServiceProvider).getExamExerciseDone();
+
         Map<String, Object> result = {
           'userInfo': userInfo,
           'countHistoryLearnedLesson': countHistoryLearnedLesson,
+          'countLessonExercisesDone': countLessonExercisesDone,
+          'countExamExercisesDone': countExamExercisesDone,
         };
 
         return result;
@@ -75,9 +81,6 @@ class UserInfoScreen extends ConsumerWidget {
 
                 final UserInfoResponse userInfo =
                     snapshot.data!['userInfo'] as UserInfoResponse;
-                final ResultReturn countHistoryLearnedLesson =
-                    snapshot.data!['countHistoryLearnedLesson'] as ResultReturn;
-
                 return Column(
                   children: <Widget>[
                     AvatarWidget(
@@ -172,9 +175,7 @@ class UserInfoScreen extends ConsumerWidget {
                                   ),
                                   StatisticsWidget(
                                     width: width,
-                                    userInfo: userInfo,
-                                    countHistoryLearnedLesson:
-                                        countHistoryLearnedLesson.data as int,
+                                    info: snapshot.data!,
                                   ),
                                   const Divider(
                                     color: Colors.white,
