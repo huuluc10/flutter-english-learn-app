@@ -7,11 +7,13 @@ class NormalInfoAttributeWidget extends StatefulWidget {
     required this.title,
     required this.value,
     this.havePermission = false,
+    required this.onChanged,
   }) : super(key: key);
 
   final String title;
   final String value;
   final bool havePermission;
+  final Function(String) onChanged;
 
   @override
   State<NormalInfoAttributeWidget> createState() =>
@@ -26,6 +28,7 @@ class _NormalInfoAttributeWidgetState extends State<NormalInfoAttributeWidget> {
   void initState() {
     super.initState();
     _isEdit = false;
+    controller.text = widget.value;
   }
 
   @override
@@ -87,6 +90,8 @@ class _NormalInfoAttributeWidgetState extends State<NormalInfoAttributeWidget> {
                       onPressed: () {
                         setState(() {
                           _isEdit = !_isEdit!;
+                          controller.text = controller.text.trim();
+                          widget.onChanged(controller.text);
                         });
                       },
                       style: ButtonStyle(

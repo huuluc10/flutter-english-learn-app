@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/user_info/repository/user_info_repository.dart';
 import 'package:flutter_englearn/model/request/change_password_request.dart';
+import 'package:flutter_englearn/model/request/update_info_request.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'dart:developer';
@@ -43,5 +44,26 @@ class UserInfoService {
 
     log('Get user info successfully', name: 'UserInfoService');
     return result.data;
+  }
+
+  Future<void> updateUserInfo(
+      BuildContext context, UpdateInfoRequest request) async {
+    log('Update user info', name: 'UserInfoService');
+    int resultUpdate = await userInfoRepository.updateInfo(request.toJson());
+
+    if (resultUpdate == 401) {
+      log('Token is expired', name: 'UserInfoService');
+      if (!context.mounted) return;
+      Navigator.pushNamedAndRemoveUntil(
+          context, WelcomeScreen.routeName, (route) => false);
+    } else if (resultUpdate == 400) {
+      log('Update user info failed', name: 'UserInfoService');
+      if (!context.mounted) return;
+      showSnackBar(context, 'Update user info failed');
+    } else {
+      log('Update user info successfully', name: 'UserInfoService');
+      if (!context.mounted) return;
+      showSnackBar(context, 'Update user info successfully');
+    }
   }
 }
