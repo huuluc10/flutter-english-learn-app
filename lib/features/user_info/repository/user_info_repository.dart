@@ -1,4 +1,5 @@
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
+import 'package:flutter_englearn/model/request/add_email_request.dart';
 import 'package:flutter_englearn/model/response/jwt_response.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
@@ -153,6 +154,50 @@ class UserInfoRepository {
       } else {
         log('Update user info failed', name: 'UserInfoRepository');
         return 400;
+      }
+    }
+  }
+
+  Future<int> addEmail(String email) async {
+    JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
+    if (jwtResponse == null) {
+      log('Token is null', name: 'UserInfoRepository');
+      return 401;
+    } else {
+      log('Add email', name: 'UserInfoRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = BaseHeaderHttp.headers;
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathAddEmail;
+
+      String username = jwtResponse.username;
+
+      AddEmailRequest request = AddEmailRequest(
+        email: email,
+        username: username,
+      );
+
+      var response = await http.post(
+        Uri.http(authority, unencodedPath),
+        headers: headers,
+        body: request.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        log('Send email successfully', name: 'UserInfoRepository');
+        return 200;
+      } else if (response.statusCode == 401) {
+        log('Token is expired', name: 'UserInfoRepository');
+        return 401;
+      } else if (response.statusCode == 400) {
+        log('Send email failed', name: 'UserInfoRepository');
+        return 400;
+      } else {
+        log("Email is already taken", name: "UserInfoRepository");
+        return 409;
       }
     }
   }
