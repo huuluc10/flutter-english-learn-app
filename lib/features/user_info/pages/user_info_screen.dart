@@ -24,14 +24,28 @@ class UserInfoScreen extends ConsumerWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    Future<UserInfoResponse> getUserInfo() async {
+    Future<Map<String, Object>> getUserInfo() async {
       try {
         final userInfo =
             await ref.read(userInfoServiceProvider).getUserInfo(context);
-        return userInfo;
+        final countHistoryLearnedLesson =
+            await ref.read(userInfoServiceProvider).countHistoryLearnedLesson();
+
+        final countLessonExercisesDone =
+            await ref.read(userInfoServiceProvider).getLessonExerciseDone();
+        final countExamExercisesDone =
+            await ref.read(userInfoServiceProvider).getExamExerciseDone();
+
+        Map<String, Object> result = {
+          'userInfo': userInfo,
+          'countHistoryLearnedLesson': countHistoryLearnedLesson,
+          'countLessonExercisesDone': countLessonExercisesDone,
+          'countExamExercisesDone': countExamExercisesDone,
+        };
+
+        return result;
       } catch (e) {
-        print('Error: $e');
-        throw e;
+        rethrow;
       }
     }
 
@@ -50,7 +64,7 @@ class UserInfoScreen extends ConsumerWidget {
         child: SizedBox(
           height: height,
           width: width,
-          child: FutureBuilder<UserInfoResponse>(
+          child: FutureBuilder<Map<String, Object>>(
               future: getUserInfo(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -66,8 +80,7 @@ class UserInfoScreen extends ConsumerWidget {
                 }
 
                 final UserInfoResponse userInfo =
-                    snapshot.data as UserInfoResponse;
-
+                    snapshot.data!['userInfo'] as UserInfoResponse;
                 return Column(
                   children: <Widget>[
                     AvatarWidget(
@@ -162,7 +175,7 @@ class UserInfoScreen extends ConsumerWidget {
                                   ),
                                   StatisticsWidget(
                                     width: width,
-                                    userInfo: userInfo,
+                                    info: snapshot.data!,
                                   ),
                                   const Divider(
                                     color: Colors.white,

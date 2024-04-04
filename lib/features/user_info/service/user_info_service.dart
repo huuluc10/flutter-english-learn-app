@@ -193,4 +193,19 @@ class UserInfoService {
           },
         );
   }
+
+  Future<ResultReturn> countHistoryLearnedLesson() {
+    log('Count history learned lesson', name: 'UserInfoService');
+    return userInfoRepository.countHistoryLearnedLesson();
+  }
+
+  Future<ResultReturn> getLessonExerciseDone() {
+    log('Get exercise lesson history', name: 'UserInfoService');
+    return userInfoRepository.getLessonExerciseDone();
+  }
+
+  Future<ResultReturn> getExamExerciseDone() {
+    log('Get exercise exam history', name: 'UserInfoService');
+    return userInfoRepository.getExamExerciseDone();
+  }
 }
