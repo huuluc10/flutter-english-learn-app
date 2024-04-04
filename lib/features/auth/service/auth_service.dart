@@ -169,12 +169,16 @@ class AuthService {
         context,
         OTPInputScreen.routeName,
         (route) => false,
-        arguments: email,
+        arguments: [email, true],
       );
     }
   }
 
-  Future<void> verifyOTP(BuildContext context, String email, String otp) async {
+  Future<void> verifyOTPResetPass(
+    BuildContext context,
+    String email,
+    String otp,
+  ) async {
     VerifyCodeRequest request = VerifyCodeRequest(
       email: email,
       code: otp,
@@ -192,7 +196,7 @@ class AuthService {
       },
     );
 
-    await authRepository.verifyOTP(request.toJson()).then(
+    await authRepository.verifyOTPResetPass(request.toJson()).then(
           (value) => {
             if (value == 'Code is correct')
               {
@@ -202,7 +206,7 @@ class AuthService {
                   SetPasswordScreen.routeName,
                   (route) => false,
                   arguments: email,
-                )
+                ),
               }
             else if (value == 'Code is incorrect')
               {

@@ -202,7 +202,7 @@ class AuthRepository {
     return check;
   }
 
-  Future<String> verifyOTP(String body) async {
+  Future<String> verifyOTPResetPass(String body) async {
     log("verifyOTP", name: "AuthRepository");
     Map<String, String> headers = BaseHeaderHttp.headers;
     String authority = APIUrl.baseUrl;

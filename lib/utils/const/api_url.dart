@@ -24,6 +24,7 @@ class APIUrl {
   // path otp api
   static const String pathResetPassword = "otp/forgot-password/";
   static const String pathVerifyOTP = "otp/verifyCodeOTP";
+  static const String pathAddEmail = "otp/addEmail";
 
   // path lesson api
   static const String pathSummaryOfTopic = "api/v1/lessons/topic/";

@@ -10,5 +10,9 @@ final userInfoRepositoryProvider = Provider((ref) {
 
 final userInfoServiceProvider = Provider((ref) {
   final userInfoRepository = ref.watch(userInfoRepositoryProvider);
-  return UserInfoService(userInfoRepository: userInfoRepository);
+  final authRepository = ref.watch(authRepositoryProvider);
+  return UserInfoService(
+    userInfoRepository: userInfoRepository,
+    authRepository: authRepository,
+  );
 });

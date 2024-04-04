@@ -63,9 +63,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const DictionaryScreen());
 
     case OTPInputScreen.routeName:
-      final email = settings.arguments as String;
+      final arguments = settings.arguments as List<dynamic>;
+      final email = arguments[0];
+      final isResetPassword = arguments[1];
       return MaterialPageRoute(
-          builder: (context) => OTPInputScreen(email: email));
+          builder: (context) => OTPInputScreen(
+                email: email,
+                iSResetPassword: isResetPassword,
+              ));
 
     case UserInfoScreen.routeName:
       final arguments = settings.arguments as Map<String, bool>;
