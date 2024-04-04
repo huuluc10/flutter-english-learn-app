@@ -122,4 +122,38 @@ class UserInfoRepository {
     String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
     return DateTime.parse(formattedDate);
   }
+
+  Future<int> updateInfo(String body) async {
+    JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
+    if (jwtResponse == null) {
+      log('Token is null', name: 'UserInfoRepository');
+      return 401;
+    } else {
+      log('Update user info', name: 'UserInfoRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = BaseHeaderHttp.headers;
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathUpdateUserInfo;
+
+      var response = await http.post(
+        Uri.http(authority, unencodedPath),
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        log('Update user info successfully', name: 'UserInfoRepository');
+        return 200;
+      } else if (response.statusCode == 401) {
+        log('Token is expired', name: 'UserInfoRepository');
+        return 401;
+      } else {
+        log('Update user info failed', name: 'UserInfoRepository');
+        return 400;
+      }
+    }
+  }
 }

@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 class GenderInfoWidget extends StatefulWidget {
   final bool value;
   final bool havePermission;
+  final Function(bool) onChanged;
 
-  const GenderInfoWidget(
-      {super.key, required this.value, required this.havePermission});
+  const GenderInfoWidget({
+    super.key,
+    required this.value,
+    required this.havePermission,
+    required this.onChanged,
+  });
 
   @override
   State<GenderInfoWidget> createState() => _GenderWidgetState();
@@ -59,7 +64,7 @@ class _GenderWidgetState extends State<GenderInfoWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.value == 0 ? 'Nữ' : 'Nam',
+                      _value == false ? 'Nữ' : 'Nam',
                       style: const TextStyle(
                         fontSize: 18,
                         color: Color.fromARGB(255, 209, 209, 209),
@@ -68,8 +73,9 @@ class _GenderWidgetState extends State<GenderInfoWidget> {
                     IconButton(
                       onPressed: () {
                         setState(() {
-                          _value = _value == false ? true : false;
+                          _value = !_value!;
                           _isEdit = !_isEdit;
+                          widget.onChanged(_value!);
                         });
                       },
                       icon: const Icon(
@@ -80,7 +86,7 @@ class _GenderWidgetState extends State<GenderInfoWidget> {
                   ],
                 )
               : Text(
-                  widget.value == 0 ? 'Nữ' : 'Nam',
+                  _value == false ? 'Nữ' : 'Nam',
                   style: const TextStyle(
                     fontSize: 18,
                     color: Color.fromARGB(255, 209, 209, 209),

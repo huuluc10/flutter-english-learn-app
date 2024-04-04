@@ -8,10 +8,12 @@ class DateAttributeWidget extends StatefulWidget {
     Key? key,
     required this.value,
     required this.havePermission,
+    required this.onChanged,
   }) : super(key: key);
 
   final DateTime value;
   final bool havePermission;
+  final Function(DateTime) onChanged;
 
   @override
   State<DateAttributeWidget> createState() => _DateAttributeWidgetState();
@@ -53,11 +55,17 @@ class _DateAttributeWidgetState extends State<DateAttributeWidget> {
       onChange: (index) {
         setState(() {
           _value = index;
+          if (_value != null) {
+            widget.onChanged(_value!);
+          }
         });
       },
       onSubmit: (index) {
         setState(() {
           _value = index;
+          if (_value != null) {
+            widget.onChanged(_value!);
+          }
         });
       },
       bottomPickerTheme: BottomPickerTheme.plumPlate,
