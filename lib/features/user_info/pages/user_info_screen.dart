@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart';
 import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
 import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
+import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,6 +56,13 @@ class UserInfoScreen extends ConsumerWidget {
       } catch (e) {
         rethrow;
       }
+    }
+
+    Future<List<MainUserInfoResponse>> getFriends(String username) async {
+      final friends =
+          await ref.read(friendServiceProvider).getFriends(context, username);
+
+      return friends;
     }
 
     return Scaffold(
@@ -197,32 +206,63 @@ class UserInfoScreen extends ConsumerWidget {
                                     color: Colors.white,
                                     thickness: 1.0,
                                   ),
-                                  const Row(
-                                    children: [
-                                      Text(
-                                        'Bạn bè ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        '(0)',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Text(
-                                        'Danh sách yêu cầu',
-                                        style: TextStyle(
-                                            color: Colors.blueAccent,
-                                            fontSize: 17),
-                                      ),
-                                    ],
+                                  FutureBuilder(
+                                    future: getFriends(username),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child:
+                                              Text('Error: ${snapshot.error}'),
+                                        );
+                                      }
+
+                                      final List<MainUserInfoResponse> friends =
+                                          snapshot.data
+                                              as List<MainUserInfoResponse>;
+
+                                      return Column(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Text(
+                                                  'Bạn bè ',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 17,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '(${friends.length})',
+                                                  style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: 16,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                const Spacer(),
+                                                Text(
+                                                  'Danh sách yêu cầu',
+                                                  style: const TextStyle(
+                                                      color: Colors.blueAccent,
+                                                      fontSize: 17),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   ),
                                 ],
                               ),

@@ -35,7 +35,8 @@ class UserInfoService {
     return await userInfoRepository.changePassword(body);
   }
 
-  Future<UserInfoResponse> getUserInfo(BuildContext context, String username) async {
+  Future<UserInfoResponse> getUserInfo(
+      BuildContext context, String username) async {
     ResultReturn result = await userInfoRepository.getInfo(username);
     log('Get user info', name: 'UserInfoService');
 

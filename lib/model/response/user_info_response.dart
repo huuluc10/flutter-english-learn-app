@@ -4,11 +4,10 @@ import 'dart:convert';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 
 class UserInfoResponse extends MainUserInfoResponse {
-  String fullName;
   bool gender;
   DateTime dateOfBirth;
   String? email;
-  String level;
+  
 
   UserInfoResponse({
     required super.username,
@@ -16,10 +15,10 @@ class UserInfoResponse extends MainUserInfoResponse {
     required super.urlAvatar,
     required super.streak,
     required super.experience,
-    required this.fullName,
+    required super.fullName,
     required this.dateOfBirth,
     required this.email,
-    required this.level,
+    required super.level,
   });
 
   factory UserInfoResponse.fromMap(Map<String, dynamic> map) {
