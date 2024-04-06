@@ -31,13 +31,16 @@ class _AddingInfoSignUpScreenState
     // Check if name and date is not empty
     if (textController.text.isEmpty || _date == null) {
       showSnackBar(context, 'Nhập đầy đủ thông tin!');
+      return;
     }
 
     // Check date of birth > 3 years or in the future
     if (_date!.isAfter(DateTime.now())) {
       showSnackBar(context, "Ngày sinh không hợp lệ!");
+      return;
     } else if (DateTime.now().difference(_date!).inDays < 3 * 365) {
       showSnackBar(context, 'Trẻ quá nhỏ để học nhiều!');
+      return;
     } else {
       // Call sign up API
       SignUpRequest request = widget.signUpRequest;
