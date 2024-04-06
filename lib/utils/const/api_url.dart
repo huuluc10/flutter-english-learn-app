@@ -45,9 +45,13 @@ class APIUrl {
   static const String pathCountHistoryLearnedLesson =
       "/api/v1/user-lesson/count-lesson-learned/";
 
-  //path get history do exercise api
+  // path get history do exercise api
   static const String pathGetExerciseLessonHistory =
       "/api/v1/user-question/count-lesson-have-exercises-done";
   static const String pathGetExerciseExamHistory =
       "/api/v1/user-question/count-exam-have-exercises-done";
+      
+  // path friend api
+  static const String pathGetFriendByUsername = "/api/v1/friend-request/";
+  static const String pathAddFriend = "/api/v1/friend-request/";
 }

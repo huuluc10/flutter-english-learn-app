@@ -66,7 +66,8 @@ class UserInfoRepository {
     }
   }
 
-  Future<ResultReturn> getInfo() async {
+  Future<ResultReturn> getInfo(String username) async {
+    // Get JWY token of current user
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
@@ -82,7 +83,7 @@ class UserInfoRepository {
       String unencodedPath = APIUrl.pathGetUserInfo;
 
       var response = await http.post(
-        Uri.http(authority, unencodedPath),
+        Uri.http(authority, unencodedPath, {"username": username}),
         headers: headers,
       );
 
@@ -90,7 +91,7 @@ class UserInfoRepository {
         log('Get user info successfully', name: 'UserInfoRepository');
         ResponseModel responseModel = ResponseModel.fromJson(response.body);
         UserInfoResponse userInfoResponse = UserInfoResponse.fromMap(
-            responseModel.data as Map<String, dynamic>);
+            responseModel.data! as Map<String, dynamic>);
 
         userInfoResponse.urlAvatar =
             _transformLocalURLAvatarToURL(userInfoResponse.urlAvatar);

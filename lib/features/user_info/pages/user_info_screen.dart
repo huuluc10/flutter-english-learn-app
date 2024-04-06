@@ -3,7 +3,6 @@ import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart'
 import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
 import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
-import 'package:flutter_englearn/features/user_info/widgets/streak_chart.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,22 +11,30 @@ class UserInfoScreen extends ConsumerWidget {
   const UserInfoScreen({
     super.key,
     required this.isFriend,
-    required this.isMe,
+    required this.username,
   });
 
   static const String routeName = '/user-info-screen';
   final bool isFriend;
-  final bool isMe;
+  final String username;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    late final bool isMe;
 
-    Future<Map<String, Object>> getUserInfo() async {
+    Future<Map<String, Object>> getUserInfo(String username) async {
       try {
-        final userInfo =
-            await ref.read(userInfoServiceProvider).getUserInfo(context);
+        final userInfo = await ref
+            .read(userInfoServiceProvider)
+            .getUserInfo(context, username);
+
+        if (username == userInfo.username) {
+          isMe = true;
+        } else {
+          isMe = false;
+        }
         final countHistoryLearnedLesson =
             await ref.read(userInfoServiceProvider).countHistoryLearnedLesson();
 
@@ -65,7 +72,7 @@ class UserInfoScreen extends ConsumerWidget {
           height: height,
           width: width,
           child: FutureBuilder<Map<String, Object>>(
-              future: getUserInfo(),
+              future: getUserInfo(username),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -74,8 +81,8 @@ class UserInfoScreen extends ConsumerWidget {
                 }
 
                 if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('Error'),
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
                   );
                 }
 
@@ -117,6 +124,15 @@ class UserInfoScreen extends ConsumerWidget {
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
+                                    ),
+                                  ),
+                                  Text(
+                                    username,
+                                    style: const TextStyle(
+                                      fontSize: 20.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.italic,
                                     ),
                                   ),
                                   const SizedBox(
@@ -181,19 +197,33 @@ class UserInfoScreen extends ConsumerWidget {
                                     color: Colors.white,
                                     thickness: 1.0,
                                   ),
-                                  const Text(
-                                    'Biểu đồ học tập 7 ngày gần nhất',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 19.5,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  const Row(
+                                    children: [
+                                      Text(
+                                        'Bạn bè ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        '(0)',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        'Danh sách yêu cầu',
+                                        style: TextStyle(
+                                            color: Colors.blueAccent,
+                                            fontSize: 17),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  const UserStreakChart(),
-                                  const SizedBox(height: 15),
                                 ],
                               ),
                             ),

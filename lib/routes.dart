@@ -66,20 +66,22 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final arguments = settings.arguments as List<dynamic>;
       final email = arguments[0];
       final isResetPassword = arguments[1];
+      final username = arguments[2];
       return MaterialPageRoute(
           builder: (context) => OTPInputScreen(
                 email: email,
                 iSResetPassword: isResetPassword,
+                username: username,
               ));
 
     case UserInfoScreen.routeName:
-      final arguments = settings.arguments as Map<String, bool>;
-      final isFriend = arguments['isFriend'];
-      final isMe = arguments['isMe'];
+      final arguments = settings.arguments as Map<String, dynamic>;
+      final isFriend = arguments['isFriend'] as bool;
+      final username = arguments['username'] as String;
       return MaterialPageRoute(
         builder: (context) => UserInfoScreen(
-          isFriend: isFriend!,
-          isMe: isMe!,
+          isFriend: isFriend,
+          username: username,
         ),
       );
 

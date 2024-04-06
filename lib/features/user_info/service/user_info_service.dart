@@ -35,8 +35,8 @@ class UserInfoService {
     return await userInfoRepository.changePassword(body);
   }
 
-  Future<UserInfoResponse> getUserInfo(BuildContext context) async {
-    ResultReturn result = await userInfoRepository.getInfo();
+  Future<UserInfoResponse> getUserInfo(BuildContext context, String username) async {
+    ResultReturn result = await userInfoRepository.getInfo(username);
     log('Get user info', name: 'UserInfoService');
 
     if (result.httpStatusCode == 401) {
@@ -78,6 +78,7 @@ class UserInfoService {
   Future<void> addEmail(
     BuildContext context,
     String email,
+    String username,
   ) async {
     log('Add email', name: 'UserInfoService');
 
@@ -101,7 +102,7 @@ class UserInfoService {
       log('Send email successfully', name: 'UserInfoService');
       if (!context.mounted) return;
       Navigator.pushNamed(context, OTPInputScreen.routeName,
-          arguments: [email, false]);
+          arguments: [email, false, username]);
     }
   }
 
@@ -109,6 +110,7 @@ class UserInfoService {
     BuildContext context,
     String email,
     String otp,
+    String username,
   ) async {
     log('Verify code add email', name: 'UserInfoService');
     VerifyCodeRequest request = VerifyCodeRequest(
@@ -127,7 +129,7 @@ class UserInfoService {
       },
     );
 
-    UserInfoResponse userInfo = await getUserInfo(context);
+    UserInfoResponse userInfo = await getUserInfo(context, username);
     userInfo.email = email;
     UpdateInfoRequest updateInfoRequest =
         UpdateInfoRequest.fromResponse(userInfo);

@@ -1,17 +1,28 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/friend/pages/find_friend_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/settings_screen.dart';
 import 'package:flutter_englearn/features/homepage/widgets/item_drawer_widget.dart';
 import 'package:flutter_englearn/features/mission/pages/mission_screen.dart';
 import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DrawerWidget extends StatelessWidget {
+class DrawerWidget extends ConsumerWidget {
   const DrawerWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.of(context).size.width;
+
+    Future<String> getUsername() async {
+      String username = await ref
+          .watch(authServiceProvicer)
+          .getJWT()
+          .then((value) => value.username);
+      return username;
+    }
+
     return Drawer(
       backgroundColor: Colors.white,
       elevation: 0,
@@ -83,12 +94,12 @@ class DrawerWidget extends StatelessWidget {
             title: 'Thông tin tài khoản',
             image: 'assets/user.png',
             routeName: UserInfoScreen.routeName,
-            onTap: () {
+            onTap: () async {
               Navigator.pushNamed(
                 context,
                 UserInfoScreen.routeName,
                 arguments: {
-                  'isMe': true,
+                  'username': await getUsername(),
                   'isFriend': false,
                 },
               );

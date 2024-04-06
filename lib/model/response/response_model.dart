@@ -2,7 +2,7 @@ import 'dart:convert';
 class ResponseModel {
   String status;
   String message;
-  Object data;
+  Object? data;
 
   ResponseModel({
     required this.status,
