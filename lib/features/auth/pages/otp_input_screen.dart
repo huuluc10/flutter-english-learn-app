@@ -10,12 +10,14 @@ class OTPInputScreen extends ConsumerWidget {
     super.key,
     required this.email,
     required this.iSResetPassword,
+    required this.username,
   });
 
   static const String routeName = '/otp_input_screen';
 
   final String email;
   final bool iSResetPassword;
+  final String? username;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,6 +78,7 @@ class OTPInputScreen extends ConsumerWidget {
                               context,
                               email,
                               verificationCode,
+                              username!,
                             );
                   }, // end onSubmit
                 ),
