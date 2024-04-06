@@ -169,7 +169,7 @@ class AuthService {
         context,
         OTPInputScreen.routeName,
         (route) => false,
-        arguments: [email, true],
+        arguments: [email, true, null],
       );
     }
   }

@@ -5,13 +5,14 @@ import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 
 class UserInfoResponse extends MainUserInfoResponse {
   String fullName;
+  bool gender;
   DateTime dateOfBirth;
   String? email;
   String level;
 
   UserInfoResponse({
     required super.username,
-    required super.gender,
+    required this.gender,
     required super.urlAvatar,
     required super.streak,
     required super.experience,
@@ -30,7 +31,7 @@ class UserInfoResponse extends MainUserInfoResponse {
       experience: int.parse(map['experience'].toString()),
       fullName: map['fullName'] as String,
       dateOfBirth: DateTime.parse(map['dateOfBirth']),
-      email: map['email'] as String,
+      email: map['email'] ?? '',
       level: map['level'] as String,
     );
   }

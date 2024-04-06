@@ -49,7 +49,9 @@ class _MoreUserInfoScreenState extends ConsumerState<MoreUserInfoScreen> {
     log('Update email', name: 'MoreUserInfoScreen');
     UpdateInfoRequest request = UpdateInfoRequest.fromResponse(userInfo);
     request.email = email;
-    ref.read(userInfoServiceProvider).addEmail(context, email);
+    ref
+        .read(userInfoServiceProvider)
+        .addEmail(context, email, userInfo.username);
   }
 
   Future<void> updateGender(bool value) async {
