@@ -1,6 +1,6 @@
 class APIUrl {
   // ip and port
-  static const String ip = "huuluc.ddns.net";
+  static const String ip = "192.168.1.202";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -50,7 +50,7 @@ class APIUrl {
       "/api/v1/user-question/count-lesson-have-exercises-done";
   static const String pathGetExerciseExamHistory =
       "/api/v1/user-question/count-exam-have-exercises-done";
-      
+
   // path friend api
   static const String pathGetFriendByUsername = "/api/v1/friend-request/";
   static const String pathAddFriend = "/api/v1/friend-request/";

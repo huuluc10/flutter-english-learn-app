@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart';
@@ -6,8 +9,11 @@ import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UserInfoScreen extends ConsumerWidget {
   const UserInfoScreen({
@@ -25,6 +31,9 @@ class UserInfoScreen extends ConsumerWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     late final bool isMe;
+
+    final ImagePicker picker = ImagePicker();
+    late File imageFilePicker;
 
     Future<Map<String, Object>> getUserInfo(String username) async {
       try {
@@ -65,6 +74,67 @@ class UserInfoScreen extends ConsumerWidget {
       return friends;
     }
 
+    void showImagePicker(BuildContext context) async {
+      showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            width: MediaQuery.sizeOf(context).width,
+            height: MediaQuery.sizeOf(context).height * 0.1,
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      imageFilePicker = await imgFromCamera(picker);
+
+                      Navigator.pop(context);
+                    },
+                    child: const Column(
+                      children: [
+                        Icon(Icons.camera_alt),
+                        Text('Chụp ảnh'),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      imageFilePicker = await imgFromGallery(picker);
+                      Navigator.pop(context);
+                    },
+                    child: const Column(
+                      children: [
+                        Icon(Icons.photo),
+                        Text('Chọn ảnh từ thư viện'),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    void changeAvatar() async {
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.camera,
+        Permission.storage,
+      ].request();
+
+      if (statuses[Permission.camera]!.isGranted &&
+          statuses[Permission.storage]!.isGranted) {
+        showImagePicker(context);
+      } else {
+        showSnackBar(context, 'Bạn cần cấp quyền truy cập ảnh và camera');
+      }
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -75,6 +145,19 @@ class UserInfoScreen extends ConsumerWidget {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: changeAvatar,
+              child: Image.asset(
+                'assets/change-picture.png',
+                height: 40,
+                width: 40,
+              ),
+            ),
+          ),
+        ],
       ),
       body: LineGradientBackgroundWidget(
         child: SizedBox(
