@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/model/request/add_email_request.dart';
 import 'package:flutter_englearn/model/response/jwt_response.dart';
@@ -9,6 +11,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter_englearn/utils/const/base_header_http.dart';
 import 'package:intl/intl.dart';
+import 'package:http_parser/http_parser.dart';
 
 class UserInfoRepository {
   final AuthRepository authRepository;
@@ -310,6 +313,46 @@ class UserInfoRepository {
         return ResultReturn(httpStatusCode: 401, data: null);
       } else {
         log('Get lesson exercise is done failed', name: 'UserInfoRepository');
+        return ResultReturn(httpStatusCode: 400, data: null);
+      }
+    }
+  }
+
+  Future<ResultReturn> changeAvatar(String imagePath) async {
+    JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
+    if (jwtResponse == null) {
+      log('Token is null', name: 'UserInfoRepository');
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Change avatar', name: 'UserInfoRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = BaseHeaderHttp.headers;
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String url = "http://${APIUrl.baseUrl}/${APIUrl.pathUpdateAvatar}";
+      final File file = File(imagePath);
+
+      // Create a multipart request
+      var multipartFile = await http.MultipartFile.fromPath(
+        'file',
+        file.path,
+        contentType: MediaType('image', 'png'),
+      );
+
+      // Create a multipart request
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.files.add(multipartFile);
+
+      request.headers.addAll(headers);
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        log('Upload successfully', name: 'UserInfoRepository');
+        return ResultReturn(httpStatusCode: 200, data: null);
+      } else {
+        log('Upload failed', name: 'UserInfoRepository');
         return ResultReturn(httpStatusCode: 400, data: null);
       }
     }

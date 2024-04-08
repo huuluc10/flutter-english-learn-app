@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 bool isHTML(String str) {
   final RegExp htmlRegExp =
@@ -22,4 +24,29 @@ extension StringCasingExtension on String {
       .split(' ')
       .map((str) => str.toCapitalized())
       .join(' ');
+}
+
+imgFromCamera(ImagePicker picker) async {
+  final status = await Permission.camera.request();
+  final XFile? image =
+      await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+
+  return image;
+}
+
+imgFromGallery(ImagePicker picker) async {
+  final statusStorage = await Permission.storage.request();
+  final statusGallery = await Permission.photos.request();
+
+  try {
+    final XFile? image =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+
+    if (image != null) {
+      return image;
+    }
+  } catch (e) {
+    print(e);
+    return null;
+  }
 }

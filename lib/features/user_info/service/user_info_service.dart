@@ -211,4 +211,10 @@ class UserInfoService {
     log('Get exercise exam history', name: 'UserInfoService');
     return userInfoRepository.getExamExerciseDone();
   }
+
+  Future<ResultReturn> updateAvatar(
+      BuildContext context, String imagePath) async {
+    log('Update avatar', name: 'UserInfoService');
+    return await userInfoRepository.changeAvatar(imagePath);
+  }
 }

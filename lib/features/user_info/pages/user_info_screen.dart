@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
+import 'package:flutter_englearn/features/user_info/controller/user_info_controller.dart';
 import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart';
-import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
 import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
@@ -9,7 +8,7 @@ import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserInfoScreen extends ConsumerWidget {
+class UserInfoScreen extends ConsumerStatefulWidget {
   const UserInfoScreen({
     super.key,
     required this.isFriend,
@@ -21,49 +20,27 @@ class UserInfoScreen extends ConsumerWidget {
   final String username;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _UserInfoScreenState();
+}
+
+class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
+  bool isMe = false;
+
+  Future<Map<String, Object>> getUserInfo(String username) async {
+    return await getInfo(
+      context,
+      ref,
+      username,
+      (bool value) {
+        isMe = value;
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    late final bool isMe;
-
-    Future<Map<String, Object>> getUserInfo(String username) async {
-      try {
-        final userInfo = await ref
-            .read(userInfoServiceProvider)
-            .getUserInfo(context, username);
-
-        if (username == userInfo.username) {
-          isMe = true;
-        } else {
-          isMe = false;
-        }
-        final countHistoryLearnedLesson =
-            await ref.read(userInfoServiceProvider).countHistoryLearnedLesson();
-
-        final countLessonExercisesDone =
-            await ref.read(userInfoServiceProvider).getLessonExerciseDone();
-        final countExamExercisesDone =
-            await ref.read(userInfoServiceProvider).getExamExerciseDone();
-
-        Map<String, Object> result = {
-          'userInfo': userInfo,
-          'countHistoryLearnedLesson': countHistoryLearnedLesson,
-          'countLessonExercisesDone': countLessonExercisesDone,
-          'countExamExercisesDone': countExamExercisesDone,
-        };
-
-        return result;
-      } catch (e) {
-        rethrow;
-      }
-    }
-
-    Future<List<MainUserInfoResponse>> getFriends(String username) async {
-      final friends =
-          await ref.read(friendServiceProvider).getFriends(context, username);
-
-      return friends;
-    }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -75,13 +52,30 @@ class UserInfoScreen extends ConsumerWidget {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () async {
+                showImagePicker(context, ref, () {
+                  setState(() {});
+                });
+              },
+              child: Image.asset(
+                'assets/change-picture.png',
+                height: 40,
+                width: 40,
+              ),
+            ),
+          ),
+        ],
       ),
       body: LineGradientBackgroundWidget(
         child: SizedBox(
           height: height,
           width: width,
           child: FutureBuilder<Map<String, Object>>(
-              future: getUserInfo(username),
+              future: getUserInfo(widget.username),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -136,7 +130,7 @@ class UserInfoScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    username,
+                                    widget.username,
                                     style: const TextStyle(
                                       fontSize: 20.0,
                                       color: Colors.white,
@@ -170,7 +164,7 @@ class UserInfoScreen extends ConsumerWidget {
                                       child: Text(
                                         isMe
                                             ? 'Chỉnh sửa thông tin'
-                                            : isFriend
+                                            : widget.isFriend
                                                 ? 'Hủy kết bạn'
                                                 : 'Thêm bạn bè',
                                         style: const TextStyle(
@@ -207,7 +201,11 @@ class UserInfoScreen extends ConsumerWidget {
                                     thickness: 1.0,
                                   ),
                                   FutureBuilder(
-                                    future: getFriends(username),
+                                    future: getFriends(
+                                      context,
+                                      ref,
+                                      widget.username,
+                                    ),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
@@ -233,9 +231,9 @@ class UserInfoScreen extends ConsumerWidget {
                                             padding: const EdgeInsets.all(5.0),
                                             child: Row(
                                               children: <Widget>[
-                                                Text(
+                                                const Text(
                                                   'Bạn bè ',
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 17,
                                                     color: Colors.white,
@@ -251,9 +249,9 @@ class UserInfoScreen extends ConsumerWidget {
                                                   ),
                                                 ),
                                                 const Spacer(),
-                                                Text(
+                                                const Text(
                                                   'Danh sách yêu cầu',
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: Colors.blueAccent,
                                                       fontSize: 17),
                                                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class AvatarWidget extends StatelessWidget {
   const AvatarWidget({
     super.key,
@@ -11,6 +12,8 @@ class AvatarWidget extends StatelessWidget {
   final double height;
   final double width;
   final String avatarUrl;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,27 +36,7 @@ class AvatarWidget extends StatelessWidget {
               height: height * 0.3,
             ),
           ),
-          Positioned(
-            top: 10,
-            right: 15,
-            child: InkWell(
-              onTap: () {
-                // TODO: Implement change avatar
-              },
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Image.asset(
-                  'assets/change-picture.png',
-                  height: 40,
-                  width: 40,
-                ),
-              ),
-            ),
-          ),
+          
           Positioned(
             top: height * 0.15,
             left: width * 0.05,
