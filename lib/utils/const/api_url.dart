@@ -36,6 +36,7 @@ class APIUrl {
   static const String pathChangePassword = "/api/v1/user/changePassword";
   static const String pathGetUserInfo = "api/v1/user/getByUsername";
   static const String pathUpdateUserInfo = "api/v1/user/update";
+  static const String pathUpdateAvatar = "api/v1/user/updateAvatar";
 
   // path storage api
   static const String pathGetFile = "storage/getfile";

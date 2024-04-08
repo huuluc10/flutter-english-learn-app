@@ -91,7 +91,10 @@ class _NormalInfoAttributeWidgetState extends State<NormalInfoAttributeWidget> {
                         setState(() {
                           _isEdit = !_isEdit!;
                           controller.text = controller.text.trim();
-                          widget.onChanged(controller.text);
+                          if (controller.text.isNotEmpty &&
+                              controller.text != widget.value) {
+                            widget.onChanged(controller.text);
+                          }
                         });
                       },
                       style: ButtonStyle(
@@ -108,6 +111,7 @@ class _NormalInfoAttributeWidgetState extends State<NormalInfoAttributeWidget> {
                       onPressed: () {
                         setState(() {
                           _isEdit = !_isEdit!;
+                          controller.text = widget.value;
                         });
                       },
                       style: ButtonStyle(
