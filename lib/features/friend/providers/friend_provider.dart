@@ -11,5 +11,5 @@ final friendRepositoryProvider = Provider((ref) {
 
 final friendServiceProvider = Provider((ref) {
   FriendRepository friendRepository = ref.read(friendRepositoryProvider);
-  return FriendService(friendRepository);
+  return FriendService(friendRepository: friendRepository);
 });

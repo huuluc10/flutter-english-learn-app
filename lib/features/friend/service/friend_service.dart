@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/friend/repository/friend_repository.dart';
+import 'package:flutter_englearn/model/request/friend_required_request.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
+import 'package:flutter_englearn/model/result_return.dart';
+import 'dart:developer';
 import 'package:flutter_englearn/utils/helper/helper.dart';
 
 class FriendService {
-  final FriendRepository _friendRepository;
+  final FriendRepository friendRepository;
 
-  FriendService(this._friendRepository);
+  FriendService({required this.friendRepository});
 
   Future<List<MainUserInfoResponse>> getFriends(
       BuildContext context, String username) async {
-    ResponseModel response = await _friendRepository.getFriend(username);
+    ResponseModel response = await friendRepository.getFriend(username);
 
     if (response.status == '401') {
       showSnackBar(context, 'Phiên đăng nhập đã hết hạn!');
@@ -25,7 +28,51 @@ class FriendService {
     } else {
       List<MainUserInfoResponse> listMainUserInfoResponse =
           response.data as List<MainUserInfoResponse>;
+
+      // Update url avatar
+      for (int i = 0; i < listMainUserInfoResponse.length; i++) {
+        String oldURL = listMainUserInfoResponse[i].urlAvatar;
+        String newURL = transformLocalURLAvatarToURL(oldURL);
+        listMainUserInfoResponse[i].urlAvatar = newURL;
+      }
       return listMainUserInfoResponse;
+    }
+  }
+
+  Future<ResultReturn> addFriend(String username) async {
+    // Get current user
+    String currentUsername =
+        await friendRepository.authRepository.getUserName();
+    FriendRequiredRequest request =
+        FriendRequiredRequest(sender: currentUsername, receiver: username);
+    return await friendRepository.addFriend(request.toJson());
+  }
+
+  Future<int> getStatusOfFriendRequest(String username) async {
+    // Get current user
+    String currentUsername =
+        await friendRepository.authRepository.getUserName();
+    FriendRequiredRequest request =
+        FriendRequiredRequest(sender: currentUsername, receiver: username);
+    ResultReturn result =
+        await friendRepository.getStatusOfRequest(request.toJson());
+    return result.data as int;
+  }
+
+  Future<void> unFriend(BuildContext context, String username) async {
+    // Get current user
+    String currentUsername =
+        await friendRepository.authRepository.getUserName();
+    FriendRequiredRequest request =
+        FriendRequiredRequest(sender: currentUsername, receiver: username);
+    ResultReturn result = await friendRepository.unfriend(request.toJson());
+
+    if (result.httpStatusCode == 200) {
+      log('Hủy kết bạn thành công', name: 'FriendService');
+      showSnackBar(context, 'Hủy kết bạn thành công!');
+    } else {
+      log('Hủy kết bạn thất bại', name: 'FriendService');
+      showSnackBar(context, 'Hủy kết bạn thất bại!');
     }
   }
 }

@@ -33,7 +33,7 @@ class SpeakingWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String _selectedAnswer = 'Answer 2';
+    String selectedAnswer = 'Answer 2';
     String? correctAnswer;
     String? explanation;
     return Column(
@@ -150,7 +150,7 @@ class SpeakingWidget extends ConsumerWidget {
                                                         .style,
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                      text: _selectedAnswer,
+                                                      text: selectedAnswer,
                                                       style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold)),
@@ -178,7 +178,7 @@ class SpeakingWidget extends ConsumerWidget {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_selectedAnswer == '') {
+                      if (selectedAnswer == '') {
                         // show SnackBar
                         ScaffoldMessenger.of(context).clearSnackBars();
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -194,7 +194,7 @@ class SpeakingWidget extends ConsumerWidget {
                           ),
                         );
                       } else {
-                        if (_selectedAnswer == correctAnswer) {
+                        if (selectedAnswer == correctAnswer) {
                           inCreaseCorrectAnswerCount();
                         } else {
                           addExplanationQuestion(

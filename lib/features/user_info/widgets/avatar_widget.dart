@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AvatarWidget extends StatelessWidget {
   const AvatarWidget({
@@ -19,8 +20,9 @@ class AvatarWidget extends StatelessWidget {
       child: Stack(
         alignment: AlignmentDirectional.topCenter,
         children: [
-          Image(
-            image: NetworkImage(avatarUrl),
+          CachedNetworkImage(
+            imageUrl: avatarUrl,
+            cacheKey: DateTime.now().millisecondsSinceEpoch.toString(),
             height: height * 0.3,
             width: width,
             filterQuality: FilterQuality.high,
@@ -34,27 +36,6 @@ class AvatarWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 10,
-            right: 15,
-            child: InkWell(
-              onTap: () {
-                // TODO: Implement change avatar
-              },
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Image.asset(
-                  'assets/change-picture.png',
-                  height: 40,
-                  width: 40,
-                ),
-              ),
-            ),
-          ),
-          Positioned(
             top: height * 0.15,
             left: width * 0.05,
             child: Container(
@@ -65,9 +46,20 @@ class AvatarWidget extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(80.0),
               ),
-              child: CircleAvatar(
-                radius: 80,
-                backgroundImage: NetworkImage(avatarUrl),
+              child: Container(
+                width: 160,
+                height: 160,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(80.0),
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      avatarUrl,
+                      cacheKey:
+                          DateTime.now().millisecondsSinceEpoch.toString(),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           ),

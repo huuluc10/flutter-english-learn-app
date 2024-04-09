@@ -73,7 +73,7 @@ class _FillInTheBlankQuestionScreenState
   int _correctAnswerCount = 0;
   int _totalQuestionCount = 0;
 
-  List<ExplanationQuestion> _explanationQuestions = [];
+  final List<ExplanationQuestion> _explanationQuestions = [];
 
   @override
   Widget build(BuildContext context) {

@@ -1,0 +1,18 @@
+List<String> listLibrary() => [
+      'Riverpod',
+      'bottom_picker',
+      'en_vi_dic',
+      'http',
+      'flutter_otp_text_field',
+      'percent_indicator',
+      'fl_chart',
+      'shared_preferences',
+      'flutter_spinkit',
+      'audioplayers',
+      'just_audio',
+      'intl',
+      'image_picker',
+      'permission_handler',
+      'cached_network_image',
+      'http_parser',
+    ];

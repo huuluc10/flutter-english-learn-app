@@ -21,7 +21,7 @@ class DateAttributeWidget extends StatefulWidget {
 
 class _DateAttributeWidgetState extends State<DateAttributeWidget> {
   DateTime? _value;
-  bool? _isEdit = false;
+  bool _isEdit = false;
 
   @override
   void initState() {
@@ -94,7 +94,7 @@ class _DateAttributeWidgetState extends State<DateAttributeWidget> {
               IconButton(
                 onPressed: () {
                   setState(() {
-                    _isEdit = !_isEdit!;
+                    _isEdit = !_isEdit;
                   });
                 },
                 icon: const Icon(
@@ -116,15 +116,17 @@ class _DateAttributeWidgetState extends State<DateAttributeWidget> {
                         color: Color.fromARGB(255, 209, 209, 209),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        _openDatePicker(context);
-                      },
-                      icon: const Icon(
-                        Icons.calendar_today,
-                        color: Colors.blue,
-                      ),
-                    ),
+                    _isEdit
+                        ? IconButton(
+                            onPressed: () {
+                              _openDatePicker(context);
+                            },
+                            icon: const Icon(
+                              Icons.calendar_today,
+                              color: Colors.blue,
+                            ),
+                          )
+                        : Container(),
                   ],
                 )
               : Text(

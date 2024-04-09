@@ -98,10 +98,7 @@ class DrawerWidget extends ConsumerWidget {
               Navigator.pushNamed(
                 context,
                 UserInfoScreen.routeName,
-                arguments: {
-                  'username': await getUsername(),
-                  'isFriend': false,
-                },
+                arguments: await getUsername(),
               );
             },
           ),
