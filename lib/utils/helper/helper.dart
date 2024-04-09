@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/utils/const/api_url.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 bool isHTML(String str) {
@@ -49,3 +51,17 @@ imgFromGallery(ImagePicker picker) async {
     return null;
   }
 }
+
+String transformLocalURLAvatarToURL(String localURL) {
+    String authority = APIUrl.baseUrl;
+    String linkAvatar =
+        Uri.http(authority, APIUrl.pathGetFile, {"path": localURL}).toString();
+
+    return linkAvatar;
+  }
+
+  DateTime convertUTCtoLocal(DateTime dateTimeUTC) {
+    DateTime dateTime = DateTime.parse(dateTimeUTC.toIso8601String()).toLocal();
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+    return DateTime.parse(formattedDate);
+  }

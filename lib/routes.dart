@@ -18,6 +18,7 @@ import 'package:flutter_englearn/features/exercise/pages/sentence_transform_ques
 import 'package:flutter_englearn/features/exercise/pages/sentence_unscramble_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/speaking_question_screen.dart';
 import 'package:flutter_englearn/features/friend/pages/find_friend_screen.dart';
+import 'package:flutter_englearn/features/friend/pages/list_friend_creen.dart';
 import 'package:flutter_englearn/features/homepage/pages/about_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/settings_screen.dart';
@@ -32,6 +33,7 @@ import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart'
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
+import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/utils/pages/error_screen.dart';
 
@@ -75,12 +77,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               ));
 
     case UserInfoScreen.routeName:
-      final arguments = settings.arguments as Map<String, dynamic>;
-      final isFriend = arguments['isFriend'] as bool;
-      final username = arguments['username'] as String;
+      final username = settings.arguments as String;
       return MaterialPageRoute(
         builder: (context) => UserInfoScreen(
-          isFriend: isFriend,
           username: username,
         ),
       );
@@ -208,6 +207,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final email = settings.arguments as String;
       return MaterialPageRoute(
           builder: (context) => SetPasswordScreen(email: email));
+
+    case ListFriendScreen.routeName:
+      final friends = settings.arguments as List<MainUserInfoResponse>;
+      return MaterialPageRoute(
+          builder: (context) => ListFriendScreen(friends: friends));
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());

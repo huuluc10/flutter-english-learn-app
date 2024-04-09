@@ -130,7 +130,7 @@ class EnViDicWidget extends StatelessWidget {
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                SizedBox(width: 10),
+                                                const SizedBox(width: 10),
                                                 Flexible(
                                                   child: Text(
                                                     mean.mean,

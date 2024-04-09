@@ -55,4 +55,6 @@ class APIUrl {
   // path friend api
   static const String pathGetFriendByUsername = "/api/v1/friend-request/";
   static const String pathAddFriend = "/api/v1/friend-request/";
+  static const String pathGetStatusOfRequestFriend =
+      "/api/v1/friend-request/status";
 }

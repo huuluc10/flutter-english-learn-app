@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
+import 'package:flutter_englearn/model/response/jwt_response.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'dart:developer' as logger;
@@ -23,6 +25,7 @@ void changeAvatar(
   if (result.httpStatusCode == 401) {
     logger.log('Token expired', name: 'UserInfoScreen');
 
+    if (!context.mounted) return;
     Navigator.pushNamedAndRemoveUntil(
         context, WelcomeScreen.routeName, (route) => false);
   } else if (result.httpStatusCode == 400) {
@@ -58,6 +61,7 @@ void showImagePicker(
               child: InkWell(
                 onTap: () async {
                   imageFilePicker = await imgFromCamera(picker);
+                  if (!context.mounted) return;
                   changeAvatar(
                     context,
                     ref,
@@ -77,6 +81,7 @@ void showImagePicker(
               child: InkWell(
                 onTap: () async {
                   imageFilePicker = await imgFromGallery(picker);
+                  if (!context.mounted) return;
                   changeAvatar(
                     context,
                     ref,
@@ -119,8 +124,12 @@ Future<Map<String, Object>> getInfo(
   try {
     final userInfo =
         await ref.read(userInfoServiceProvider).getUserInfo(context, username);
+    final String currentUser = await ref
+        .read(authServiceProvicer)
+        .getJWT()
+        .then((value) => value.username);
 
-    if (username == userInfo.username) {
+    if (username == currentUser) {
       updateIsMe(true);
     } else {
       updateIsMe(false);

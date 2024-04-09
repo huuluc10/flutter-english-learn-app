@@ -9,12 +9,12 @@ class FindFriendScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController _searchController = TextEditingController();
+    final TextEditingController searchController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(169, 0, 141, 211),
         title: TextField(
-          controller: _searchController,
+          controller: searchController,
           style: const TextStyle(color: Colors.black),
           cursorColor: Colors.black,
           decoration: InputDecoration(
@@ -36,7 +36,7 @@ class FindFriendScreen extends ConsumerWidget {
                 color: Colors.black,
               ),
               onPressed: () {
-                _searchController.clear();
+                searchController.clear();
               },
             ),
           ),

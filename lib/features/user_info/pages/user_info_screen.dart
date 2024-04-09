@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/friend/pages/list_friend_creen.dart';
+import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/controller/user_info_controller.dart';
 import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart';
 import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
@@ -11,12 +13,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class UserInfoScreen extends ConsumerStatefulWidget {
   const UserInfoScreen({
     super.key,
-    required this.isFriend,
     required this.username,
   });
 
   static const String routeName = '/user-info-screen';
-  final bool isFriend;
   final String username;
 
   @override
@@ -34,6 +34,14 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
       (bool value) {
         isMe = value;
       },
+    );
+  }
+
+  Future<List<MainUserInfoResponse>> getFriend(String username) async {
+    return await getFriends(
+      context,
+      ref,
+      username,
     );
   }
 
@@ -138,6 +146,73 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                                       fontStyle: FontStyle.italic,
                                     ),
                                   ),
+                                  FutureBuilder(
+                                    future: getFriend(widget.username),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child:
+                                              Text('Error: ${snapshot.error}'),
+                                        );
+                                      }
+
+                                      final List<MainUserInfoResponse> friends =
+                                          snapshot.data
+                                              as List<MainUserInfoResponse>;
+
+                                      return Column(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                InkWell(
+                                                  onTap: () =>
+                                                      Navigator.pushNamed(
+                                                    context,
+                                                    ListFriendScreen.routeName,
+                                                    arguments: friends,
+                                                  ),
+                                                  child: const Text(
+                                                    'Bạn bè ',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 17,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '(${friends.length})',
+                                                  style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: 16,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                const Spacer(),
+                                                const Text(
+                                                  'Danh sách yêu cầu',
+                                                  style: TextStyle(
+                                                      color: Colors.blueAccent,
+                                                      fontSize: 17),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
                                   const SizedBox(
                                     height: 10,
                                   ),
@@ -145,14 +220,16 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                                     width: double.infinity,
                                     child: OutlinedButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          MoreUserInfoScreen.routeName,
-                                          arguments: [
-                                            isMe,
-                                            userInfo,
-                                          ],
-                                        );
+                                        isMe
+                                            ? Navigator.pushNamed(
+                                                context,
+                                                MoreUserInfoScreen.routeName,
+                                                arguments: [
+                                                  isMe,
+                                                  userInfo,
+                                                ],
+                                              )
+                                            : null;
                                       },
                                       style: OutlinedButton.styleFrom(
                                         backgroundColor: Colors.blueAccent,
@@ -161,17 +238,74 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                                               BorderRadius.circular(32.0),
                                         ),
                                       ),
-                                      child: Text(
-                                        isMe
-                                            ? 'Chỉnh sửa thông tin'
-                                            : widget.isFriend
-                                                ? 'Hủy kết bạn'
-                                                : 'Thêm bạn bè',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
+                                      child: isMe
+                                          ? Text(
+                                              'Chỉnh sửa thông tin',
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            )
+                                          : Consumer(
+                                              builder: (context, ref, child) {
+                                                return FutureBuilder<int>(
+                                                  future: ref
+                                                      .watch(
+                                                          friendServiceProvider)
+                                                      .getStatusOfFriendRequest(
+                                                          widget.username),
+                                                  builder:
+                                                      (BuildContext context,
+                                                          AsyncSnapshot<int>
+                                                              snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return CircularProgressIndicator(); // show loading spinner while waiting
+                                                    } else if (snapshot
+                                                        .hasError) {
+                                                      return const Text(
+                                                        'Lỗi',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 17,
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      int? statusRequest =
+                                                          snapshot.data;
+                                                      if (statusRequest == 1)
+                                                        return Text(
+                                                          'Đã kết bạn',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 17,
+                                                          ),
+                                                        );
+                                                      else if (statusRequest ==
+                                                          0)
+                                                        return Text(
+                                                          'Đã gửi yêu cầu',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 17,
+                                                          ),
+                                                        );
+                                                      return Text(
+                                                        'Kết bạn',
+                                                        style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 17,
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
                                     ),
                                   ),
                                   const SizedBox(
@@ -199,68 +333,6 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                                   const Divider(
                                     color: Colors.white,
                                     thickness: 1.0,
-                                  ),
-                                  FutureBuilder(
-                                    future: getFriends(
-                                      context,
-                                      ref,
-                                      widget.username,
-                                    ),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-
-                                      if (snapshot.hasError) {
-                                        return Center(
-                                          child:
-                                              Text('Error: ${snapshot.error}'),
-                                        );
-                                      }
-
-                                      final List<MainUserInfoResponse> friends =
-                                          snapshot.data
-                                              as List<MainUserInfoResponse>;
-
-                                      return Column(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Row(
-                                              children: <Widget>[
-                                                const Text(
-                                                  'Bạn bè ',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  '(${friends.length})',
-                                                  style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                const Spacer(),
-                                                const Text(
-                                                  'Danh sách yêu cầu',
-                                                  style: TextStyle(
-                                                      color: Colors.blueAccent,
-                                                      fontSize: 17),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    },
                                   ),
                                 ],
                               ),

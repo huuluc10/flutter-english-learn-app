@@ -47,19 +47,20 @@ class AvatarWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(80.0),
               ),
               child: Container(
-                  width: 160,
-                  height: 160,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(80.0),
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                        avatarUrl,
-                        cacheKey:
-                            DateTime.now().millisecondsSinceEpoch.toString(),
-                      ),
-                      fit: BoxFit.cover,
+                width: 160,
+                height: 160,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(80.0),
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      avatarUrl,
+                      cacheKey:
+                          DateTime.now().millisecondsSinceEpoch.toString(),
                     ),
-                  )),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
           ),
         ],

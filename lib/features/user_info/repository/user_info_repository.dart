@@ -7,10 +7,10 @@ import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter_englearn/utils/const/base_header_http.dart';
-import 'package:intl/intl.dart';
 import 'package:http_parser/http_parser.dart';
 
 class UserInfoRepository {
@@ -97,9 +97,9 @@ class UserInfoRepository {
             responseModel.data! as Map<String, dynamic>);
 
         userInfoResponse.urlAvatar =
-            _transformLocalURLAvatarToURL(userInfoResponse.urlAvatar);
+            transformLocalURLAvatarToURL(userInfoResponse.urlAvatar);
         userInfoResponse.dateOfBirth =
-            _convertUTCtoLocal(userInfoResponse.dateOfBirth);
+            convertUTCtoLocal(userInfoResponse.dateOfBirth);
 
         return ResultReturn<UserInfoResponse>(
             httpStatusCode: 200, data: userInfoResponse);
@@ -114,19 +114,7 @@ class UserInfoRepository {
   }
 
   // *Important: Transform local url avatar to get full url
-  String _transformLocalURLAvatarToURL(String localURL) {
-    String authority = APIUrl.baseUrl;
-    String linkAvatar =
-        Uri.http(authority, APIUrl.pathGetFile, {"path": localURL}).toString();
-
-    return linkAvatar;
-  }
-
-  DateTime _convertUTCtoLocal(DateTime dateTimeUTC) {
-    DateTime dateTime = DateTime.parse(dateTimeUTC.toIso8601String()).toLocal();
-    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
-    return DateTime.parse(formattedDate);
-  }
+  
 
   Future<int> updateInfo(String body) async {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();

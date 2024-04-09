@@ -14,4 +14,5 @@ List<String> listLibrary() => [
       'image_picker',
       'permission_handler',
       'cached_network_image',
+      'http_parser',
     ];
