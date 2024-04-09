@@ -3,11 +3,9 @@ import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
-import 'package:flutter_englearn/model/response/jwt_response.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'dart:developer' as logger;
-
 import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';

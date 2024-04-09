@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/friend/pages/list_friend_creen.dart';
-import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/controller/user_info_controller.dart';
 import 'package:flutter_englearn/features/user_info/pages/more_info_screen.dart';
 import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
+import 'package:flutter_englearn/features/user_info/widgets/more_user_info_button_widgett.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
+import 'package:flutter_englearn/features/user_info/widgets/status_friend_widget.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
@@ -146,6 +147,42 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                                       fontStyle: FontStyle.italic,
                                     ),
                                   ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: isMe
+                                        ? MoreUserInfoButton(isMe: isMe, userInfo: userInfo)
+                                        : StatusFriend(
+                                            username: widget.username),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Divider(
+                                    color: Colors.white,
+                                    thickness: 1.0,
+                                  ),
+                                  const Text(
+                                    'Thống kê',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  StatisticsWidget(
+                                    width: width,
+                                    info: snapshot.data!,
+                                  ),
+                                  const Divider(
+                                    color: Colors.white,
+                                    thickness: 1.0,
+                                  ),
                                   FutureBuilder(
                                     future: getFriend(widget.username),
                                     builder: (context, snapshot) {
@@ -213,127 +250,6 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                                       );
                                     },
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: OutlinedButton(
-                                      onPressed: () {
-                                        isMe
-                                            ? Navigator.pushNamed(
-                                                context,
-                                                MoreUserInfoScreen.routeName,
-                                                arguments: [
-                                                  isMe,
-                                                  userInfo,
-                                                ],
-                                              )
-                                            : null;
-                                      },
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor: Colors.blueAccent,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(32.0),
-                                        ),
-                                      ),
-                                      child: isMe
-                                          ? Text(
-                                              'Chỉnh sửa thông tin',
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 17,
-                                              ),
-                                            )
-                                          : Consumer(
-                                              builder: (context, ref, child) {
-                                                return FutureBuilder<int>(
-                                                  future: ref
-                                                      .watch(
-                                                          friendServiceProvider)
-                                                      .getStatusOfFriendRequest(
-                                                          widget.username),
-                                                  builder:
-                                                      (BuildContext context,
-                                                          AsyncSnapshot<int>
-                                                              snapshot) {
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState
-                                                            .waiting) {
-                                                      return CircularProgressIndicator(); // show loading spinner while waiting
-                                                    } else if (snapshot
-                                                        .hasError) {
-                                                      return const Text(
-                                                        'Lỗi',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      int? statusRequest =
-                                                          snapshot.data;
-                                                      if (statusRequest == 1)
-                                                        return Text(
-                                                          'Đã kết bạn',
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 17,
-                                                          ),
-                                                        );
-                                                      else if (statusRequest ==
-                                                          0)
-                                                        return Text(
-                                                          'Đã gửi yêu cầu',
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 17,
-                                                          ),
-                                                        );
-                                                      return Text(
-                                                        'Kết bạn',
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
-                                                        ),
-                                                      );
-                                                    }
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Divider(
-                                    color: Colors.white,
-                                    thickness: 1.0,
-                                  ),
-                                  const Text(
-                                    'Thống kê',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  StatisticsWidget(
-                                    width: width,
-                                    info: snapshot.data!,
-                                  ),
-                                  const Divider(
-                                    color: Colors.white,
-                                    thickness: 1.0,
-                                  ),
                                 ],
                               ),
                             ),
@@ -349,3 +265,4 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
     );
   }
 }
+

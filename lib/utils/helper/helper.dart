@@ -53,15 +53,48 @@ imgFromGallery(ImagePicker picker) async {
 }
 
 String transformLocalURLAvatarToURL(String localURL) {
-    String authority = APIUrl.baseUrl;
-    String linkAvatar =
-        Uri.http(authority, APIUrl.pathGetFile, {"path": localURL}).toString();
+  String authority = APIUrl.baseUrl;
+  String linkAvatar =
+      Uri.http(authority, APIUrl.pathGetFile, {"path": localURL}).toString();
 
-    return linkAvatar;
-  }
+  return linkAvatar;
+}
 
-  DateTime convertUTCtoLocal(DateTime dateTimeUTC) {
-    DateTime dateTime = DateTime.parse(dateTimeUTC.toIso8601String()).toLocal();
-    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
-    return DateTime.parse(formattedDate);
-  }
+DateTime convertUTCtoLocal(DateTime dateTimeUTC) {
+  DateTime dateTime = DateTime.parse(dateTimeUTC.toIso8601String()).toLocal();
+  String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+  return DateTime.parse(formattedDate);
+}
+
+showConfirmDialog(BuildContext context, String content, Function() onConfirm) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: const Text("Hủy"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+  Widget continueButton = TextButton(
+    onPressed: onConfirm,
+    child: const Text("Đồng ý"),
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Xác nhận"),
+    content: Text(
+      content,
+      textAlign: TextAlign.justify,
+    ),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

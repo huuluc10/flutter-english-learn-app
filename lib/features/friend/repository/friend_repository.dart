@@ -155,4 +155,49 @@ class FriendRepository {
       }
     }
   }
+
+  Future<ResultReturn> unfriend(String body) async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'UserInfoRepository');
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Unfriend', name: 'UserInfoRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = BaseHeaderHttp.headers;
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathUnFriend;
+
+      var response = await http.post(
+        Uri.http(authority, unencodedPath),
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 401) {
+        log('Token is expired', name: 'UserInfoRepository');
+        return ResultReturn(
+          httpStatusCode: response.statusCode,
+          data: null,
+        );
+      } else if (response.statusCode == 400) {
+        log('Unfriend failed', name: 'UserInfoRepository');
+        return ResultReturn(
+          httpStatusCode: response.statusCode,
+          data: null,
+        );
+      } else {
+        log("Unfriend successfully", name: 'UserInfoRepository');
+        return ResultReturn(
+          httpStatusCode: 200,
+          data: null,
+        );
+      }
+    }
+  }
 }

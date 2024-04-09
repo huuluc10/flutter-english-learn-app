@@ -1,6 +1,6 @@
 class APIUrl {
   // ip and port
-  static const String ip = "192.168.226.233";
+  static const String ip = "192.168.1.202";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -57,4 +57,5 @@ class APIUrl {
   static const String pathAddFriend = "/api/v1/friend-request/";
   static const String pathGetStatusOfRequestFriend =
       "/api/v1/friend-request/status";
+  static const String pathUnFriend = "/api/v1/friend-request/delete";
 }
