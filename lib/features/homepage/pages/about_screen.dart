@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/utils/const/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AboutScreen extends ConsumerWidget {
@@ -88,19 +89,7 @@ class AboutScreen extends ConsumerWidget {
               const SizedBox(height: 8.0),
               _buildResourceItem('Ngôn ngữ lập trình:', 'Dart, Flutter'),
               _buildResourceItem('Framework:', 'Flutter SDK, Firebase'),
-              _buildResourceItem('Thư viện:', [
-                'Riverpod',
-                'bottom_picker',
-                'en_vi_dic',
-                'http',
-                'flutter_otp_text_field',
-                'percent_indicator',
-                'fl_chart',
-                'shared_preferences',
-                'flutter_spinkit',
-                'audioplayers',
-                'just_audio'
-              ]),
+              _buildResourceItem('Thư viện:', listLibrary()),
               _buildResourceItem('Tài liệu:', [
                 'https://flutter.dev/docs',
                 'https://firebase.google.com/docs',

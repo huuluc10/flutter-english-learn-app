@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AvatarWidget extends StatelessWidget {
   const AvatarWidget({
@@ -13,8 +13,6 @@ class AvatarWidget extends StatelessWidget {
   final double width;
   final String avatarUrl;
 
-
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -22,8 +20,9 @@ class AvatarWidget extends StatelessWidget {
       child: Stack(
         alignment: AlignmentDirectional.topCenter,
         children: [
-          Image(
-            image: NetworkImage(avatarUrl),
+          CachedNetworkImage(
+            imageUrl: avatarUrl,
+            cacheKey: DateTime.now().millisecondsSinceEpoch.toString(),
             height: height * 0.3,
             width: width,
             filterQuality: FilterQuality.high,
@@ -36,7 +35,6 @@ class AvatarWidget extends StatelessWidget {
               height: height * 0.3,
             ),
           ),
-          
           Positioned(
             top: height * 0.15,
             left: width * 0.05,
@@ -48,10 +46,20 @@ class AvatarWidget extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(80.0),
               ),
-              child: CircleAvatar(
-                radius: 80,
-                backgroundImage: NetworkImage(avatarUrl),
-              ),
+              child: Container(
+                  width: 160,
+                  height: 160,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(80.0),
+                    image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                        avatarUrl,
+                        cacheKey:
+                            DateTime.now().millisecondsSinceEpoch.toString(),
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  )),
             ),
           ),
         ],

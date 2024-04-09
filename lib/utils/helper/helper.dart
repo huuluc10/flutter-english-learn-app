@@ -27,7 +27,7 @@ extension StringCasingExtension on String {
 }
 
 imgFromCamera(ImagePicker picker) async {
-  final status = await Permission.camera.request();
+  await Permission.camera.request();
   final XFile? image =
       await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
 
@@ -35,8 +35,8 @@ imgFromCamera(ImagePicker picker) async {
 }
 
 imgFromGallery(ImagePicker picker) async {
-  final statusStorage = await Permission.storage.request();
-  final statusGallery = await Permission.photos.request();
+  await Permission.storage.request();
+  await Permission.photos.request();
 
   try {
     final XFile? image =
@@ -46,7 +46,6 @@ imgFromGallery(ImagePicker picker) async {
       return image;
     }
   } catch (e) {
-    print(e);
     return null;
   }
 }
