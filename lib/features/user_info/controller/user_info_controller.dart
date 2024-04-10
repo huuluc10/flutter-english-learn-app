@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
-import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
@@ -117,21 +116,11 @@ Future<Map<String, Object>> getInfo(
   BuildContext context,
   WidgetRef ref,
   String username,
-  Function(bool) updateIsMe,
 ) async {
   try {
     final userInfo =
         await ref.read(userInfoServiceProvider).getUserInfo(context, username);
-    final String currentUser = await ref
-        .read(authServiceProvicer)
-        .getJWT()
-        .then((value) => value.username);
 
-    if (username == currentUser) {
-      updateIsMe(true);
-    } else {
-      updateIsMe(false);
-    }
     final countHistoryLearnedLesson =
         await ref.read(userInfoServiceProvider).countHistoryLearnedLesson();
 

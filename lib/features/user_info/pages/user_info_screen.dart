@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/friend/pages/list_friend_creen.dart';
 import 'package:flutter_englearn/features/user_info/controller/user_info_controller.dart';
 import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
@@ -26,14 +27,30 @@ class UserInfoScreen extends ConsumerStatefulWidget {
 class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
   bool isMe = false;
 
+  Future<void> updateIsMe() async {
+    final String currentUser = await ref
+        .read(authServiceProvicer)
+        .getJWT()
+        .then((value) => value.username);
+
+    if (widget.username == currentUser) {
+      isMe = true;
+    } else {
+      isMe = false;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    updateIsMe().then((value) => setState(() {}));
+  }
+
   Future<Map<String, Object>> getUserInfo(String username) async {
     return await getInfo(
       context,
       ref,
       username,
-      (bool value) {
-        isMe = value;
-      },
     );
   }
 
@@ -61,21 +78,23 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
           },
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap: () async {
-                showImagePicker(context, ref, () {
-                  setState(() {});
-                });
-              },
-              child: Image.asset(
-                'assets/change-picture.png',
-                height: 40,
-                width: 40,
-              ),
-            ),
-          ),
+          isMe
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () async {
+                      showImagePicker(context, ref, () {
+                        setState(() {});
+                      });
+                    },
+                    child: Image.asset(
+                      'assets/change-picture.png',
+                      height: 40,
+                      width: 40,
+                    ),
+                  ),
+                )
+              : Container(),
         ],
       ),
       body: LineGradientBackgroundWidget(
