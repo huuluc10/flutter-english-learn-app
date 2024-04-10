@@ -117,21 +117,11 @@ Future<Map<String, Object>> getInfo(
   BuildContext context,
   WidgetRef ref,
   String username,
-  Function(bool) updateIsMe,
 ) async {
   try {
     final userInfo =
         await ref.read(userInfoServiceProvider).getUserInfo(context, username);
-    final String currentUser = await ref
-        .read(authServiceProvicer)
-        .getJWT()
-        .then((value) => value.username);
 
-    if (username == currentUser) {
-      updateIsMe(true);
-    } else {
-      updateIsMe(false);
-    }
     final countHistoryLearnedLesson =
         await ref.read(userInfoServiceProvider).countHistoryLearnedLesson();
 

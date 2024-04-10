@@ -152,7 +152,15 @@ class _FindFriendScreenState extends ConsumerState<FindFriendScreen> {
                                         ),
                                         child: Row(
                                           children: [
-                                            Text(listHistory[i]),
+                                            InkWell(
+                                                onTap: () {
+                                                  isSearching = true;
+                                                  searchController.text =
+                                                      listHistory[i];
+                                                  _onTypingFinished(
+                                                      listHistory[i]);
+                                                },
+                                                child: Text(listHistory[i])),
                                             const Spacer(),
                                             IconButton(
                                               icon: const Icon(Icons.close),
@@ -160,7 +168,8 @@ class _FindFriendScreenState extends ConsumerState<FindFriendScreen> {
                                                 await ref
                                                     .watch(
                                                         friendServiceProvider)
-                                                    .deleteHistoryFindFriend(listHistory[i]);
+                                                    .deleteHistoryFindFriend(
+                                                        listHistory[i]);
                                                 setState(() {});
                                               },
                                             ),
