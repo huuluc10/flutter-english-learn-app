@@ -6,6 +6,7 @@ import 'package:flutter_englearn/utils/const/api_url.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter_englearn/utils/const/base_header_http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FriendRepository {
   final AuthRepository authRepository;
@@ -198,6 +199,86 @@ class FriendRepository {
           data: null,
         );
       }
+    }
+  }
+
+  Future<List<String>> getHistoryFindFriend() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> listHistoryFindFriend =
+        prefs.getStringList('historyFindFriend') ?? [];
+    return listHistoryFindFriend;
+  }
+
+  Future<void> addHistoryFindFriend(String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> listHistoryFindFriend =
+        prefs.getStringList('historyFindFriend') ?? [];
+    if (listHistoryFindFriend.contains(username)) {
+      listHistoryFindFriend.remove(username);
+    }
+    listHistoryFindFriend.insert(0, username);
+    if (listHistoryFindFriend.length > 5) {
+      listHistoryFindFriend.removeLast();
+    }
+    prefs.setStringList('historyFindFriend', listHistoryFindFriend);
+  }
+
+  Future<void> removeHistoryFindFriend() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('historyFindFriend');
+  }
+
+  Future<void> deleteFromHistoryFindFriend(String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> listHistoryFindFriend =
+        prefs.getStringList('historyFindFriend') ?? [];
+    listHistoryFindFriend.remove(username);
+    prefs.setStringList('historyFindFriend', listHistoryFindFriend);
+  }
+
+  Future<ResultReturn> getUserByUsername(String username) async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'UserInfoRepository');
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Get users by username', name: 'UserInfoRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = BaseHeaderHttp.headers;
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathFindFriend;
+
+      Map<String, String> body = {};
+      body['username'] = username;
+
+      Uri uri = Uri.http(authority, unencodedPath);
+
+      var request = http.MultipartRequest('POST', uri)
+        ..headers.addAll(headers)
+        ..fields.addAll(body);
+
+      var response = await request.send();
+
+      if (response.statusCode == 401) {
+        ResultReturn(httpStatusCode: response.statusCode, data: null);
+      } else if (response.statusCode == 400) {
+        log('Get users by username failed', name: 'UserInfoRepository');
+        return ResultReturn(httpStatusCode: response.statusCode, data: null);
+      }
+      log("Get users by username successfully", name: 'UserInfoRepository');
+
+      ResponseModel responseModel =
+          ResponseModel.fromJson(await response.stream.bytesToString());
+      List<MainUserInfoResponse> listMainUserInfoResponse =
+          (responseModel.data as List<dynamic>)
+              .map((item) => MainUserInfoResponse.fromMap(item))
+              .toList();
+      return ResultReturn(httpStatusCode: 200, data: listMainUserInfoResponse);
     }
   }
 }

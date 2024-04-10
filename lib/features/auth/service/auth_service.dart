@@ -5,6 +5,7 @@ import 'package:flutter_englearn/features/auth/pages/otp_input_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/set_password_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
+import 'package:flutter_englearn/features/friend/repository/friend_repository.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 import 'package:flutter_englearn/model/login_request.dart';
 import 'package:flutter_englearn/model/request/reset_password_request.dart';
@@ -16,9 +17,11 @@ import 'dart:developer';
 
 class AuthService {
   final AuthRepository authRepository;
+  final FriendRepository friendRepository;
 
   AuthService({
     required this.authRepository,
+    required this.friendRepository,
   });
 
   Future<bool> isJWTExist() async {
@@ -77,6 +80,9 @@ class AuthService {
     if (result) {
       if (!context.mounted) return;
       log("Logout successfully", name: "AuthService");
+
+      friendRepository.removeHistoryFindFriend();
+
       Navigator.pushNamedAndRemoveUntil(
         context,
         WelcomeScreen.routeName,
