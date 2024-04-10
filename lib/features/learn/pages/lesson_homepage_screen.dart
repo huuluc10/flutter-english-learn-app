@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/learn/provider/learn_provider.dart';
 import 'package:flutter_englearn/features/learn/widgets/fill_in_the_blank_item_exercise_widget.dart';
 import 'package:flutter_englearn/features/learn/pages/lesson_content_screen.dart';
 import 'package:flutter_englearn/features/learn/widgets/listening_exercise_item_widget.dart';
@@ -32,115 +33,117 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
     final height = MediaQuery.sizeOf(context).height;
 
     Future<List<LessonResponse>> getLessons() async {
-      List<LessonResponse> lessons = [];
+      List<LessonResponse> lessons = await ref
+          .watch(learnServiceProvider)
+          .getListLessonOfTopic(widget.topicId.toString());
 
-      lessons.add(LessonResponse(
-        lessonId: 1,
-        lessonName: 'Lesson 1',
-        topicId: 1,
-        content: 1,
-        lessonExperience: 1,
-        levelId: 1,
-        completed: 'yes',
-        contentURL: 'https://www.youtube.com/watch?v=1',
-        levelName: 'Beginner',
-      ));
+      // lessons.add(LessonResponse(
+      //   lessonId: 1,
+      //   lessonName: 'Lesson 1',
+      //   topicId: 1,
+      //   content: 1,
+      //   lessonExperience: 1,
+      //   levelId: 1,
+      //   completed: 'yes',
+      //   contentURL: 'https://www.youtube.com/watch?v=1',
+      //   levelName: 'Beginner',
+      // ));
 
-      lessons.add(LessonResponse(
-        lessonId: 2,
-        lessonName: 'Lesson 2',
-        topicId: 1,
-        content: 2,
-        lessonExperience: 2,
-        levelId: 1,
-        completed: 'yes',
-        contentURL: 'https://www.youtube.com/watch?v=2',
-        levelName: 'Beginner',
-      ));
+      // lessons.add(LessonResponse(
+      //   lessonId: 2,
+      //   lessonName: 'Lesson 2',
+      //   topicId: 1,
+      //   content: 2,
+      //   lessonExperience: 2,
+      //   levelId: 1,
+      //   completed: 'yes',
+      //   contentURL: 'https://www.youtube.com/watch?v=2',
+      //   levelName: 'Beginner',
+      // ));
 
-      lessons.add(LessonResponse(
-        lessonId: 3,
-        lessonName: 'Lesson 3',
-        topicId: 1,
-        content: 3,
-        lessonExperience: 3,
-        levelId: 1,
-        completed: 'no',
-        contentURL: 'https://www.youtube.com/watch?v=3',
-        levelName: 'Beginner',
-      ));
+      // lessons.add(LessonResponse(
+      //   lessonId: 3,
+      //   lessonName: 'Lesson 3',
+      //   topicId: 1,
+      //   content: 3,
+      //   lessonExperience: 3,
+      //   levelId: 1,
+      //   completed: 'no',
+      //   contentURL: 'https://www.youtube.com/watch?v=3',
+      //   levelName: 'Beginner',
+      // ));
 
-      lessons.add(LessonResponse(
-        lessonId: 1,
-        lessonName: 'Lesson 1',
-        topicId: 1,
-        content: 1,
-        lessonExperience: 1,
-        levelId: 1,
-        completed: 'no',
-        contentURL: 'https://www.youtube.com/watch?v=1',
-        levelName: 'Beginner',
-      ));
+      // lessons.add(LessonResponse(
+      //   lessonId: 1,
+      //   lessonName: 'Lesson 1',
+      //   topicId: 1,
+      //   content: 1,
+      //   lessonExperience: 1,
+      //   levelId: 1,
+      //   completed: 'no',
+      //   contentURL: 'https://www.youtube.com/watch?v=1',
+      //   levelName: 'Beginner',
+      // ));
 
-      lessons.add(LessonResponse(
-        lessonId: 2,
-        lessonName: 'Lesson 2',
-        topicId: 1,
-        content: 2,
-        lessonExperience: 2,
-        levelId: 1,
-        completed: 'no',
-        contentURL: 'https://www.youtube.com/watch?v=2',
-        levelName: 'Beginner',
-      ));
+      // lessons.add(LessonResponse(
+      //   lessonId: 2,
+      //   lessonName: 'Lesson 2',
+      //   topicId: 1,
+      //   content: 2,
+      //   lessonExperience: 2,
+      //   levelId: 1,
+      //   completed: 'no',
+      //   contentURL: 'https://www.youtube.com/watch?v=2',
+      //   levelName: 'Beginner',
+      // ));
 
-      lessons.add(LessonResponse(
-        lessonId: 3,
-        lessonName: 'Lesson 3',
-        topicId: 1,
-        content: 3,
-        lessonExperience: 3,
-        levelId: 1,
-        completed: 'no',
-        contentURL: 'https://www.youtube.com/watch?v=3',
-        levelName: 'Beginner',
-      ));
+      // lessons.add(LessonResponse(
+      //   lessonId: 3,
+      //   lessonName: 'Lesson 3',
+      //   topicId: 1,
+      //   content: 3,
+      //   lessonExperience: 3,
+      //   levelId: 1,
+      //   completed: 'no',
+      //   contentURL: 'https://www.youtube.com/watch?v=3',
+      //   levelName: 'Beginner',
+      // ));
 
-      lessons.add(LessonResponse(
-        lessonId: 1,
-        lessonName: 'Lesson 1',
-        topicId: 1,
-        content: 1,
-        lessonExperience: 1,
-        levelId: 1,
-        completed: 'no',
-        contentURL: 'https://www.youtube.com/watch?v=1',
-        levelName: 'Beginner',
-      ));
+      // lessons.add(LessonResponse(
+      //   lessonId: 1,
+      //   lessonName: 'Lesson 1',
+      //   topicId: 1,
+      //   content: 1,
+      //   lessonExperience: 1,
+      //   levelId: 1,
+      //   completed: 'no',
+      //   contentURL: 'https://www.youtube.com/watch?v=1',
+      //   levelName: 'Beginner',
+      // ));
 
-      lessons.add(LessonResponse(
-        lessonId: 2,
-        lessonName: 'Lesson 2',
-        topicId: 1,
-        content: 2,
-        lessonExperience: 2,
-        levelId: 1,
-        completed: 'no',
-        contentURL: 'https://www.youtube.com/watch?v=2',
-        levelName: 'Beginner',
-      ));
+      // lessons.add(LessonResponse(
+      //   lessonId: 2,
+      //   lessonName: 'Lesson 2',
+      //   topicId: 1,
+      //   content: 2,
+      //   lessonExperience: 2,
+      //   levelId: 1,
+      //   completed: 'no',
+      //   contentURL: 'https://www.youtube.com/watch?v=2',
+      //   levelName: 'Beginner',
+      // ));
 
-      lessons.add(LessonResponse(
-        lessonId: 3,
-        lessonName: 'Lesson 3',
-        topicId: 1,
-        content: 3,
-        lessonExperience: 3,
-        levelId: 1,
-        completed: 'no',
-        contentURL: 'https://www.youtube.com/watch?v=3',
-        levelName: 'Beginner',
-      ));
+      // lessons.add(LessonResponse(
+      //   lessonId: 3,
+      //   lessonName: 'Lesson 3',
+      //   topicId: 1,
+      //   content: 3,
+      //   lessonExperience: 3,
+      //   levelId: 1,
+      //   completed: 'no',
+      //   contentURL: 'https://www.youtube.com/watch?v=3',
+      //   levelName: 'Beginner',
+      // ));
 
       return lessons;
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
-import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
