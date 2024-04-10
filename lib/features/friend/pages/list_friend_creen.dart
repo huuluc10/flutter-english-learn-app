@@ -19,17 +19,6 @@ class ListFriendScreen extends StatefulWidget {
 }
 
 class _ListFriendScreenState extends State<ListFriendScreen> {
-  void updateList(String username) {
-    setState(() {
-      for (int i = 0; i < widget.friends.length; i++) {
-        if (widget.friends[i].username == username) {
-          widget.friends.removeAt(i);
-          break;
-        }
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

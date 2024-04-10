@@ -75,4 +75,42 @@ class FriendService {
       showSnackBar(context, 'Hủy kết bạn thất bại!');
     }
   }
+
+  Future<List<String>> getHistoryFindFriend() async {
+    return await friendRepository.getHistoryFindFriend();
+  }
+
+  Future<void> addHistoryFindFriend(String username) async {
+    await friendRepository.addHistoryFindFriend(username);
+  }
+
+  Future<void> deleteHistoryFindFriend(String username) async {
+    await friendRepository.deleteFromHistoryFindFriend(username);
+  }
+
+  Future<List<MainUserInfoResponse>> findUsers(
+      BuildContext context, String username) async {
+    ResultReturn result = await friendRepository.getUserByUsername(username);
+
+    if (result.httpStatusCode == 401) {
+      showSnackBar(context, 'Phiên đăng nhập đã hết hạn!');
+      Navigator.pushNamedAndRemoveUntil(
+          context, WelcomeScreen.routeName, (route) => false);
+    } else if (result.httpStatusCode == 400) {
+      showSnackBar(context, 'Tìm kiếm thất bại!');
+      return [];
+    } else {
+      List<MainUserInfoResponse> listMainUserInfoResponse =
+          result.data as List<MainUserInfoResponse>;
+
+      // Update url avatar
+      for (int i = 0; i < listMainUserInfoResponse.length; i++) {
+        String oldURL = listMainUserInfoResponse[i].urlAvatar;
+        String newURL = transformLocalURLAvatarToURL(oldURL);
+        listMainUserInfoResponse[i].urlAvatar = newURL;
+      }
+      return listMainUserInfoResponse;
+    }
+    return [];
+  }
 }
