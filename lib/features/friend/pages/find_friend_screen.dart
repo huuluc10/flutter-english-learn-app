@@ -45,7 +45,6 @@ class _FindFriendScreenState extends ConsumerState<FindFriendScreen> {
     searchTimer = Timer(const Duration(seconds: 1), () async {
       response =
           await ref.watch(friendServiceProvider).findUsers(context, text);
-      print('Typing finished: $text');
       setState(() {});
     });
   }

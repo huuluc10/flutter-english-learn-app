@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
-import 'package:flutter_englearn/model/lesson_question_response.dart';
+import 'package:flutter_englearn/model/response/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SpeakingWidget extends ConsumerWidget {

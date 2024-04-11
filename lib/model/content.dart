@@ -5,8 +5,8 @@ import 'package:flutter_englearn/model/example.dart';
 
 class Content {
   String? title;
-  String text;
-  List<Example> example;
+  String? text;
+  List<Example>? example;
   String? imageUrl;
   String? videoUrl;
   Content({
@@ -17,31 +17,23 @@ class Content {
     required this.videoUrl,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'title': title,
-      'text': text,
-      'example': example.map((x) => x.toMap()).toList(),
-      'image_url': imageUrl,
-      'video_url': videoUrl,
-    };
-  }
-
   factory Content.fromMap(Map<String, dynamic> map) {
+    List<Example> example = [];
+
+    if (map['example'] == null) {
+      example = [];
+    } else
+      for (var item in map['example']) {
+        example.add(Example.fromMap(item as Map<String, dynamic>));
+      }
     return Content(
-      title: map['title'] as String,
-      text: map['text'] as String,
-      example: List<Example>.from(
-        (map['example'] as List<int>).map<Example>(
-          (x) => Example.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      imageUrl: map['image_url'] as String,
-      videoUrl: map['video_url'] as String,
+      title: map['title'] == null ? null : map['title'],
+      text: map['text'] == null ? null : map['text'],
+      example: example,
+      imageUrl: map['image_url'] == null ? null : map['image_url'],
+      videoUrl: map['video_url'] == null ? null : map['video_url'],
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory Content.fromJson(String source) =>
       Content.fromMap(json.decode(source) as Map<String, dynamic>);

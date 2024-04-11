@@ -7,15 +7,19 @@ import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../model/response/history_learn_topic_response.dart';
 
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({super.key});
   static const String routeName = '/home-screen';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
     // Get index of bottom navigation bar
     final indexBottomNavbar = ref.watch(indexBottomNavbarProvider);
     // Get current time
@@ -130,7 +134,9 @@ class HomeScreen extends ConsumerWidget {
                                   (index) => InkWell(
                                     onTap: () => Navigator.pushNamed(
                                         context, TopicDetailsScreen.routeName,
-                                        arguments: listTopic[index]),
+                                        arguments: [listTopic[index], () {setState(() {
+                                          
+                                        });}]),
                                     child: TopicWidget(
                                       nameTopic:
                                           'Topic ${listTopic[index].topicId}: ${listTopic[index].topicName}',

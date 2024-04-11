@@ -97,7 +97,7 @@ class UserInfoRepository {
             responseModel.data! as Map<String, dynamic>);
 
         userInfoResponse.urlAvatar =
-            transformLocalURLAvatarToURL(userInfoResponse.urlAvatar);
+            transformLocalURLMediaToURL(userInfoResponse.urlAvatar);
         userInfoResponse.dateOfBirth =
             convertUTCtoLocal(userInfoResponse.dateOfBirth);
 
@@ -114,7 +114,6 @@ class UserInfoRepository {
   }
 
   // *Important: Transform local url avatar to get full url
-  
 
   Future<int> updateInfo(String body) async {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();

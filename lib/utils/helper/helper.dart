@@ -52,7 +52,7 @@ imgFromGallery(ImagePicker picker) async {
   }
 }
 
-String transformLocalURLAvatarToURL(String localURL) {
+String transformLocalURLMediaToURL(String localURL) {
   String authority = APIUrl.baseUrl;
   String linkAvatar =
       Uri.http(authority, APIUrl.pathGetFile, {"path": localURL}).toString();

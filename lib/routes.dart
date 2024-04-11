@@ -117,10 +117,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const ChatRoom());
 
     case TopicDetailsScreen.routeName:
-      final topicResponse = settings.arguments as HistoryLearnTopicResponse;
+      final argruments = settings.arguments as List<dynamic>;
+      final topicResponse = argruments[0] as HistoryLearnTopicResponse;
+      final refresh = argruments[1] as Function();
       return MaterialPageRoute(
-          builder: (context) =>
-              TopicDetailsScreen(topicResponse: topicResponse));
+          builder: (context) => TopicDetailsScreen(
+                topicResponse: topicResponse,
+                refresh: refresh,
+              ));
 
     case LessonHomePageScreen.routeName:
       final topicId = settings.arguments as int;
@@ -128,13 +132,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (context) => LessonHomePageScreen(topicId: topicId));
 
     case LessonContentScreen.routeName:
-      final arguments = settings.arguments as List<Object>;
-      final lessonId = arguments[0] as int;
-      final isCompleted = arguments[1] as bool;
+      final arguments = settings.arguments as List<dynamic>;
+      final int lessonId = arguments[0];
+      final url = arguments[1] as String;
+      final isCompleted = arguments[2] as String;
+      final onMarkAsLearned = arguments[3] as Function();
       return MaterialPageRoute(
           builder: (context) => LessonContentScreen(
                 lessonId: lessonId,
+                url: url,
                 isCompleted: isCompleted,
+                onMarkAsLearned: onMarkAsLearned,
               ));
 
     case MultichoiceQuestionScreen.routeName:
