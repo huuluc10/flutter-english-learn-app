@@ -21,7 +21,7 @@ class MissionResponse {
       missionName: map['missionName'] as String,
       missionContent: map['missionContent'] as String,
       missionExperience: map['missionExperience'] as int,
-      isDone: map['isDone'] as bool,
+      isDone: map['done'] as bool,
     );
   }
 
