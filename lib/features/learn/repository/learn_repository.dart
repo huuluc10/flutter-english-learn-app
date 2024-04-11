@@ -81,6 +81,7 @@ class LearnRepository {
 
       Uri uri = Uri.http(authority, unencodedPath, {'path': url});
       final response = await http.get(uri, headers: headers);
+
       if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
         return ResultReturn(httpStatusCode: 401, data: null);

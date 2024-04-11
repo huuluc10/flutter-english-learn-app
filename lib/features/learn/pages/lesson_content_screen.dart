@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/learn/provider/learn_provider.dart';
+import 'package:flutter_englearn/features/learn/widgets/youtube_player_widget.dart';
 import 'package:flutter_englearn/model/lesson_content.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -56,10 +57,17 @@ class LessonContentScreen extends ConsumerWidget {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      'Có lỗi xảy ra: ${snapshot.error}',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  );
                 } else {
                   final lessonContent = snapshot.data;
                   return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         lessonContent!.title,
@@ -72,14 +80,17 @@ class LessonContentScreen extends ConsumerWidget {
                         textAlign: TextAlign.justify,
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        lessonContent.description,
-                        style:
-                            Theme.of(context).textTheme.displaySmall?.copyWith(
-                                  fontSize: 16,
-                                ),
-                        textAlign: TextAlign.justify,
-                      ),
+                      if (lessonContent.description != null)
+                        Text(
+                          lessonContent.description!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(
+                                fontSize: 16,
+                              ),
+                          textAlign: TextAlign.justify,
+                        ),
                       const SizedBox(height: 16),
                       for (final content in lessonContent.content)
                         Column(
@@ -106,16 +117,18 @@ class LessonContentScreen extends ConsumerWidget {
                                 textAlign: TextAlign.justify,
                               ),
                             const SizedBox(height: 8),
-                            Text(
-                              'Ví dụ:',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                            if (content.example != null)
+                            if (content.example != null &&
+                                content.example!.isNotEmpty) ...[
+                              Text(
+                                'Ví dụ:',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                textAlign: TextAlign.left,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 16),
                                 child: Column(
@@ -153,6 +166,7 @@ class LessonContentScreen extends ConsumerWidget {
                                   ],
                                 ),
                               ),
+                            ],
                             if (content.imageUrl != null)
                               Center(
                                 child: CachedNetworkImage(
@@ -163,44 +177,46 @@ class LessonContentScreen extends ConsumerWidget {
                               ),
                             const SizedBox(height: 8),
                             if (content.videoUrl != null)
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text('Watch video'),
-                              ),
+                              YoutubePlayerWidget(url: content.videoUrl!),
+                            const SizedBox(height: 16),
                           ],
                         ),
                       isCompleted == "No"
-                          ? ElevatedButton(
-                              onPressed: () {
-                                ref
-                                    .watch(learnServiceProvider)
-                                    .markLessonAsLearned(
-                                  context,
-                                  lessonId,
-                                  () {
-                                    onMarkAsLearned();
-                                  },
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                              ),
-                              child: const Text(
-                                "Đánh dấu đã học xong",
-                                style: TextStyle(
-                                  color: Colors.white,
+                          ? Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  ref
+                                      .watch(learnServiceProvider)
+                                      .markLessonAsLearned(
+                                    context,
+                                    lessonId,
+                                    () {
+                                      onMarkAsLearned();
+                                    },
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                ),
+                                child: const Text(
+                                  "Đánh dấu đã học xong",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             )
-                          : ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                              ),
-                              child: const Text(
-                                "Đã học xong",
-                                style: TextStyle(
-                                  color: Colors.white,
+                          : Center(
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                ),
+                                child: const Text(
+                                  "Đã học xong",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
