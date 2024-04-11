@@ -39,6 +39,8 @@ class APIUrl {
   static const String pathUpdateAvatar = "api/v1/user/updateAvatar";
   static const String pathFindFriend = "/api/v1/user/findUser";
 
+  static const String pathUpdateStreak = "/api/v1/user/updateStreak";
+
   // path storage api
   static const String pathGetFile = "storage/getfile";
 
@@ -63,4 +65,7 @@ class APIUrl {
   // path lesson api
   static const String pathGetListLessonOfTopic = "/api/v1/lessons/topic";
   static const String pathSaveHistoryLesson = "/api/v1/user-lesson/";
+
+  // path get list daily mission api
+  static const String pathGetListDailyMission = "/api/v1/mission-daily/";
 }

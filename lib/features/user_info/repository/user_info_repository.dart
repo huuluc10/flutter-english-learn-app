@@ -344,4 +344,37 @@ class UserInfoRepository {
       }
     }
   }
+
+  Future<ResultReturn> updateStreak() async {
+    JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
+    if (jwtResponse == null) {
+      log('Token is null', name: 'UserInfoRepository');
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Update streak', name: 'UserInfoRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = BaseHeaderHttp.headers;
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathUpdateStreak;
+
+      var response = await http.post(
+        Uri.http(authority, unencodedPath),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        log('Update streak successfully', name: 'UserInfoRepository');
+        return ResultReturn(httpStatusCode: 200, data: null);
+      } else if (response.statusCode == 401) {
+        log('Token is expired', name: 'UserInfoRepository');
+        return ResultReturn(httpStatusCode: 401, data: null);
+      } else {
+        log('Update streak failed', name: 'UserInfoRepository');
+        return ResultReturn(httpStatusCode: 400, data: null);
+      }
+    }
+  }
 }

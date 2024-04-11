@@ -45,6 +45,7 @@ class UserInfoService {
       Navigator.pushNamedAndRemoveUntil(
           context, WelcomeScreen.routeName, (route) => false);
     }
+
     if (result.httpStatusCode == 400) {
       log('Get user info failed', name: 'UserInfoService');
       showSnackBar(context, 'Get user info failed');
@@ -216,5 +217,25 @@ class UserInfoService {
       BuildContext context, String imagePath) async {
     log('Update avatar', name: 'UserInfoService');
     return await userInfoRepository.changeAvatar(imagePath);
+  }
+
+  Future<void> updateStreak(BuildContext context) async {
+    log('Update streak', name: 'UserInfoService');
+    ResultReturn resultReturn = await userInfoRepository.updateStreak();
+
+    if (resultReturn.httpStatusCode == 200) {
+      log('Update streak successfully', name: 'UserInfoService');
+    } else if (resultReturn.httpStatusCode == 401) {
+      log('Token is expired', name: 'UserInfoService');
+      if (!context.mounted) return;
+      showSnackBar(
+          context, 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!');
+      Navigator.pushNamedAndRemoveUntil(
+          context, WelcomeScreen.routeName, (route) => false);
+    } else {
+      log('Update streak failed', name: 'UserInfoService');
+      if (!context.mounted) return;
+      showSnackBar(context, 'Update streak failed');
+    }
   }
 }
