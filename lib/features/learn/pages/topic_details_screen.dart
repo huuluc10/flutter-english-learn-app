@@ -10,10 +10,12 @@ class TopicDetailsScreen extends ConsumerWidget {
   const TopicDetailsScreen({
     super.key,
     required this.topicResponse,
+    required this.refresh,
   });
   static const String routeName = '/topic-details-screen';
 
   final HistoryLearnTopicResponse topicResponse;
+  final Function() refresh;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,6 +24,13 @@ class TopicDetailsScreen extends ConsumerWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+            refresh();
+          },
+        ),
         title: Text(topicResponse.topicName),
         backgroundColor: Colors.transparent,
       ),
@@ -58,7 +67,6 @@ class TopicDetailsScreen extends ConsumerWidget {
                         TopicItemDetailsWidget(
                           image: 'assets/theory.png',
                           title: 'Lý thuyết',
-                          subTitle: 'Đã học 0/10',
                           onTap: () {
                             Navigator.pushNamed(
                               context,
@@ -70,7 +78,6 @@ class TopicDetailsScreen extends ConsumerWidget {
                         TopicItemDetailsWidget(
                           image: 'assets/exam.png',
                           title: 'Bài kiểm tra',
-                          subTitle: 'Đã làm 0/10',
                           onTap: () {
                             Navigator.pushNamed(
                               context,

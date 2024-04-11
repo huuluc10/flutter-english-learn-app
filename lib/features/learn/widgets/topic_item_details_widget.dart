@@ -5,13 +5,11 @@ class TopicItemDetailsWidget extends StatelessWidget {
   const TopicItemDetailsWidget({
     Key? key,
     required this.title,
-    required this.subTitle,
     required this.image,
     required this.onTap,
   }) : super(key: key);
 
   final String title;
-  final String subTitle;
   final String image;
   final Function() onTap;
 
@@ -38,13 +36,7 @@ class TopicItemDetailsWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    subTitle,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  
                 ],
               ),
             ],

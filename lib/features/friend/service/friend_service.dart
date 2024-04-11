@@ -32,7 +32,7 @@ class FriendService {
       // Update url avatar
       for (int i = 0; i < listMainUserInfoResponse.length; i++) {
         String oldURL = listMainUserInfoResponse[i].urlAvatar;
-        String newURL = transformLocalURLAvatarToURL(oldURL);
+        String newURL = transformLocalURLMediaToURL(oldURL);
         listMainUserInfoResponse[i].urlAvatar = newURL;
       }
       return listMainUserInfoResponse;
@@ -106,7 +106,7 @@ class FriendService {
       // Update url avatar
       for (int i = 0; i < listMainUserInfoResponse.length; i++) {
         String oldURL = listMainUserInfoResponse[i].urlAvatar;
-        String newURL = transformLocalURLAvatarToURL(oldURL);
+        String newURL = transformLocalURLMediaToURL(oldURL);
         listMainUserInfoResponse[i].urlAvatar = newURL;
       }
       return listMainUserInfoResponse;

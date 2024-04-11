@@ -13,23 +13,18 @@ class LessconContent {
     required this.content,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'title': title,
-      'description': description,
-      'content': content.map((x) => x.toMap()).toList(),
-    };
-  }
-
   factory LessconContent.fromMap(Map<String, dynamic> map) {
+    List<Content> content = [];
+    for (var item in map['content']) {
+      content.add(Content.fromMap(item as Map<String, dynamic>));
+    }
+
     return LessconContent(
       title: map['title'] as String,
       description: map['description'] as String,
-      content: List<Content>.from((map['content'])),
+      content: content,
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory LessconContent.fromJson(String source) =>
       LessconContent.fromMap(json.decode(source) as Map<String, dynamic>);

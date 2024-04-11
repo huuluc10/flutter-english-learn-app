@@ -7,7 +7,7 @@ import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/features/friend/repository/friend_repository.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
-import 'package:flutter_englearn/model/login_request.dart';
+import 'package:flutter_englearn/model/request/login_request.dart';
 import 'package:flutter_englearn/model/request/reset_password_request.dart';
 import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/request/verify_code_request.dart';

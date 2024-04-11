@@ -10,5 +10,9 @@ final learnRepositoryProvider = Provider<LearnRepository>((ref) {
 
 final learnServiceProvider = Provider<LearnService>((ref) {
   final learnRepository = ref.watch(learnRepositoryProvider);
-  return LearnService(learnRepository: learnRepository);
+  final authRepository = ref.watch(authRepositoryProvider);
+  return LearnService(
+    learnRepository: learnRepository,
+    authRepository: authRepository,
+  );
 });

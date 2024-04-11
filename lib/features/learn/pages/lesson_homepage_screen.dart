@@ -35,115 +35,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
     Future<List<LessonResponse>> getLessons() async {
       List<LessonResponse> lessons = await ref
           .watch(learnServiceProvider)
-          .getListLessonOfTopic(widget.topicId.toString());
-
-      // lessons.add(LessonResponse(
-      //   lessonId: 1,
-      //   lessonName: 'Lesson 1',
-      //   topicId: 1,
-      //   content: 1,
-      //   lessonExperience: 1,
-      //   levelId: 1,
-      //   completed: 'yes',
-      //   contentURL: 'https://www.youtube.com/watch?v=1',
-      //   levelName: 'Beginner',
-      // ));
-
-      // lessons.add(LessonResponse(
-      //   lessonId: 2,
-      //   lessonName: 'Lesson 2',
-      //   topicId: 1,
-      //   content: 2,
-      //   lessonExperience: 2,
-      //   levelId: 1,
-      //   completed: 'yes',
-      //   contentURL: 'https://www.youtube.com/watch?v=2',
-      //   levelName: 'Beginner',
-      // ));
-
-      // lessons.add(LessonResponse(
-      //   lessonId: 3,
-      //   lessonName: 'Lesson 3',
-      //   topicId: 1,
-      //   content: 3,
-      //   lessonExperience: 3,
-      //   levelId: 1,
-      //   completed: 'no',
-      //   contentURL: 'https://www.youtube.com/watch?v=3',
-      //   levelName: 'Beginner',
-      // ));
-
-      // lessons.add(LessonResponse(
-      //   lessonId: 1,
-      //   lessonName: 'Lesson 1',
-      //   topicId: 1,
-      //   content: 1,
-      //   lessonExperience: 1,
-      //   levelId: 1,
-      //   completed: 'no',
-      //   contentURL: 'https://www.youtube.com/watch?v=1',
-      //   levelName: 'Beginner',
-      // ));
-
-      // lessons.add(LessonResponse(
-      //   lessonId: 2,
-      //   lessonName: 'Lesson 2',
-      //   topicId: 1,
-      //   content: 2,
-      //   lessonExperience: 2,
-      //   levelId: 1,
-      //   completed: 'no',
-      //   contentURL: 'https://www.youtube.com/watch?v=2',
-      //   levelName: 'Beginner',
-      // ));
-
-      // lessons.add(LessonResponse(
-      //   lessonId: 3,
-      //   lessonName: 'Lesson 3',
-      //   topicId: 1,
-      //   content: 3,
-      //   lessonExperience: 3,
-      //   levelId: 1,
-      //   completed: 'no',
-      //   contentURL: 'https://www.youtube.com/watch?v=3',
-      //   levelName: 'Beginner',
-      // ));
-
-      // lessons.add(LessonResponse(
-      //   lessonId: 1,
-      //   lessonName: 'Lesson 1',
-      //   topicId: 1,
-      //   content: 1,
-      //   lessonExperience: 1,
-      //   levelId: 1,
-      //   completed: 'no',
-      //   contentURL: 'https://www.youtube.com/watch?v=1',
-      //   levelName: 'Beginner',
-      // ));
-
-      // lessons.add(LessonResponse(
-      //   lessonId: 2,
-      //   lessonName: 'Lesson 2',
-      //   topicId: 1,
-      //   content: 2,
-      //   lessonExperience: 2,
-      //   levelId: 1,
-      //   completed: 'no',
-      //   contentURL: 'https://www.youtube.com/watch?v=2',
-      //   levelName: 'Beginner',
-      // ));
-
-      // lessons.add(LessonResponse(
-      //   lessonId: 3,
-      //   lessonName: 'Lesson 3',
-      //   topicId: 1,
-      //   content: 3,
-      //   lessonExperience: 3,
-      //   levelId: 1,
-      //   completed: 'no',
-      //   contentURL: 'https://www.youtube.com/watch?v=3',
-      //   levelName: 'Beginner',
-      // ));
+          .getListLessonOfTopic(context, widget.topicId.toString());
 
       return lessons;
     }
@@ -212,7 +104,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                             title: const Text('Lý thuyết'),
                                             trailing: snapshot.data![index]
                                                         .completed ==
-                                                    'yes'
+                                                    'Yes'
                                                 ? const Icon(
                                                     Icons.check,
                                                     color: Colors.green,
@@ -225,8 +117,15 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                                     snapshot
                                                         .data![index].lessonId,
                                                     snapshot.data![index]
-                                                            .completed ==
-                                                        'yes',
+                                                        .contentURL,
+                                                    snapshot
+                                                        .data![index].completed,
+                                                    () {
+                                                      setState(() {
+                                                        snapshot.data![index]
+                                                            .completed = 'Yes';
+                                                      });
+                                                    }
                                                   ]);
                                             },
                                           ),

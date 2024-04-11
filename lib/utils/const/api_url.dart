@@ -1,6 +1,6 @@
 class APIUrl {
   // ip and port
-  static const String ip = "192.168.1.202";
+  static const String ip = "192.168.226.233";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -62,4 +62,5 @@ class APIUrl {
 
   // path lesson api
   static const String pathGetListLessonOfTopic = "/api/v1/lessons/topic";
+  static const String pathSaveHistoryLesson = "/api/v1/user-lesson/";
 }
