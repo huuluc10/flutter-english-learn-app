@@ -13,16 +13,8 @@ class FriendSummaryInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<List<MainUserInfoResponse>> getFriend(String username) async {
-      return await getFriends(
-        context,
-        ref,
-        username,
-      );
-    }
-
     return FutureBuilder(
-      future: getFriend(username),
+      future: getFriend(context, ref, username),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(

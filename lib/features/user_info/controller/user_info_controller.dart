@@ -145,55 +145,65 @@ Future<Map<String, Object>> getInfo(
 }
 
 Future<bool> updateIsMe(WidgetRef ref, String username) async {
-    final String currentUser = await ref
-        .read(authServiceProvicer)
-        .getJWT()
-        .then((value) => value.username);
+  final String currentUser = await ref
+      .read(authServiceProvicer)
+      .getJWT()
+      .then((value) => value.username);
 
-    if (username == currentUser) {
-      return true;
-    } else {
-      return false;
-    }
+  if (username == currentUser) {
+    return true;
+  } else {
+    return false;
   }
+}
 
-  Future<Map<String, Object>> getUserInfo(BuildContext context, WidgetRef ref,  String username) async {
-    return await getInfo(
-      context,
-      ref,
-      username,
-    );
-  }
+Future<Map<String, Object>> getUserInfo(
+    BuildContext context, WidgetRef ref, String username) async {
+  return await getInfo(
+    context,
+    ref,
+    username,
+  );
+}
 
-  Future<void> changePassword(
-      BuildContext context,
-      WidgetRef ref,
-      String oldPassword,
-      String newPasswword,
-    ) async {
-      ChangePasswordRequest request = ChangePasswordRequest(
-        username: '',
-        oldPassword: oldPassword,
-        newPassword: newPasswword,
-      );
-      int resultChangePassword =
-          await ref.read(userInfoServiceProvider).changePassword(request);
+Future<void> changePassword(
+  BuildContext context,
+  WidgetRef ref,
+  String oldPassword,
+  String newPasswword,
+) async {
+  ChangePasswordRequest request = ChangePasswordRequest(
+    username: '',
+    oldPassword: oldPassword,
+    newPassword: newPasswword,
+  );
+  int resultChangePassword =
+      await ref.read(userInfoServiceProvider).changePassword(request);
 
-      if (resultChangePassword == 401) {
-        if (!context.mounted) {
-          return;
-        }
-        showSnackBar(context, 'Phiên đăng nhập đã hết hạn');
-        await ref.read(authServiceProvicer).logout(context);
-      } else if (resultChangePassword == 400) {
-        if (!context.mounted) {
-          return;
-        }
-        showSnackBar(context, 'Đổi mật khẩu thất bại');
-      } else {
-        if (!context.mounted) {
-          return;
-        }
-        showSnackBar(context, 'Đổi mật khẩu thành công');
-      }
+  if (resultChangePassword == 401) {
+    if (!context.mounted) {
+      return;
     }
+    showSnackBar(context, 'Phiên đăng nhập đã hết hạn');
+    await ref.read(authServiceProvicer).logout(context);
+  } else if (resultChangePassword == 400) {
+    if (!context.mounted) {
+      return;
+    }
+    showSnackBar(context, 'Đổi mật khẩu thất bại');
+  } else {
+    if (!context.mounted) {
+      return;
+    }
+    showSnackBar(context, 'Đổi mật khẩu thành công');
+  }
+}
+
+Future<List<MainUserInfoResponse>> getFriend(
+    BuildContext context, WidgetRef ref, String username) async {
+  return await getFriends(
+    context,
+    ref,
+    username,
+  );
+}
