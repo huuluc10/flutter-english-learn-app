@@ -39,7 +39,7 @@ class _MoreUserInfoScreenState extends ConsumerState<MoreUserInfoScreen> {
     log('Update full name', name: 'MoreUserInfoScreen');
     UpdateInfoRequest request = UpdateInfoRequest.fromResponse(userInfo);
     request.fullName = fullName;
-    ref.read(userInfoServiceProvider).updateUserInfo(context, request);
+    await ref.read(userInfoServiceProvider).updateUserInfo(context, request);
     setState(() {
       userInfo.fullName = fullName;
     });
@@ -49,7 +49,7 @@ class _MoreUserInfoScreenState extends ConsumerState<MoreUserInfoScreen> {
     log('Update email', name: 'MoreUserInfoScreen');
     UpdateInfoRequest request = UpdateInfoRequest.fromResponse(userInfo);
     request.email = email;
-    ref
+    await ref
         .read(userInfoServiceProvider)
         .addEmail(context, email, userInfo.username);
   }
@@ -58,7 +58,7 @@ class _MoreUserInfoScreenState extends ConsumerState<MoreUserInfoScreen> {
     log('Update gender', name: 'MoreUserInfoScreen');
     UpdateInfoRequest request = UpdateInfoRequest.fromResponse(userInfo);
     request.gender = value;
-    ref.read(userInfoServiceProvider).updateUserInfo(context, request);
+    await ref.read(userInfoServiceProvider).updateUserInfo(context, request);
     setState(() {
       userInfo.gender = value;
     });
@@ -68,7 +68,7 @@ class _MoreUserInfoScreenState extends ConsumerState<MoreUserInfoScreen> {
     log('Update date of birth', name: 'MoreUserInfoScreen');
     UpdateInfoRequest request = UpdateInfoRequest.fromResponse(userInfo);
     request.dateOfBirth = dateOfBirth;
-    ref.read(userInfoServiceProvider).updateUserInfo(context, request);
+    await ref.read(userInfoServiceProvider).updateUserInfo(context, request);
     setState(() {
       userInfo.dateOfBirth = dateOfBirth;
     });

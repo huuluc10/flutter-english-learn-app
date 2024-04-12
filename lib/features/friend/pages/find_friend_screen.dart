@@ -37,7 +37,7 @@ class _FindFriendScreenState extends ConsumerState<FindFriendScreen> {
 
   final TextEditingController searchController = TextEditingController();
 
-  void _onTypingFinished(String text) async {
+  Future<void> _onTypingFinished(String text) async {
     if (searchTimer != null) {
       searchTimer!.cancel();
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/homepage/controller/homepage_controller.dart';
 import 'package:flutter_englearn/features/homepage/provider/homepage_provider.dart';
 import 'package:flutter_englearn/features/homepage/widgets/drawer_home_widget.dart';
 import 'package:flutter_englearn/features/homepage/widgets/topic_widget.dart';
@@ -18,6 +19,22 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  final searchController = TextEditingController();
+  Future<List<HistoryLearnTopicResponse>>? _listTopicFuture;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_listTopicFuture == null) {
+      _listTopicFuture = getListTopic(context, ref);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Get index of bottom navigation bar
@@ -37,13 +54,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       // Good evening
       welcome = "Chào buổi tối,";
       image = "assets/night.png";
-    }
-
-    Future<List<HistoryLearnTopicResponse>> getListTopic() async {
-      final List<HistoryLearnTopicResponse> listTopic =
-          await ref.watch(homepageServiceProvider).fetchTopic(context);
-
-      return Future.value(listTopic);
     }
 
     return Scaffold(
@@ -90,11 +100,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           fontWeight: FontWeight.w600),
                     ),
                     TextField(
+                      controller: searchController,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
                         hintText: 'Tìm kiếm',
                         prefixIcon: const Icon(Icons.search),
+                        contentPadding: EdgeInsets.zero,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -105,20 +120,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
             Positioned(
-              top: 185,
+              top: 165,
               left: 7,
               right: 7,
               child: Column(
                 children: [
                   FutureBuilder<List<HistoryLearnTopicResponse>>(
-                    future: getListTopic(),
+                    future: _listTopicFuture,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         List<HistoryLearnTopicResponse> listTopic =
                             snapshot.data!;
+                        // Filter the list based on the search term
+                        listTopic = listTopic
+                            .where((topic) => topic.topicName
+                                .toLowerCase()
+                                .contains(searchController.text.trim()))
+                            .toList();
                         return SingleChildScrollView(
                           child: SizedBox(
-                            height: MediaQuery.sizeOf(context).height - 285,
+                            height: MediaQuery.sizeOf(context).height - 265,
                             child: MediaQuery.removePadding(
                               context: context,
                               removeTop: true,
@@ -134,9 +155,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   (index) => InkWell(
                                     onTap: () => Navigator.pushNamed(
                                         context, TopicDetailsScreen.routeName,
-                                        arguments: [listTopic[index], () {setState(() {
-                                          
-                                        });}]),
+                                        arguments: [
+                                          listTopic[index],
+                                          () {
+                                            setState(() {});
+                                          }
+                                        ]),
                                     child: TopicWidget(
                                       nameTopic:
                                           'Topic ${listTopic[index].topicId}: ${listTopic[index].topicName}',

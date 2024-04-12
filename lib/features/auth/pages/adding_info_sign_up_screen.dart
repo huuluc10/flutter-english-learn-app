@@ -1,10 +1,6 @@
-import 'package:bottom_picker/bottom_picker.dart';
-import 'package:bottom_picker/resources/arrays.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
+import 'package:flutter_englearn/features/auth/controller/auth_controller.dart';
 import 'package:flutter_englearn/model/request/sign_up_request.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/gender_choose_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,68 +22,6 @@ class _AddingInfoSignUpScreenState
   DateTime? _date;
   bool _isMale = true;
   final TextEditingController textController = TextEditingController();
-
-  void signUp() {
-    // Check if name and date is not empty
-    if (textController.text.isEmpty || _date == null) {
-      showSnackBar(context, 'Nhập đầy đủ thông tin!');
-      return;
-    }
-
-    // Check date of birth > 3 years or in the future
-    if (_date!.isAfter(DateTime.now())) {
-      showSnackBar(context, "Ngày sinh không hợp lệ!");
-      return;
-    } else if (DateTime.now().difference(_date!).inDays < 3 * 365) {
-      showSnackBar(context, 'Trẻ quá nhỏ để học nhiều!');
-      return;
-    } else {
-      // Call sign up API
-      SignUpRequest request = widget.signUpRequest;
-      request.fullName = textController.text.trim();
-      request.dateOfBirth = _date!;
-      request.gender = _isMale;
-
-      ref.watch(authServiceProvicer).signUp(context, request);
-    }
-  }
-
-  void _openDatePicker(BuildContext context) {
-    BottomPicker.date(
-      title: 'Chọn ngày sinh',
-      dateOrder: DatePickerDateOrder.dmy,
-      pickerTextStyle: const TextStyle(
-        color: Colors.blue,
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-      ),
-      titleStyle: const TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-        color: Colors.blue,
-      ),
-      buttonContent: const Center(
-        child: Text(
-          'Xong',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-          ),
-        ),
-      ),
-      onChange: (index) {
-        setState(() {
-          _date = index;
-        });
-      },
-      onSubmit: (index) {
-        setState(() {
-          _date = index;
-        });
-      },
-      bottomPickerTheme: BottomPickerTheme.plumPlate,
-    ).show(context);
-  }
 
   void _updateGender(bool isMale) {
     setState(() {
@@ -161,7 +95,11 @@ class _AddingInfoSignUpScreenState
                       ),
                       IconButton(
                         onPressed: () {
-                          _openDatePicker(context);
+                          openDatePicker(context, (index) {
+                            setState(() {
+                              _date = index;
+                            });
+                          });
                         },
                         icon: const Icon(
                           Icons.calendar_today,
@@ -172,7 +110,16 @@ class _AddingInfoSignUpScreenState
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: signUp,
+                    onPressed: () async {
+                      await signUp(
+                        context,
+                        ref,
+                        widget.signUpRequest,
+                        textController.text.trim(),
+                        _date,
+                        _isMale,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       padding: const EdgeInsets.symmetric(

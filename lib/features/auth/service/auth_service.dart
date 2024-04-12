@@ -44,6 +44,12 @@ class AuthService {
     await authRepository.saveJWT(jwtResponse);
   }
 
+  Future<String> getUsername() async {
+    log("getUsername", name: "AuthService");
+    String username = await authRepository.getUserName();
+    return username;
+  }
+
   Future<void> removeJWT() async {
     log("removeJWT", name: "AuthService");
     await authRepository.removeJWT();

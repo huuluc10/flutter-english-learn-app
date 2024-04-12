@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/learn/controller/learn_controller.dart';
 import 'package:flutter_englearn/features/learn/provider/learn_provider.dart';
 import 'package:flutter_englearn/features/learn/widgets/youtube_player_widget.dart';
 import 'package:flutter_englearn/model/lesson_content.dart';
@@ -22,14 +23,6 @@ class LessonContentScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<LessconContent> fetchLessonContent() async {
-      final response = await ref.watch(learnServiceProvider).getLessonContent(
-            context,
-            url,
-          );
-      return response;
-    }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -51,7 +44,7 @@ class LessonContentScreen extends ConsumerWidget {
             context: context,
             removeTop: true,
             child: FutureBuilder<LessconContent>(
-              future: fetchLessonContent(),
+              future: fetchLessonContent(context, ref, url),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
