@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
-import 'package:flutter_englearn/features/friend/pages/list_friend_creen.dart';
 import 'package:flutter_englearn/features/user_info/controller/user_info_controller.dart';
 import 'package:flutter_englearn/features/user_info/widgets/avatar_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/more_user_info_button_widgett.dart';
 import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/status_friend_widget.dart';
-import 'package:flutter_englearn/model/response/main_user_info_request.dart';
+import 'package:flutter_englearn/features/user_info/widgets/user_friend_summary_info_widget.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,39 +25,12 @@ class UserInfoScreen extends ConsumerStatefulWidget {
 class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
   bool isMe = false;
 
-  Future<void> updateIsMe() async {
-    final String currentUser = await ref
-        .read(authServiceProvicer)
-        .getJWT()
-        .then((value) => value.username);
-
-    if (widget.username == currentUser) {
-      isMe = true;
-    } else {
-      isMe = false;
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    updateIsMe().then((value) => setState(() {}));
-  }
-
-  Future<Map<String, Object>> getUserInfo(String username) async {
-    return await getInfo(
-      context,
-      ref,
-      username,
-    );
-  }
-
-  Future<List<MainUserInfoResponse>> getFriend(String username) async {
-    return await getFriends(
-      context,
-      ref,
-      username,
-    );
+    updateIsMe(ref, widget.username).then((value) => setState(() {
+          isMe = value;
+        }));
   }
 
   @override
@@ -102,7 +73,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
           height: height,
           width: width,
           child: FutureBuilder<Map<String, Object>>(
-              future: getUserInfo(widget.username),
+              future: getUserInfo(context, ref, widget.username),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -202,73 +173,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                                     color: Colors.white,
                                     thickness: 1.0,
                                   ),
-                                  FutureBuilder(
-                                    future: getFriend(widget.username),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-
-                                      if (snapshot.hasError) {
-                                        return Center(
-                                          child:
-                                              Text('Error: ${snapshot.error}'),
-                                        );
-                                      }
-
-                                      final List<MainUserInfoResponse> friends =
-                                          snapshot.data
-                                              as List<MainUserInfoResponse>;
-
-                                      return Column(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Row(
-                                              children: <Widget>[
-                                                InkWell(
-                                                  onTap: () =>
-                                                      Navigator.pushNamed(
-                                                    context,
-                                                    ListFriendScreen.routeName,
-                                                    arguments: friends,
-                                                  ),
-                                                  child: const Text(
-                                                    'Bạn bè ',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 17,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  '(${friends.length})',
-                                                  style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                const Spacer(),
-                                                const Text(
-                                                  'Danh sách yêu cầu',
-                                                  style: TextStyle(
-                                                      color: Colors.blueAccent,
-                                                      fontSize: 17),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
+                                  FriendSummaryInfo(username: widget.username),
                                 ],
                               ),
                             ),

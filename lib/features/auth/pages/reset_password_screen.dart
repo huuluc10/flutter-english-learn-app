@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/features/auth/controller/auth_controller.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -16,22 +15,6 @@ class ResetPasswordScreen extends ConsumerStatefulWidget {
 
 class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
-
-  final String regrexEmail = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-
-  void createResetPassword() {
-    String email = _emailController.text.trim();
-
-    if (email.isNotEmpty) {
-      //check valid email
-      if (RegExp(regrexEmail).hasMatch(email)) {
-        ref.watch(authServiceProvicer).resetPassword(context, email);
-        
-      } else {
-        showSnackBar(context, 'Email không hợp lệ');
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +54,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: createResetPassword,
+                    onPressed: () async {
+                      await createResetPassword(
+                          context, ref, _emailController.text.trim());
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),

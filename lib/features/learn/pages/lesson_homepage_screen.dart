@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/learn/provider/learn_provider.dart';
+import 'package:flutter_englearn/features/learn/controller/learn_controller.dart';
 import 'package:flutter_englearn/features/learn/widgets/fill_in_the_blank_item_exercise_widget.dart';
 import 'package:flutter_englearn/features/learn/pages/lesson_content_screen.dart';
 import 'package:flutter_englearn/features/learn/widgets/listening_exercise_item_widget.dart';
@@ -31,14 +31,6 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
-
-    Future<List<LessonResponse>> getLessons() async {
-      List<LessonResponse> lessons = await ref
-          .watch(learnServiceProvider)
-          .getListLessonOfTopic(context, widget.topicId.toString());
-
-      return lessons;
-    }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -77,7 +69,8 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                         ),
                         const SizedBox(height: 10),
                         FutureBuilder<List<LessonResponse>>(
-                          future: getLessons(),
+                          future: getLessons(
+                              context, ref, widget.topicId.toString()),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return MediaQuery.removePadding(

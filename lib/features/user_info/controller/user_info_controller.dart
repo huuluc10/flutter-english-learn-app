@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
+import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
+import 'package:flutter_englearn/model/request/change_password_request.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'dart:developer' as logger;
@@ -141,3 +143,57 @@ Future<Map<String, Object>> getInfo(
     rethrow;
   }
 }
+
+Future<bool> updateIsMe(WidgetRef ref, String username) async {
+    final String currentUser = await ref
+        .read(authServiceProvicer)
+        .getJWT()
+        .then((value) => value.username);
+
+    if (username == currentUser) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<Map<String, Object>> getUserInfo(BuildContext context, WidgetRef ref,  String username) async {
+    return await getInfo(
+      context,
+      ref,
+      username,
+    );
+  }
+
+  Future<void> changePassword(
+      BuildContext context,
+      WidgetRef ref,
+      String oldPassword,
+      String newPasswword,
+    ) async {
+      ChangePasswordRequest request = ChangePasswordRequest(
+        username: '',
+        oldPassword: oldPassword,
+        newPassword: newPasswword,
+      );
+      int resultChangePassword =
+          await ref.read(userInfoServiceProvider).changePassword(request);
+
+      if (resultChangePassword == 401) {
+        if (!context.mounted) {
+          return;
+        }
+        showSnackBar(context, 'Phiên đăng nhập đã hết hạn');
+        await ref.read(authServiceProvicer).logout(context);
+      } else if (resultChangePassword == 400) {
+        if (!context.mounted) {
+          return;
+        }
+        showSnackBar(context, 'Đổi mật khẩu thất bại');
+      } else {
+        if (!context.mounted) {
+          return;
+        }
+        showSnackBar(context, 'Đổi mật khẩu thành công');
+      }
+    }

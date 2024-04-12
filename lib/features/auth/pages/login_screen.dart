@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/auth/controller/auth_controller.dart';
 import 'package:flutter_englearn/features/auth/pages/reset_password_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/sign_up_screen.dart';
-import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,23 +23,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
     usernameController.dispose();
     passwordController.dispose();
-  }
-
-  void login() async {
-    // Check if username and password is not empty
-    if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
-      showSnackBar(context, "Nhập đây đủ thông tin tài khoản và mật khẩu!");
-    } else if (isHTML(usernameController.text) ||
-        isHTML(passwordController.text)) {
-      showSnackBar(context, "Vui lòng không chèn ký tự đặc biệt!");
-    } else {
-      // Call login API
-      ref.watch(authServiceProvicer).login(
-            context,
-            usernameController.text.trim(),
-            passwordController.text.trim(),
-          );
-    }
   }
 
   @override
@@ -96,7 +78,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: login,
+                    onPressed: () async {
+                      await login(
+                        context,
+                        ref,
+                        usernameController.text.trim(),
+                        passwordController.text.trim(),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),
