@@ -15,4 +15,6 @@ List<String> listLibrary() => [
       'permission_handler',
       'cached_network_image',
       'http_parser',
+      'youtube_player_flutter',
+      'stomp_dart_client'
     ];

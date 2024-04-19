@@ -11,7 +11,7 @@ import 'package:flutter_englearn/features/chat/pages/chat_room_screen.dart';
 import 'package:flutter_englearn/features/dictionary/pages/dictionary_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/exam_homepage_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/explantion_result_screen.dart';
-import 'package:flutter_englearn/features/exercise/pages/full_in_the_blank_question_screen.dart';
+import 'package:flutter_englearn/features/exercise/pages/fill_in_the_blank_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/listening_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/multichoice_questions_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/sentence_transform_question_screen.dart';
