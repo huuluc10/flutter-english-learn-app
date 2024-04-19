@@ -27,7 +27,6 @@ class _FillInTheBlankQuestionScreenState
     for (int i = 0; i < 10; i++) {
       elements.add(Question(
         questionId: i,
-        questionContent: '______ you know the answer?  $i',
         questionType: 'multichoice',
         lessonId: lessonId,
         answerUrl: 'Answer $i',

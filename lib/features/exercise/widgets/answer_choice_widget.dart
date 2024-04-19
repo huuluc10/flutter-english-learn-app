@@ -28,38 +28,47 @@ class AnswerChoiceWidget extends ConsumerWidget {
       children: List.generate(
         answer.answers.length,
         (index) => TextButton(
-          onPressed: () {
-            // TODO: call API to save answer
-            if (answer.answers[index].text == answer.correctAnswer) {
-              increaseCorrectAnswerCount();
-            } else {
-              addExplanationQuestion(
-                ExplanationQuestion(
-                  question: 'Question',
-                  answer: answer.correctAnswer,
-                  explanation: answer.explanation,
-                ),
-              );
-            }
-            updateCurrentIndex();
-          },
-          style: TextButton.styleFrom(
-            disabledBackgroundColor: Colors.white,
-            backgroundColor: Colors.blue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+            onPressed: () {
+              // TODO: call API to save answer
+
+              if (answer.answers[index].text != null &&
+                  answer.answers[index].text == answer.correctAnswer) {
+                increaseCorrectAnswerCount();
+              } else if (answer.answers[index].answerImage != null &&
+                  answer.answers[index].answerImage == answer.correctImage) {
+              } else {
+                addExplanationQuestion(
+                  ExplanationQuestion(
+                    question: 'Question',
+                    answer: answer.correctAnswer,
+                    answerImage: answer.correctImage,
+                    explanation: answer.explanation,
+                  ),
+                );
+              }
+              updateCurrentIndex();
+            },
+            style: TextButton.styleFrom(
+              disabledBackgroundColor: Colors.white,
+              backgroundColor: Colors.blue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
-          ),
-          child: Text(
-            answer.answers[index].text,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
+            child: answer.answers[index].text != null
+                ? Text(
+                    answer.answers[index].text!,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                : Image.network(
+                    answer.answers[index].answerImage!,
+                    fit: BoxFit.cover,
+                  )),
       ),
     );
   }

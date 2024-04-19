@@ -28,7 +28,6 @@ class _MultichoiceQuestionScreenState
     for (int i = 0; i < 10; i++) {
       elements.add(Question(
         questionId: i,
-        questionContent: 'Question $i',
         questionType: 'multichoice',
         lessonId: lessonId,
         answerUrl: 'Answer $i',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/answer_choice.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
@@ -28,20 +29,9 @@ class FillInTheBlankWidget extends ConsumerStatefulWidget {
 
 class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
   Future<Answer> _fetchAnswer(int questionId) async {
-    return await Future.delayed(
-        const Duration(seconds: 0),
-        () => Answer(
-              answers: [
-                AnswerChoice(text: 'Where'),
-                AnswerChoice(text: 'Do'),
-                AnswerChoice(text: 'What'),
-                AnswerChoice(text: 'How'),
-                AnswerChoice(text: 'When'),
-              ],
-              correctAnswer: 'Do',
-              explanation:
-                  'Explanation Answer 2 Explanation Answer 2.\nExplanation Answer 2 Explanation Answer 2  ',
-            ));
+    return await ref.watch(exerciseServiceProvider).getAnswer(
+          widget.question.answerUrl,
+        );
   }
 
   String? wordIsChosen;
