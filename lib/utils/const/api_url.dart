@@ -1,18 +1,19 @@
 class APIUrl {
-  // ip and port
-  static const String ip = "192.168.226.233";
+  // IP ADDRESS SERVER AND PORT
+  static const String ip = "huuluc.ddns.net";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
-  // base url
+  // BASE URL
   static const String baseUrl = "$ip:$portEngLearn";
   static const String baseUrlSocket = "ws://$ip:$portSocket";
+  static const String baseUrlSocketHttp = "$ip:$portSocket";
 
-  // path dictionary api
+  // PATH DICTIONARY API
   static const String rootDictionaryAPI = "api.dictionaryapi.dev";
   static const String pathDictionary = "api/v2/entries/en/";
 
-  // path auth api
+  // PATH AUTH API
   static const String pathLogin = "auth/signin";
   static const String pathLogout = "auth/logout";
   static const String pathSignUp = "auth/signup";
@@ -21,18 +22,18 @@ class APIUrl {
   static const String pathChangeResetPassword =
       "auth/resetPassword/setNewPassword";
 
-  // path otp api
+  // PATH OTP API
   static const String pathResetPassword = "otp/forgot-password/";
   static const String pathVerifyOTP = "otp/verifyCodeOTP";
   static const String pathAddEmail = "otp/addEmail";
 
-  // path lesson api
+  // PATH SUMMARY OF TOPIC API
   static const String pathSummaryOfTopic = "api/v1/lessons/topic/";
 
-  // path topic api
+  // PATH TOPIC API
   static const String pathAllTopic = "api/v1/topic/";
 
-  // path user api
+  // PATH USER API
   static const String pathChangePassword = "/api/v1/user/changePassword";
   static const String pathGetUserInfo = "api/v1/user/getByUsername";
   static const String pathUpdateUserInfo = "api/v1/user/update";
@@ -41,31 +42,42 @@ class APIUrl {
 
   static const String pathUpdateStreak = "/api/v1/user/updateStreak";
 
-  // path storage api
+  // PATH STORAGE API
   static const String pathGetFile = "storage/getfile";
 
-  //path get history learn lesson api
+  // PATH GET HISTORY LEARN LESSON API
   static const String pathSaveHistoryLearnLesson = "/api/v1/user-lesson/";
   static const String pathCountHistoryLearnedLesson =
       "/api/v1/user-lesson/count-lesson-learned/";
 
-  // path get history do exercise api
+  // PATH GET HISTORY LEARN EXERCISE API
   static const String pathGetExerciseLessonHistory =
       "/api/v1/user-question/count-lesson-have-exercises-done";
   static const String pathGetExerciseExamHistory =
       "/api/v1/user-question/count-exam-have-exercises-done";
 
-  // path friend api
+  // PATH FRIEND API
   static const String pathGetFriendByUsername = "/api/v1/friend-request/";
   static const String pathAddFriend = "/api/v1/friend-request/";
   static const String pathGetStatusOfRequestFriend =
       "/api/v1/friend-request/status";
   static const String pathUnFriend = "/api/v1/friend-request/delete";
 
-  // path lesson api
+  // PATH LESSON API
   static const String pathGetListLessonOfTopic = "/api/v1/lessons/topic";
   static const String pathSaveHistoryLesson = "/api/v1/user-lesson/";
 
-  // path get list daily mission api
+  // PATH GET LIST DAYLY MISSION API
   static const String pathGetListDailyMission = "/api/v1/mission-daily/";
+
+  // PATH GET QUESTION API
+  static const String pathGetMultipleChoiceQuestion =
+      "/api/v1/question/findMultipleChoiceQuestionByLessonId";
+  static const String pathGetListExerciseQuestion =
+      "/api/v1/question/getTypeQuestion/";
+
+  /* ----------------------------------------------------------------------------- */
+
+  // PATH GET ALL ROOM CHAT API
+  static const String pathGetAllChatRoom = "/api/chat-room";
 }

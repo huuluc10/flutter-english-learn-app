@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 class AnswerChoice {
-  String text;
+  String? text;
+  String? answerImage;
   AnswerChoice({
     required this.text,
+    required this.answerImage,
   });
 
   Map<String, dynamic> toMap() {
@@ -14,7 +16,9 @@ class AnswerChoice {
 
   factory AnswerChoice.fromMap(Map<String, dynamic> map) {
     return AnswerChoice(
-      text: map['text'] as String,
+      text: map['text'] == null ? null : map['text'] as String,
+      answerImage:
+          map['answerImage'] == null ? null : map['answerImage'] as String,
     );
   }
 

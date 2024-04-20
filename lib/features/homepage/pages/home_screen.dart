@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/homepage/controller/homepage_controller.dart';
-import 'package:flutter_englearn/features/homepage/provider/homepage_provider.dart';
 import 'package:flutter_englearn/features/homepage/widgets/drawer_home_widget.dart';
 import 'package:flutter_englearn/features/homepage/widgets/topic_widget.dart';
 import 'package:flutter_englearn/features/learn/pages/topic_details_screen.dart';

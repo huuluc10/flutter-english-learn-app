@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/learn/provider/learn_provider.dart';
 import 'package:flutter_englearn/model/lesson_content.dart';
+import 'package:flutter_englearn/model/question_type.dart';
 import 'package:flutter_englearn/model/response/lesson_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,4 +24,18 @@ Future<List<LessonResponse>> getLessons(
       .getListLessonOfTopic(context, topicId);
 
   return lessons;
+}
+
+Future<List<QuestionType>> getListExerciseOfLesson(
+  BuildContext context,
+  WidgetRef ref,
+  int lessonId,
+) async {
+  List<QuestionType> questionTypes =
+      await ref.watch(learnServiceProvider).getListExerciseOfLesson(
+            context,
+            lessonId,
+          );
+
+  return questionTypes;
 }

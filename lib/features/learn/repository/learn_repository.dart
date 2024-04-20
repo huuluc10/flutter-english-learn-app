@@ -1,6 +1,7 @@
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/model/lesson_content.dart';
 import 'package:flutter_englearn/model/response/lesson_response.dart';
+import 'package:flutter_englearn/model/question_type.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
@@ -18,10 +19,10 @@ class LearnRepository {
     final jwtResponse = await authRepository.getJWTCurrent();
 
     if (jwtResponse == null) {
-      log('Token is null', name: 'UserInfoRepository');
+      log('Token is null', name: 'LearnRepository');
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
-      log('Get list lesson of topic', name: 'UserInfoRepository');
+      log('Get list lesson of topic', name: 'LearnRepository');
 
       String jwt = jwtResponse.token;
       Map<String, String> headers = BaseHeaderHttp.headers;
@@ -42,10 +43,10 @@ class LearnRepository {
       var response = await request.send();
 
       if (response.statusCode == 401) {
-        log('Token is expired', name: 'UserInfoRepository');
+        log('Token is expired', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {
-        log('Get list lesson of topic failed', name: 'UserInfoRepository');
+        log('Get list lesson of topic failed', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 400, data: null);
       } else {
         log("Get list lesson of topic successfully",
@@ -67,10 +68,10 @@ class LearnRepository {
     final jwtResponse = await authRepository.getJWTCurrent();
 
     if (jwtResponse == null) {
-      log('Token is null', name: 'UserInfoRepository');
+      log('Token is null', name: 'LearnRepository');
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
-      log('Get lesson detail', name: 'UserInfoRepository');
+      log('Get lesson detail', name: 'LearnRepository');
 
       String jwt = jwtResponse.token;
       Map<String, String> headers = BaseHeaderHttp.headers;
@@ -83,13 +84,13 @@ class LearnRepository {
       final response = await http.get(uri, headers: headers);
 
       if (response.statusCode == 401) {
-        log('Token is expired', name: 'UserInfoRepository');
+        log('Token is expired', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {
-        log('Get lesson detail failed', name: 'UserInfoRepository');
+        log('Get lesson detail failed', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 400, data: null);
       } else {
-        log("Get lesson detail successfully", name: 'UserInfoRepository');
+        log("Get lesson detail successfully", name: 'LearnRepository');
         LessconContent lessonResponse = LessconContent.fromJson(response.body);
         return ResultReturn(httpStatusCode: 200, data: lessonResponse);
       }
@@ -101,10 +102,10 @@ class LearnRepository {
     final jwtResponse = await authRepository.getJWTCurrent();
 
     if (jwtResponse == null) {
-      log('Token is null', name: 'UserInfoRepository');
+      log('Token is null', name: 'LearnRepository');
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
-      log('Save history lesson', name: 'UserInfoRepository');
+      log('Save history lesson', name: 'LearnRepository');
 
       String jwt = jwtResponse.token;
       Map<String, String> headers = BaseHeaderHttp.headers;
@@ -120,14 +121,61 @@ class LearnRepository {
         body: body,
       );
       if (response.statusCode == 401) {
-        log('Token is expired', name: 'UserInfoRepository');
+        log('Token is expired', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {
-        log('Save history lesson failed', name: 'UserInfoRepository');
+        log('Save history lesson failed', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 400, data: null);
       } else {
-        log("Save history lesson successfully", name: 'UserInfoRepository');
+        log("Save history lesson successfully", name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 200, data: null);
+      }
+    }
+  }
+
+  Future<ResultReturn> getListExerciseOfLessopn(int lessonId) async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'LearnRepository');
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Get list exercise of lesson', name: 'LearnRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = BaseHeaderHttp.headers;
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath =
+          APIUrl.pathGetListExerciseQuestion + lessonId.toString();
+
+      Uri uri = Uri.http(authority, unencodedPath);
+      final response = await http.get(
+        uri,
+        headers: headers,
+      );
+
+      if (response.statusCode == 500) {
+        log('Server error', name: 'LearnRepository');
+        return ResultReturn(httpStatusCode: 500, data: null);
+      }
+      if (response.statusCode == 401) {
+        log('Token is expired', name: 'LearnRepository');
+        return ResultReturn(httpStatusCode: 401, data: null);
+      } else if (response.statusCode == 400) {
+        log('Get list exercise of lesson failed', name: 'LearnRepository');
+        return ResultReturn(httpStatusCode: 400, data: null);
+      } else {
+        log("Get list exercise of lesson successfully",
+            name: 'LearnRepository');
+        ResponseModel responseModel = ResponseModel.fromJson(response.body);
+        List<QuestionType> listExerciseResponse =
+            (responseModel.data as List<dynamic>)
+                .map((item) => QuestionType.fromMap(item))
+                .toList();
+        return ResultReturn(httpStatusCode: 200, data: listExerciseResponse);
       }
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/features/learn/repository/learn_repository.dart';
 import 'package:flutter_englearn/model/lesson_content.dart';
+import 'package:flutter_englearn/model/question_type.dart';
 import 'package:flutter_englearn/model/response/lesson_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/model/user_lesson.dart';
@@ -95,5 +96,27 @@ class LearnService {
       Navigator.of(context).pop();
       updateIsComplete();
     }
+  }
+
+  Future<List<QuestionType>> getListExerciseOfLesson(
+      BuildContext context, int lessonId) async {
+    ResultReturn resultReturn =
+        await learnRepository.getListExerciseOfLessopn(lessonId);
+
+    if (resultReturn.httpStatusCode == 401) {
+      showSnackBar(
+          context, 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại');
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        WelcomeScreen.routeName,
+        (route) => false,
+      );
+    } else if (resultReturn.httpStatusCode == 400) {
+      showSnackBar(context, 'Lấy danh sách bài tập thất bại');
+      return [];
+    }
+
+    List<QuestionType> listQuestionType =
+        resultReturn.data as List<QuestionType>;
+    return listQuestionType;
   }
 }
