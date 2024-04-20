@@ -5,7 +5,7 @@ class AnswerChoice {
   String? answerImage;
   AnswerChoice({
     required this.text,
-    this.answerImage,
+    required this.answerImage,
   });
 
   Map<String, dynamic> toMap() {

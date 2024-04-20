@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/exercise/pages/result_exercise_screen.dart';
+import 'package:flutter_englearn/features/exercise/controller/exercise_controller.dart';
 import 'package:flutter_englearn/features/exercise/widgets/sentence_widget.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
-import 'package:flutter_englearn/model/response/lesson_question_response.dart';
+import 'package:flutter_englearn/model/response/question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -22,43 +22,14 @@ class SentenceUnscrambleQuestionScreen extends ConsumerStatefulWidget {
 
 class _SentenceUnscrambleQuestionScreenState
     extends ConsumerState<SentenceUnscrambleQuestionScreen> {
-  Future<List<Question>> _fetchQuestions(int lessonId) async {
-    List<Question> elements = [];
-    for (int i = 0; i < 10; i++) {
-      elements.add(Question(
-        questionId: i,
-        questionContent: 'Nice/to/meet/you $i',
-        questionType: 'multichoice',
-        lessonId: lessonId,
-        answerUrl: 'Answer $i',
-      ));
-    }
-
-    _totalQuestionCount = elements.length;
-    return await Future.delayed(
-        const Duration(seconds: 0), () => List.of(elements));
-  }
-
-  void updateCurrentIndex() {
-    if (_currentIndex < _totalQuestionCount - 1) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          _currentIndex++;
-        });
-      });
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushNamed(
-          context,
-          ResultExerciseScreen.routeName,
-          arguments: [
-            _correctAnswerCount,
-            _totalQuestionCount,
-            _explanationQuestions,
-          ],
-        );
-      });
-    }
+  Future<List<QuestionResponse>> _fetchQuestions() async {
+    return await fetchQuestions(
+      ref,
+      widget.lessonId,
+      (totalQuestionCount) {
+        _totalQuestionCount = totalQuestionCount;
+      },
+    );
   }
 
   void inCreaseCorrectAnswerCount() {
@@ -87,8 +58,8 @@ class _SentenceUnscrambleQuestionScreenState
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
         ),
-        body: FutureBuilder<List<Question>>(
-          future: _fetchQuestions(widget.lessonId),
+        body: FutureBuilder<List<QuestionResponse>>(
+          future: _fetchQuestions(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -127,8 +98,24 @@ class _SentenceUnscrambleQuestionScreenState
                 SentenceWidget(
                   isUnscrambl: true,
                   height: height,
-                  question: snapshot.data![_currentIndex],
-                  updateCurrentIndex: updateCurrentIndex,
+                  questionURL: snapshot.data![_currentIndex].answerFileURL,
+                  updateCurrentIndex: () {
+                    updateCurrentIndexQuestion(
+                      context,
+                      () {
+                        setState(() {
+                          _currentIndex++;
+                        });
+                      },
+                      _currentIndex,
+                      _totalQuestionCount,
+                      [
+                        _correctAnswerCount,
+                        _totalQuestionCount,
+                        _explanationQuestions,
+                      ],
+                    );
+                  },
                   inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                   addExplanationQuestion: addExplanationQuestion,
                 ),

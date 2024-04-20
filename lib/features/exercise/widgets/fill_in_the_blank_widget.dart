@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
-import 'package:flutter_englearn/model/response/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FillInTheBlankWidget extends ConsumerStatefulWidget {
   const FillInTheBlankWidget({
     super.key,
     required this.height,
-    required this.question,
+    required this.questionURl,
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
     required this.addExplanationQuestion,
   });
 
   final double height;
-  final Question question;
+  final String questionURl;
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
   final Function(ExplanationQuestion) addExplanationQuestion;
@@ -27,10 +26,10 @@ class FillInTheBlankWidget extends ConsumerStatefulWidget {
 }
 
 class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
-  Future<Answer> _fetchAnswer(int questionId) async {
-    return await ref.watch(exerciseServiceProvider).getAnswer(
-          widget.question.answerUrl,
-        );
+  Future<Answer> _fetchAnswer() async {
+    return await ref
+        .watch(exerciseServiceProvider)
+        .getAnswer(widget.questionURl);
   }
 
   String? wordIsChosen;
@@ -55,7 +54,7 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
           child: SizedBox(
             height: widget.height * 0.75,
             child: FutureBuilder<Answer>(
-              future: _fetchAnswer(widget.question.questionId),
+              future: _fetchAnswer(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(

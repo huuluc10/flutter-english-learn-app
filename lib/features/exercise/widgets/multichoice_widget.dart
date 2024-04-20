@@ -3,29 +3,28 @@ import 'package:flutter_englearn/features/exercise/provider/exercise_provider.da
 import 'package:flutter_englearn/features/exercise/widgets/answer_choice_widget.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
-import 'package:flutter_englearn/model/response/lesson_question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MultichoiceWidget extends ConsumerWidget {
   const MultichoiceWidget({
     super.key,
     required this.height,
-    required this.question,
+    required this.questionURL,
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
     required this.addExplanationQuestion,
   });
 
   final double height;
-  final Question question;
+  final String questionURL;
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
   final Function(ExplanationQuestion) addExplanationQuestion;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<Answer> fetchAnswer(int questionId) {
-      return ref.read(exerciseServiceProvider).getAnswer(question.answerUrl);
+    Future<Answer> fetchAnswer() {
+      return ref.read(exerciseServiceProvider).getAnswer(questionURL);
     }
 
     return Column(
@@ -46,7 +45,7 @@ class MultichoiceWidget extends ConsumerWidget {
               context: context,
               removeTop: true,
               child: FutureBuilder<Answer>(
-                  future: fetchAnswer(question.questionId),
+                  future: fetchAnswer(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
