@@ -2,7 +2,6 @@ import 'package:flutter_englearn/features/exercise/repository/exercise.repositor
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
 
 class ExerciseService {
   final ExerciseRepository exerciseRepository;
@@ -20,8 +19,7 @@ class ExerciseService {
   }
 
   Future<Answer> getAnswer(String filePath) async {
-    String url = transformLocalURLMediaToURL(filePath);
-    ResultReturn result = await exerciseRepository.getAnswer(url);
+    ResultReturn result = await exerciseRepository.getAnswer(filePath);
     Answer answer = result.data;
     return answer;
   }

@@ -44,16 +44,21 @@ class _ExplanationResultScreenState extends State<ExplanationResultScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        if (_currentIndex > 0) {
-                          setState(() {
-                            _currentIndex--;
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                    ),
+                    _currentIndex > 0
+                        ? SizedBox(
+                            width: 50,
+                            child: IconButton(
+                              onPressed: () {
+                                if (_currentIndex > 0) {
+                                  setState(() {
+                                    _currentIndex--;
+                                  });
+                                }
+                              },
+                              icon: const Icon(Icons.arrow_back),
+                            ),
+                          )
+                        : const SizedBox(width: 50),
                     SingleChildScrollView(
                       child: SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.6,
@@ -68,12 +73,18 @@ class _ExplanationResultScreenState extends State<ExplanationResultScreen> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              'Đáp án: ${widget.explanationQuestions[_currentIndex].answer}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
+                            widget.explanationQuestions[_currentIndex].answer !=
+                                    null
+                                ? Text(
+                                    'Đáp án: ${widget.explanationQuestions[_currentIndex].answer}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  )
+                                : Image.network(
+                                    widget.explanationQuestions[_currentIndex]
+                                        .answerImage!,
+                                  ),
                             const SizedBox(height: 10),
                             Text(
                               'Lời giải: ${widget.explanationQuestions[_currentIndex].explanation}',
@@ -86,17 +97,22 @@ class _ExplanationResultScreenState extends State<ExplanationResultScreen> {
                         ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        if (_currentIndex <
-                            widget.explanationQuestions.length - 1) {
-                          setState(() {
-                            _currentIndex++;
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.arrow_forward),
-                    ),
+                    _currentIndex < widget.explanationQuestions.length - 1
+                        ? SizedBox(
+                            width: 50,
+                            child: IconButton(
+                              onPressed: () {
+                                if (_currentIndex <
+                                    widget.explanationQuestions.length - 1) {
+                                  setState(() {
+                                    _currentIndex++;
+                                  });
+                                }
+                              },
+                              icon: const Icon(Icons.arrow_forward),
+                            ),
+                          )
+                        : const SizedBox(width: 50),
                   ],
                 ),
               ],

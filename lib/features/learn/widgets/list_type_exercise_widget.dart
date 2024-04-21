@@ -25,7 +25,6 @@ class ListTypeExerciseWidget extends StatelessWidget {
           if (e.questionTypeName == 'Multiple choice') {
             return MultichoiceExerciseWidget(
               lessonId: lessonId,
-              isCompleted: 'no',
             );
           } else if (e.questionTypeName == 'Fill in the blank') {
             return FillInTheBlankExerciseWidget(

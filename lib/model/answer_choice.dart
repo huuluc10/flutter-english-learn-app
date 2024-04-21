@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_englearn/utils/helper/helper.dart';
+
 class AnswerChoice {
   String? text;
   String? answerImage;
@@ -15,10 +17,13 @@ class AnswerChoice {
   }
 
   factory AnswerChoice.fromMap(Map<String, dynamic> map) {
+    String? image;
+    if (map['answer_image'] != null) {
+      image = transformLocalURLMediaToURL(map['answer_image']);
+    }
     return AnswerChoice(
       text: map['text'] == null ? null : map['text'] as String,
-      answerImage:
-          map['answerImage'] == null ? null : map['answerImage'] as String,
+      answerImage: image,
     );
   }
 

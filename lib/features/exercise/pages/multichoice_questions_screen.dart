@@ -41,10 +41,10 @@ class _MultichoiceQuestionScreenState
     _explanationQuestions.add(explanationQuestion);
   }
 
-  int _currentIndex = 0;
   int _correctAnswerCount = 0;
   int _totalQuestionCount = 0;
   final List<ExplanationQuestion> _explanationQuestions = [];
+  ValueNotifier<int> currentIndexQuestion = ValueNotifier<int>(0);
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +70,8 @@ class _MultichoiceQuestionScreenState
                   );
                 }
                 if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('Error'),
+                  return Center(
+                    child: Text('Error fetching questions!: ${snapshot.error}'),
                   );
                 }
                 return Column(
@@ -81,45 +81,53 @@ class _MultichoiceQuestionScreenState
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
-                        child: LinearPercentIndicator(
-                          lineHeight: 22.0,
-                          percent: _currentIndex / snapshot.data!.length,
-                          center: Text(
-                            "${_currentIndex / snapshot.data!.length * 100}%",
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                        child: ValueListenableBuilder<int>(
+                          valueListenable: currentIndexQuestion,
+                          builder: (context, value, child) => LinearPercentIndicator(
+                            lineHeight: 22.0,
+                            percent: value /
+                                snapshot.data!.length,
+                            center: Text(
+                              "${value / snapshot.data!.length * 100}%",
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
+                            barRadius: const Radius.circular(20),
+                            backgroundColor: Colors.grey,
+                            progressColor: Colors.blue,
                           ),
-                          barRadius: const Radius.circular(20),
-                          backgroundColor: Colors.grey,
-                          progressColor: Colors.blue,
                         ),
                       ),
                     ),
-                    MultichoiceWidget(
-                      height: height,
-                      questionURL: snapshot.data![_currentIndex].answerFileURL,
-                      updateCurrentIndex: () {
-                        updateCurrentIndexQuestion(
-                          context,
-                          () {
-                            setState(() {
-                              _currentIndex++;
-                            });
+                    ValueListenableBuilder<int>(
+                      valueListenable: currentIndexQuestion,
+                      builder: (context, value, child) {
+                        return MultichoiceWidget(
+                          height: height,
+                          questionURL: snapshot.data![value].answerFileURL,
+                          updateCurrentIndex: () {
+                            updateCurrentIndexQuestion(
+                              context,
+                              () {
+                                currentIndexQuestion.value++;
+                              },
+                              value,
+                              _totalQuestionCount,
+                              [
+                                _correctAnswerCount,
+                                _totalQuestionCount,
+                                _explanationQuestions,
+                              ],
+                            );
                           },
-                          _currentIndex,
-                          _totalQuestionCount,
-                          [
-                            _correctAnswerCount,
-                            _totalQuestionCount,
-                            _explanationQuestions,
-                          ],
+                          inCreaseCorrectAnswerCount:
+                              inCreaseCorrectAnswerCount,
+                          addExplanationQuestion: addExplanationQuestion,
                         );
                       },
-                      inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
-                      addExplanationQuestion: addExplanationQuestion,
                     ),
                   ],
                 );
