@@ -40,11 +40,11 @@ class _FillInTheBlankQuestionScreenState
     _explanationQuestions.add(explanationQuestion);
   }
 
-  int _currentIndex = 0;
   int _correctAnswerCount = 0;
   int _totalQuestionCount = 0;
 
   final List<ExplanationQuestion> _explanationQuestions = [];
+  ValueNotifier<int> currentIndexQuestion = ValueNotifier<int>(0);
 
   @override
   Widget build(BuildContext context) {
@@ -74,54 +74,57 @@ class _FillInTheBlankQuestionScreenState
                     child: Text('Error'),
                   );
                 }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: LinearPercentIndicator(
-                          lineHeight: 22.0,
-                          percent: _currentIndex / snapshot.data!.length,
-                          center: Text(
-                            "${_currentIndex / snapshot.data!.length * 100}%",
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                return ValueListenableBuilder<int>(
+                  valueListenable: currentIndexQuestion,
+                  builder: (context, value, child) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: LinearPercentIndicator(
+                            lineHeight: 22.0,
+                            percent: value / snapshot.data!.length,
+                            center: Text(
+                              "${value / snapshot.data!.length * 100}%",
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
+                            barRadius: const Radius.circular(20),
+                            backgroundColor: Colors.grey,
+                            progressColor: Colors.blue,
                           ),
-                          barRadius: const Radius.circular(20),
-                          backgroundColor: Colors.grey,
-                          progressColor: Colors.blue,
                         ),
                       ),
-                    ),
-                    FillInTheBlankWidget(
-                      height: height,
-                      questionURl: snapshot.data![_currentIndex].answerFileURL,
-                      updateCurrentIndex: () {
-                        updateCurrentIndexQuestion(
-                          context,
-                          () {
-                            setState(() {
-                              _currentIndex++;
-                            });
-                          },
-                          _currentIndex,
-                          _totalQuestionCount,
-                          [
-                            _correctAnswerCount,
+                      FillInTheBlankWidget(
+                        height: height,
+                        questionURl: snapshot.data![value].answerFileURL,
+                        updateCurrentIndex: () {
+                          updateCurrentIndexQuestion(
+                            context,
+                            () {
+                              setState(() {
+                                currentIndexQuestion.value++;
+                              });
+                            },
+                            value,
                             _totalQuestionCount,
-                            _explanationQuestions,
-                          ],
-                        );
-                      },
-                      inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
-                      addExplanationQuestion: addExplanationQuestion,
-                    ),
-                  ],
+                            [
+                              _correctAnswerCount,
+                              _totalQuestionCount,
+                              _explanationQuestions,
+                            ],
+                          );
+                        },
+                        inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
+                        addExplanationQuestion: addExplanationQuestion,
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

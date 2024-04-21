@@ -74,19 +74,18 @@ class _MultichoiceQuestionScreenState
                     child: Text('Error fetching questions!: ${snapshot.error}'),
                   );
                 }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: ValueListenableBuilder<int>(
-                          valueListenable: currentIndexQuestion,
-                          builder: (context, value, child) => LinearPercentIndicator(
+                return ValueListenableBuilder<int>(
+                  valueListenable: currentIndexQuestion,
+                  builder: (context, value, child) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: LinearPercentIndicator(
                             lineHeight: 22.0,
-                            percent: value /
-                                snapshot.data!.length,
+                            percent: value / snapshot.data!.length,
                             center: Text(
                               "${value / snapshot.data!.length * 100}%",
                               style: const TextStyle(
@@ -101,35 +100,29 @@ class _MultichoiceQuestionScreenState
                           ),
                         ),
                       ),
-                    ),
-                    ValueListenableBuilder<int>(
-                      valueListenable: currentIndexQuestion,
-                      builder: (context, value, child) {
-                        return MultichoiceWidget(
-                          height: height,
-                          questionURL: snapshot.data![value].answerFileURL,
-                          updateCurrentIndex: () {
-                            updateCurrentIndexQuestion(
-                              context,
-                              () {
-                                currentIndexQuestion.value++;
-                              },
-                              value,
+                      MultichoiceWidget(
+                        height: height,
+                        questionURL: snapshot.data![value].answerFileURL,
+                        updateCurrentIndex: () {
+                          updateCurrentIndexQuestion(
+                            context,
+                            () {
+                              currentIndexQuestion.value++;
+                            },
+                            value,
+                            _totalQuestionCount,
+                            [
+                              _correctAnswerCount,
                               _totalQuestionCount,
-                              [
-                                _correctAnswerCount,
-                                _totalQuestionCount,
-                                _explanationQuestions,
-                              ],
-                            );
-                          },
-                          inCreaseCorrectAnswerCount:
-                              inCreaseCorrectAnswerCount,
-                          addExplanationQuestion: addExplanationQuestion,
-                        );
-                      },
-                    ),
-                  ],
+                              _explanationQuestions,
+                            ],
+                          );
+                        },
+                        inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
+                        addExplanationQuestion: addExplanationQuestion,
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
