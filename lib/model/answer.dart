@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter_englearn/model/answer_choice.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
 
 class Answer {
   String question;
@@ -21,19 +22,26 @@ class Answer {
   });
 
   factory Answer.fromMap(Map<String, dynamic> map) {
+    String? questionImage;
+    String? correctImage;
+    if (map['question_image'] != null) {
+      questionImage = transformLocalURLMediaToURL(map['question_image']);
+    }
+    if (map['correct_image'] != null) {
+      correctImage = transformLocalURLMediaToURL(map['correct_image']);
+    }
     return Answer(
       question: map['question'] as String,
-      questionImage: map['question_image'] != null
-          ? map['question_image'] as String
-          : null,
+      questionImage: questionImage,
       answers: List<AnswerChoice>.from(
         (map['answers']).map<AnswerChoice>(
           (x) => AnswerChoice.fromMap(x as Map<String, dynamic>),
         ),
       ),
-      correctAnswer: map['correct_answer'] as String,
-      correctImage:
-          map['correct_image'] != null ? map['correct_image'] as String : null,
+      correctAnswer: map['correct_answer'] != null
+          ? map['correct_answer'] as String
+          : null,
+      correctImage: correctImage,
       explanation:
           map['explanation'] != null ? map['explanation'] as String : null,
     );

@@ -36,7 +36,7 @@ class ExerciseRepository {
 
       Uri uri = Uri.http(authority, unencodedPath);
 
-      var request = http.MultipartRequest('GET', uri)
+      var request = http.MultipartRequest('POST', uri)
         ..headers.addAll(headers)
         ..fields.addAll(body);
 

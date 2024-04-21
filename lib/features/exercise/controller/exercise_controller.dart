@@ -11,8 +11,7 @@ Future<List<QuestionResponse>> fetchQuestions(
       .getListMultipleChoiceQuestion(lessonId);
 
   updateTotalQuestion(elements.length);
-  return await Future.delayed(
-      const Duration(seconds: 0), () => List.of(elements));
+  return List.of(elements);
 }
 
 void updateCurrentIndexQuestion(BuildContext context, Function() refresh,

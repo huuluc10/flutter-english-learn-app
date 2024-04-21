@@ -5,7 +5,7 @@ import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MultichoiceWidget extends ConsumerWidget {
+class MultichoiceWidget extends ConsumerStatefulWidget {
   const MultichoiceWidget({
     super.key,
     required this.height,
@@ -22,11 +22,20 @@ class MultichoiceWidget extends ConsumerWidget {
   final Function(ExplanationQuestion) addExplanationQuestion;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    Future<Answer> fetchAnswer() {
-      return ref.read(exerciseServiceProvider).getAnswer(questionURL);
-    }
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _MultichoiceWidgetState();
+}
 
+class _MultichoiceWidgetState extends ConsumerState<MultichoiceWidget> {
+  Future<Answer> fetchAnswer() async {
+    Answer answer =
+        await ref.read(exerciseServiceProvider).getAnswer(widget.questionURL);
+    answer.answers.shuffle();
+    return answer;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         const Text(
@@ -40,7 +49,7 @@ class MultichoiceWidget extends ConsumerWidget {
           context: context,
           removeTop: true,
           child: SizedBox(
-            height: height * 0.8,
+            height: widget.height * 0.8,
             child: MediaQuery.removePadding(
               context: context,
               removeTop: true,
@@ -53,8 +62,9 @@ class MultichoiceWidget extends ConsumerWidget {
                       );
                     }
                     if (snapshot.hasError) {
-                      return const Center(
-                        child: Text('Error'),
+                      return Center(
+                        child: Text(
+                            'Error fetching questions!: ${snapshot.error}'),
                       );
                     }
                     Answer answer = snapshot.data!;
@@ -69,7 +79,7 @@ class MultichoiceWidget extends ConsumerWidget {
                           ),
                           constraints: BoxConstraints(
                             minHeight: 150,
-                            maxHeight: height * 0.25,
+                            maxHeight: widget.height * 0.27,
                           ),
                           child: Center(
                             child: Padding(
@@ -103,17 +113,17 @@ class MultichoiceWidget extends ConsumerWidget {
                             right: 10,
                           ),
                           child: SizedBox(
-                            height: height * 0.46,
+                            height: widget.height * 0.45,
                             child: AnswerChoiceWidget(
                               answer: answer,
-                              updateCurrentIndex: updateCurrentIndex,
+                              updateCurrentIndex: widget.updateCurrentIndex,
                               increaseCorrectAnswerCount:
-                                  inCreaseCorrectAnswerCount,
+                                  widget.inCreaseCorrectAnswerCount,
                               addExplanationQuestion:
                                   (ExplanationQuestion explanationQuestion) {
                                 ExplanationQuestion explanation =
                                     explanationQuestion;
-                                addExplanationQuestion(explanation);
+                                widget.addExplanationQuestion(explanation);
                               },
                             ),
                           ),
