@@ -18,6 +18,16 @@ class ExerciseService {
     return list;
   }
 
+  Future<List<QuestionResponse>> getListFillInBlankQuestion(
+      int lessonId) async {
+    ResultReturn result =
+        await exerciseRepository.getListFillQuestion(lessonId);
+
+    List<QuestionResponse> list = result.data;
+    list.shuffle();
+    return list;
+  }
+
   Future<Answer> getAnswer(String filePath) async {
     ResultReturn result = await exerciseRepository.getAnswer(filePath);
     Answer answer = result.data;

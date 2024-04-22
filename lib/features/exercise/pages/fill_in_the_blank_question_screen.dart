@@ -23,7 +23,7 @@ class FillInTheBlankQuestionScreen extends ConsumerStatefulWidget {
 class _FillInTheBlankQuestionScreenState
     extends ConsumerState<FillInTheBlankQuestionScreen> {
   Future<List<QuestionResponse>> _fetchQuestions() async {
-    return await fetchQuestions(
+    return await fetchFillInBlankQuestions(
       ref,
       widget.lessonId,
       (totalQuestionCount) {
@@ -53,6 +53,7 @@ class _FillInTheBlankQuestionScreenState
       canPop: false,
       child: Scaffold(
         extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: true,
         extendBody: true,
         appBar: AppBar(
           leading: null,
@@ -87,7 +88,7 @@ class _FillInTheBlankQuestionScreenState
                             lineHeight: 22.0,
                             percent: value / snapshot.data!.length,
                             center: Text(
-                              "${value / snapshot.data!.length * 100}%",
+                              "${(value / snapshot.data!.length * 100).toStringAsFixed(2)} %",
                               style: const TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.white,
@@ -107,9 +108,7 @@ class _FillInTheBlankQuestionScreenState
                           updateCurrentIndexQuestion(
                             context,
                             () {
-                              setState(() {
-                                currentIndexQuestion.value++;
-                              });
+                              currentIndexQuestion.value++;
                             },
                             value,
                             _totalQuestionCount,

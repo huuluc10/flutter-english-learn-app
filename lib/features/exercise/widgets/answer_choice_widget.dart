@@ -27,16 +27,16 @@ class AnswerChoiceWidget extends ConsumerWidget {
       crossAxisSpacing: 5,
       shrinkWrap: true,
       children: List.generate(
-        answer.answers.length,
+        answer.answers!.length,
         (index) => TextButton(
           onPressed: () {
             // TODO: call API to save answer
 
-            if (answer.answers[index].text != null &&
-                answer.answers[index].text == answer.correctAnswer) {
+            if (answer.answers![index].text != null &&
+                answer.answers![index].text == answer.correctAnswer) {
               increaseCorrectAnswerCount();
-            } else if (answer.answers[index].answerImage != null &&
-                answer.answers[index].answerImage == answer.correctImage) {
+            } else if (answer.answers![index].answerImage != null &&
+                answer.answers![index].answerImage == answer.correctImage) {
               increaseCorrectAnswerCount();
             } else {
               addExplanationQuestion(
@@ -57,9 +57,9 @@ class AnswerChoiceWidget extends ConsumerWidget {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: answer.answers[index].text != null
+          child: answer.answers![index].text != null
               ? Text(
-                  answer.answers[index].text!,
+                  answer.answers![index].text!,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class AnswerChoiceWidget extends ConsumerWidget {
                   textAlign: TextAlign.center,
                 )
               : Image.network(
-                  answer.answers[index].answerImage!,
+                  answer.answers![index].answerImage!,
                   fit: BoxFit.cover,
                   width: 100,
                   height: 100,

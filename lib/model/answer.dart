@@ -7,7 +7,7 @@ import 'package:flutter_englearn/utils/helper/helper.dart';
 class Answer {
   String question;
   String? questionImage;
-  List<AnswerChoice> answers;
+  List<AnswerChoice>? answers;
   String? correctAnswer;
   String? correctImage;
   String? explanation;
@@ -33,11 +33,13 @@ class Answer {
     return Answer(
       question: map['question'] as String,
       questionImage: questionImage,
-      answers: List<AnswerChoice>.from(
-        (map['answers']).map<AnswerChoice>(
-          (x) => AnswerChoice.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      answers: map['answers'] != null
+          ? List<AnswerChoice>.from(
+              (map['answers']).map<AnswerChoice>(
+                (x) => AnswerChoice.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
       correctAnswer: map['correct_answer'] != null
           ? map['correct_answer'] as String
           : null,

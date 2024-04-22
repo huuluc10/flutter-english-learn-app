@@ -4,11 +4,21 @@ import 'package:flutter_englearn/features/exercise/provider/exercise_provider.da
 import 'package:flutter_englearn/model/response/question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Future<List<QuestionResponse>> fetchQuestions(
+Future<List<QuestionResponse>> fetchMultipleChoiceQuestions(
     WidgetRef ref, int lessonId, Function(int) updateTotalQuestion) async {
   List<QuestionResponse> elements = await ref
       .watch(exerciseServiceProvider)
       .getListMultipleChoiceQuestion(lessonId);
+
+  updateTotalQuestion(elements.length);
+  return List.of(elements);
+}
+
+Future<List<QuestionResponse>> fetchFillInBlankQuestions(
+    WidgetRef ref, int lessonId, Function(int) updateTotalQuestion) async {
+  List<QuestionResponse> elements = await ref
+      .watch(exerciseServiceProvider)
+      .getListFillInBlankQuestion(lessonId);
 
   updateTotalQuestion(elements.length);
   return List.of(elements);
