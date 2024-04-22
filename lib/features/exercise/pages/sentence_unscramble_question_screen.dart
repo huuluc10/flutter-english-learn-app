@@ -23,7 +23,7 @@ class SentenceUnscrambleQuestionScreen extends ConsumerStatefulWidget {
 class _SentenceUnscrambleQuestionScreenState
     extends ConsumerState<SentenceUnscrambleQuestionScreen> {
   Future<List<QuestionResponse>> _fetchQuestions() async {
-    return await fetchMultipleChoiceQuestions(
+    return await fetchSentenceUnscrambleQuestions(
       ref,
       widget.lessonId,
       (totalQuestionCount) {
@@ -68,8 +68,8 @@ class _SentenceUnscrambleQuestionScreenState
               );
             }
             if (snapshot.hasError) {
-              return const Center(
-                child: Text('Error'),
+              return Center(
+                child: Text('Error fetching data: ${snapshot.error}'),
               );
             }
             return ValueListenableBuilder<int>(
@@ -106,9 +106,7 @@ class _SentenceUnscrambleQuestionScreenState
                       updateCurrentIndexQuestion(
                         context,
                         () {
-                          setState(() {
-                            currentIndexQuestion.value++;
-                          });
+                          currentIndexQuestion.value++;
                         },
                         value,
                         _totalQuestionCount,

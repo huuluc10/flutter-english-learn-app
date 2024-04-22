@@ -77,6 +77,8 @@ class APIUrl {
       "/api/v1/question/findFillInBlankQuestionByLessonId";
   static const String pathGetListExerciseQuestion =
       "/api/v1/question/getTypeQuestion/";
+  static const String pathGetListSentenceUnscrambleQuestion =
+      "/api/v1/question/findSentenceUnscrambleQuestionByLessonId";
 
   /* ----------------------------------------------------------------------------- */
 

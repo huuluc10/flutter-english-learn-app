@@ -30,6 +30,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
