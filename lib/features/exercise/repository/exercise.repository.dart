@@ -63,6 +63,54 @@ class ExerciseRepository {
     }
   }
 
+  Future<ResultReturn> getListFillQuestion(int lessonId) async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'ExerciseRepository');
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Get list multiple choice question by lesson id: $lessonId',
+          name: 'ExerciseRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = BaseHeaderHttp.headers;
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathGetFillInBlankQuestion;
+
+      Map<String, String> body = {};
+      body['lessonId'] = lessonId.toString();
+
+      Uri uri = Uri.http(authority, unencodedPath);
+
+      var request = http.MultipartRequest('POST', uri)
+        ..headers.addAll(headers)
+        ..fields.addAll(body);
+
+      var response = await request.send();
+
+      if (response.statusCode == 401) {
+        log('Token is expired', name: 'ExerciseRepository');
+        return ResultReturn(httpStatusCode: 401, data: null);
+      } else if (response.statusCode == 400) {
+        log('Get list fill question failed', name: 'ExerciseRepository');
+        return ResultReturn(httpStatusCode: 400, data: null);
+      } else {
+        log("Get list fill question successfully", name: 'ExerciseRepository');
+
+        ResponseModel responseModel =
+            ResponseModel.fromJson(await response.stream.bytesToString());
+        List<QuestionResponse> list = (responseModel.data as List<dynamic>)
+            .map((item) => QuestionResponse.fromMap(item))
+            .toList();
+        return ResultReturn(httpStatusCode: 200, data: list);
+      }
+    }
+  }
+
   Future<ResultReturn> getAnswer(String url) async {
     // get jwt token from authRepository
     final jwtResponse = await authRepository.getJWTCurrent();

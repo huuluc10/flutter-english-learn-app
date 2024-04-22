@@ -30,7 +30,7 @@ class _MultichoiceWidgetState extends ConsumerState<MultichoiceWidget> {
   Future<Answer> fetchAnswer() async {
     Answer answer =
         await ref.read(exerciseServiceProvider).getAnswer(widget.questionURL);
-    answer.answers.shuffle();
+    answer.answers!.shuffle();
     return answer;
   }
 

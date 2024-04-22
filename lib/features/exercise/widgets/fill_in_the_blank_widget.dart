@@ -32,9 +32,16 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
         .getAnswer(widget.questionURl);
   }
 
-  String? wordIsChosen;
   String? correctAnswer;
   String? explanation;
+
+  TextEditingController controller = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +59,7 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
           context: context,
           removeTop: true,
           child: SizedBox(
-            height: widget.height * 0.75,
+            // height: widget.height * 0.75,
             child: FutureBuilder<Answer>(
               future: _fetchAnswer(),
               builder: (context, snapshot) {
@@ -62,19 +69,14 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
                   );
                 }
                 if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('Error'),
+                  return Center(
+                    child: Text('Error fetching questions!: ${snapshot.error}'),
                   );
                 }
                 Answer answer = snapshot.data!;
                 correctAnswer = answer.correctAnswer;
                 explanation = answer.explanation;
 
-                // Remove word is chosen
-                if (wordIsChosen != null) {
-                  answer.answers
-                      .removeWhere((element) => element.text == wordIsChosen);
-                }
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -110,25 +112,12 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
                                       fontSize: 20,
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () => setState(() {
-                                      wordIsChosen = null;
-                                    }),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          wordIsChosen ?? '',
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: controller,
+                                      style: const TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 20,
                                       ),
                                     ),
                                   ),
@@ -139,58 +128,11 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                        left: 10,
-                        bottom: 5,
-                        right: 10,
-                      ),
-                      child: SizedBox(
-                        height: widget.height * 0.28,
-                        child: GridView.count(
-                          crossAxisCount: 3,
-                          childAspectRatio: 3.2,
-                          mainAxisSpacing: 5,
-                          children: List.of(
-                            answer.answers[0].text!.split('/').map(
-                              (e) {
-                                return InkWell(
-                                  onTap: () {
-                                    if (wordIsChosen == null) {
-                                      setState(() {
-                                        wordIsChosen = e;
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        e,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          if (wordIsChosen == null || wordIsChosen == '') {
+                          if (controller.text.isEmpty ||
+                              controller.text.trim() == '') {
                             // show SnackBar
                             ScaffoldMessenger.of(context).clearSnackBars();
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -207,8 +149,12 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
                               ),
                             );
                           } else {
-                            if (wordIsChosen == correctAnswer) {
+                            List<String> correctAnswers =
+                                correctAnswer!.split('/');
+                            if (correctAnswers
+                                .contains(controller.text.trim())) {
                               widget.inCreaseCorrectAnswerCount();
+                              controller.clear();
                             } else {
                               widget.addExplanationQuestion(
                                 ExplanationQuestion(

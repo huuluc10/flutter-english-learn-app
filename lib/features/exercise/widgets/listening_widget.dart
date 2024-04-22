@@ -71,7 +71,7 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
 
                   // Remove word is chosen
                   if (_selectedAnswer != '') {
-                    answer.answers.removeWhere(
+                    answer.answers!.removeWhere(
                         (element) => element.text == _selectedAnswer);
                   }
                   return Column(
@@ -179,7 +179,7 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                               childAspectRatio: 3.2,
                               mainAxisSpacing: 5,
                               children: List.of(
-                                answer.answers.map(
+                                answer.answers!.map(
                                   (e) {
                                     return InkWell(
                                       onTap: () {

@@ -24,7 +24,7 @@ class MultichoiceQuestionScreen extends ConsumerStatefulWidget {
 class _MultichoiceQuestionScreenState
     extends ConsumerState<MultichoiceQuestionScreen> {
   Future<List<QuestionResponse>> _fetchQuestions() async {
-    return await fetchQuestions(
+    return await fetchMultipleChoiceQuestions(
       ref,
       widget.lessonId,
       (totalQuestionCount) {
@@ -87,7 +87,7 @@ class _MultichoiceQuestionScreenState
                             lineHeight: 22.0,
                             percent: value / snapshot.data!.length,
                             center: Text(
-                              "${value / snapshot.data!.length * 100}%",
+                              "${(value / snapshot.data!.length * 100).toStringAsFixed(2)} %",
                               style: const TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.white,
