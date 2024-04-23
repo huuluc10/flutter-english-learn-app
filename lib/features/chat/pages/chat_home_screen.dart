@@ -6,6 +6,7 @@ import 'package:flutter_englearn/features/user_info/controller/user_info_control
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
 import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
+import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -56,8 +57,8 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
+                  return FutureBuilderErrorWidget(
+                    error: snapshot.error.toString(),
                   );
                 }
                 String? username = snapshot.data;
@@ -111,8 +112,8 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
                                         child: CircularProgressIndicator(),
                                       );
                                     } else if (snapshot.hasError) {
-                                      return Center(
-                                        child: Text('Error: ${snapshot.error}'),
+                                      return FutureBuilderErrorWidget(
+                                        error: snapshot.error.toString(),
                                       );
                                     }
                                     final List<MainUserInfoResponse> friends =

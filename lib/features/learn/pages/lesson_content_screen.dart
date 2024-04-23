@@ -4,9 +4,10 @@ import 'package:flutter_englearn/features/learn/controller/learn_controller.dart
 import 'package:flutter_englearn/features/learn/provider/learn_provider.dart';
 import 'package:flutter_englearn/features/learn/widgets/youtube_player_widget.dart';
 import 'package:flutter_englearn/model/lesson_content.dart';
+import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LessonContentScreen extends ConsumerWidget {
+class LessonContentScreen extends ConsumerStatefulWidget {
   const LessonContentScreen({
     super.key,
     required this.lessonId,
@@ -22,7 +23,14 @@ class LessonContentScreen extends ConsumerWidget {
   final Function() onMarkAsLearned;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _LessonContentScreenState();
+}
+
+class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -44,18 +52,15 @@ class LessonContentScreen extends ConsumerWidget {
             context: context,
             removeTop: true,
             child: FutureBuilder<LessconContent>(
-              future: fetchLessonContent(context, ref, url),
+              future: fetchLessonContent(context, ref, widget.url),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      'Có lỗi xảy ra: ${snapshot.error}',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
+                  return FutureBuilderErrorWidget(
+                    error: snapshot.error.toString(),
                   );
                 } else {
                   final lessonContent = snapshot.data;
@@ -102,7 +107,6 @@ class LessonContentScreen extends ConsumerWidget {
                                         ),
                                     textAlign: TextAlign.justify,
                                   ),
-                            const SizedBox(height: 8),
                             if (content.text != null)
                               Text(
                                 content.text!,
@@ -164,17 +168,15 @@ class LessonContentScreen extends ConsumerWidget {
                               Center(
                                 child: CachedNetworkImage(
                                   imageUrl: content.imageUrl!,
-                                  width: 200,
-                                  height: 200,
+                                  width: MediaQuery.of(context).size.width,
                                 ),
                               ),
-                            const SizedBox(height: 8),
                             if (content.videoUrl != null)
                               YoutubePlayerWidget(url: content.videoUrl!),
                             const SizedBox(height: 16),
                           ],
                         ),
-                      isCompleted == "No"
+                      widget.isCompleted == "No"
                           ? Center(
                               child: ElevatedButton(
                                 onPressed: () {
@@ -182,9 +184,9 @@ class LessonContentScreen extends ConsumerWidget {
                                       .watch(learnServiceProvider)
                                       .markLessonAsLearned(
                                     context,
-                                    lessonId,
+                                    widget.lessonId,
                                     () {
-                                      onMarkAsLearned();
+                                      widget.onMarkAsLearned();
                                     },
                                   );
                                 },

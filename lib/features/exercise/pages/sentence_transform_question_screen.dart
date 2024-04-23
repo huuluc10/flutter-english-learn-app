@@ -3,6 +3,7 @@ import 'package:flutter_englearn/features/exercise/controller/exercise_controlle
 import 'package:flutter_englearn/features/exercise/widgets/sentence_widget.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
+import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -67,9 +68,9 @@ class _SentenceTransformQuestionScreenState
               );
             }
             if (snapshot.hasError) {
-              return const Center(
-                child: Text('Error'),
-              );
+              return FutureBuilderErrorWidget(
+                    error: snapshot.error.toString(),
+                  );
             }
             return ValueListenableBuilder<int>(
               valueListenable: currentIndexQuestion,

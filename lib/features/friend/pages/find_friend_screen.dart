@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
+import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -139,45 +140,48 @@ class _FindFriendScreenState extends ConsumerState<FindFriendScreen> {
                                 return const Center(
                                   child: CircularProgressIndicator(),
                                 );
-                              } else {
-                                List<String> listHistory = snapshot.data!;
-                                return Column(
-                                  children: <Widget>[
-                                    for (int i = 0; i < listHistory.length; i++)
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: 5,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: () {
-                                                  isSearching = true;
-                                                  searchController.text =
-                                                      listHistory[i];
-                                                  _onTypingFinished(
-                                                      listHistory[i]);
-                                                },
-                                                child: Text(listHistory[i])),
-                                            const Spacer(),
-                                            IconButton(
-                                              icon: const Icon(Icons.close),
-                                              onPressed: () async {
-                                                await ref
-                                                    .watch(
-                                                        friendServiceProvider)
-                                                    .deleteHistoryFindFriend(
-                                                        listHistory[i]);
-                                                setState(() {});
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                  ],
+                              } else if (snapshot.hasError) {
+                                return FutureBuilderErrorWidget(
+                                  error: snapshot.error.toString(),
                                 );
                               }
+
+                              List<String> listHistory = snapshot.data!;
+                              return Column(
+                                children: <Widget>[
+                                  for (int i = 0; i < listHistory.length; i++)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 5,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          InkWell(
+                                              onTap: () {
+                                                isSearching = true;
+                                                searchController.text =
+                                                    listHistory[i];
+                                                _onTypingFinished(
+                                                    listHistory[i]);
+                                              },
+                                              child: Text(listHistory[i])),
+                                          const Spacer(),
+                                          IconButton(
+                                            icon: const Icon(Icons.close),
+                                            onPressed: () async {
+                                              await ref
+                                                  .watch(friendServiceProvider)
+                                                  .deleteHistoryFindFriend(
+                                                      listHistory[i]);
+                                              setState(() {});
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                              );
                             },
                           ),
                           const SizedBox(height: 5),
