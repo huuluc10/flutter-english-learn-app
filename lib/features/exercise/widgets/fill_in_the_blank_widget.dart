@@ -60,6 +60,7 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
         widget.addExplanationQuestion(
           ExplanationQuestion(
             question: question,
+            questionImage: null,
             answer: correctAnswer!,
             answerImage: null,
             explanation: explanation,

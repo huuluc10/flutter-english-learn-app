@@ -77,7 +77,6 @@ class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
                                 ),
                         textAlign: TextAlign.justify,
                       ),
-                      const SizedBox(height: 8),
                       if (lessonContent.description != null)
                         Text(
                           lessonContent.description!,
@@ -168,7 +167,6 @@ class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
                               Center(
                                 child: CachedNetworkImage(
                                   imageUrl: content.imageUrl!,
-                                  width: MediaQuery.of(context).size.width,
                                 ),
                               ),
                             if (content.videoUrl != null)

@@ -199,6 +199,7 @@ class SpeakingWidget extends ConsumerWidget {
                                 addExplanationQuestion(
                                   ExplanationQuestion(
                                     question: answer.question,
+                                    questionImage: answer.questionImage,
                                     answer: correctAnswer!,
                                     answerImage: answer.correctImage,
                                     explanation: explanation,

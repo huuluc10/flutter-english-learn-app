@@ -70,8 +70,8 @@ class _SentenceUnscrambleQuestionScreenState
             }
             if (snapshot.hasError) {
               return FutureBuilderErrorWidget(
-                    error: snapshot.error.toString(),
-                  );
+                error: snapshot.error.toString(),
+              );
             }
             return ValueListenableBuilder<int>(
               valueListenable: currentIndexQuestion,

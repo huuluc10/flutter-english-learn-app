@@ -139,8 +139,9 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                               }
                                               if (snapshot.hasError) {
                                                 return FutureBuilderErrorWidget(
-                    error: snapshot.error.toString(),
-                  );
+                                                  error:
+                                                      snapshot.error.toString(),
+                                                );
                                               }
                                               List<QuestionType> questionTypes =
                                                   snapshot.data!;

@@ -42,6 +42,7 @@ class AnswerChoiceWidget extends ConsumerWidget {
               addExplanationQuestion(
                 ExplanationQuestion(
                   question: answer.question,
+                  questionImage: answer.questionImage,
                   answer: answer.correctAnswer,
                   answerImage: answer.correctImage,
                   explanation: answer.explanation,

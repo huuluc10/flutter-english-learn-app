@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
+import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SentenceWidget extends ConsumerStatefulWidget {
@@ -27,25 +28,46 @@ class SentenceWidget extends ConsumerStatefulWidget {
 }
 
 class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
+  late Future<Answer> _answer;
+  String stringAnswer = '';
   Future<Answer> _fetchAnswer() async {
-    return await ref
-        .watch(exerciseServiceProvider)
-        .getAnswer(widget.questionURL);
+    String correctAnswer = '';
+    _answer.then((value) => correctAnswer = value.correctAnswer!);
+    if (correctAnswer.length == stringAnswer.length) {
+      return _answer;
+    }
+    _answer = ref.watch(exerciseServiceProvider).getAnswer(widget.questionURL);
+    return _answer;
   }
 
   List<String> getWordsTransform(String sentence) {
-    List<String> words = sentence.split(' ');
-    words.shuffle();
     return sentence.split(' ');
   }
 
   List<String> getWordsUnscramble(String sentence) {
-    List<String> words = sentence.split('/');
-    return words;
+    return sentence.split('/');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void refreshAnswer() {
+    setState(() {
+      _answer =
+          ref.watch(exerciseServiceProvider).getAnswer(widget.questionURL);
+    });
   }
 
   ValueNotifier<List<String>> listWordIsChosen =
       ValueNotifier<List<String>>([]);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    refreshAnswer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,22 +97,25 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                       );
                     }
                     if (snapshot.hasError) {
-                      return const Center(
-                        child: Text('Error'),
+                      return FutureBuilderErrorWidget(
+                        error: snapshot.error.toString(),
                       );
                     }
                     Answer answer = snapshot.data!;
                     List<String> words = widget.isUnscrambl
                         ? getWordsUnscramble(answer.question)
                         : getWordsTransform(answer.correctAnswer!);
+                    words.shuffle();
                     // Remove word is chosen
                     for (String word in value) {
                       words.remove(word);
                     }
+                    stringAnswer = value.join(' ');
 
-                    if (words.isEmpty) {
+                    if (words.isEmpty &&
+                        stringAnswer.length == answer.correctAnswer!.length) {
                       // Concat list word is chosen to create answer
-                      String stringAnswer = value.join(' ');
+
                       if (stringAnswer == answer.correctAnswer) {
                         widget.inCreaseCorrectAnswerCount();
                         value.clear();
@@ -98,6 +123,7 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                         widget.addExplanationQuestion(
                           ExplanationQuestion(
                             question: answer.question,
+                            questionImage: answer.questionImage,
                             answer: answer.correctAnswer,
                             answerImage: answer.correctImage,
                             explanation: answer.explanation,
@@ -208,6 +234,8 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                               removeTop: true,
                               child: GridView.count(
                                 crossAxisCount: 3,
+                                crossAxisSpacing: 5,
+                                mainAxisSpacing: 5,
                                 childAspectRatio: 3,
                                 children: List.of(
                                   words.map(

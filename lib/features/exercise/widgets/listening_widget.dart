@@ -241,6 +241,7 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                                 widget.addExplanationQuestion(
                                   ExplanationQuestion(
                                     question: answer.question,
+                                    questionImage: answer.questionImage,
                                     answer: correctAnswer!,
                                     answerImage: answer.questionImage,
                                     explanation: explanation,

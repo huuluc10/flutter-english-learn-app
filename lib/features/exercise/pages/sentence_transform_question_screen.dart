@@ -24,7 +24,7 @@ class SentenceTransformQuestionScreen extends ConsumerStatefulWidget {
 class _SentenceTransformQuestionScreenState
     extends ConsumerState<SentenceTransformQuestionScreen> {
   Future<List<QuestionResponse>> _fetchQuestions() async {
-    return await fetchMultipleChoiceQuestions(
+    return await fetchSentenceTransformationQuestions(
       ref,
       widget.lessonId,
       (totalQuestionCount) {
@@ -69,8 +69,8 @@ class _SentenceTransformQuestionScreenState
             }
             if (snapshot.hasError) {
               return FutureBuilderErrorWidget(
-                    error: snapshot.error.toString(),
-                  );
+                error: snapshot.error.toString(),
+              );
             }
             return ValueListenableBuilder<int>(
               valueListenable: currentIndexQuestion,
@@ -106,9 +106,7 @@ class _SentenceTransformQuestionScreenState
                       updateCurrentIndexQuestion(
                         context,
                         () {
-                          setState(() {
-                            currentIndexQuestion.value++;
-                          });
+                          currentIndexQuestion.value++;
                         },
                         value,
                         _totalQuestionCount,

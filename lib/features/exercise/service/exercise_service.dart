@@ -46,4 +46,14 @@ class ExerciseService {
     }
     return answer;
   }
+
+  Future<List<QuestionResponse>> getListSentenceTransformationQuestion(
+      int lessonId) async {
+    ResultReturn result =
+        await exerciseRepository.getListSentenceTransformationQuestion(lessonId);
+
+    List<QuestionResponse> list = result.data;
+    list.shuffle();
+    return list;
+  }
 }
