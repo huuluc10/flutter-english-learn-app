@@ -73,6 +73,14 @@ class _ExplanationResultScreenState extends State<ExplanationResultScreen> {
                               ),
                             ),
                             const SizedBox(height: 10),
+                            if (widget.explanationQuestions[_currentIndex]
+                                    .questionImage !=
+                                null)
+                              Image.network(
+                                widget.explanationQuestions[_currentIndex]
+                                    .questionImage!,
+                              ),
+                            const SizedBox(height: 10),
                             widget.explanationQuestions[_currentIndex].answer !=
                                     null
                                 ? Text(
@@ -86,13 +94,16 @@ class _ExplanationResultScreenState extends State<ExplanationResultScreen> {
                                         .answerImage!,
                                   ),
                             const SizedBox(height: 10),
-                            Text(
-                              'Lời giải: ${widget.explanationQuestions[_currentIndex].explanation}',
-                              style: const TextStyle(
-                                fontSize: 16,
+                            if (widget.explanationQuestions[_currentIndex]
+                                    .explanation !=
+                                null)
+                              Text(
+                                'Lời giải: ${widget.explanationQuestions[_currentIndex].explanation}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.justify,
                               ),
-                              textAlign: TextAlign.justify,
-                            ),
                           ],
                         ),
                       ),

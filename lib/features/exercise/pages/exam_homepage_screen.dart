@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/topic.dart';
+import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -62,6 +63,16 @@ class ExamHomePageScreen extends ConsumerWidget {
                         FutureBuilder<List<Topic>>(
                           future: getTopicsHasExam(),
                           builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError)
+                              // ignore: curly_braces_in_flow_control_structures
+                              return FutureBuilderErrorWidget(
+                                error: snapshot.error.toString(),
+                              );
                             if (snapshot.hasData) {
                               return MediaQuery.removePadding(
                                 context: context,

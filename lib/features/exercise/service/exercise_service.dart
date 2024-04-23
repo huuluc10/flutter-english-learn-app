@@ -28,9 +28,32 @@ class ExerciseService {
     return list;
   }
 
+  Future<List<QuestionResponse>> getListSentenceUnscrambleQuestion(
+      int lessonId) async {
+    ResultReturn result =
+        await exerciseRepository.getListSentenceUnscrambleQuestion(lessonId);
+
+    List<QuestionResponse> list = result.data;
+    list.shuffle();
+    return list;
+  }
+
   Future<Answer> getAnswer(String filePath) async {
     ResultReturn result = await exerciseRepository.getAnswer(filePath);
     Answer answer = result.data;
+    if (answer.answers != null) {
+      answer.answers!.shuffle();
+    }
     return answer;
+  }
+
+  Future<List<QuestionResponse>> getListSentenceTransformationQuestion(
+      int lessonId) async {
+    ResultReturn result =
+        await exerciseRepository.getListSentenceTransformationQuestion(lessonId);
+
+    List<QuestionResponse> list = result.data;
+    list.shuffle();
+    return list;
   }
 }

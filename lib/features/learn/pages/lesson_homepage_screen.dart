@@ -4,6 +4,7 @@ import 'package:flutter_englearn/features/learn/pages/lesson_content_screen.dart
 import 'package:flutter_englearn/features/learn/widgets/list_type_exercise_widget.dart';
 import 'package:flutter_englearn/model/question_type.dart';
 import 'package:flutter_englearn/model/response/lesson_response.dart';
+import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,6 +31,7 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
@@ -68,6 +70,14 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                           future: getLessons(
                               context, ref, widget.topicId.toString()),
                           builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return FutureBuilderErrorWidget(
+                                error: snapshot.error.toString(),
+                              );
+                            }
                             if (snapshot.hasData) {
                               return MediaQuery.removePadding(
                                 context: context,
@@ -128,8 +138,10 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                                 return const CircularProgressIndicator();
                                               }
                                               if (snapshot.hasError) {
-                                                return Text(
-                                                    '${snapshot.error}');
+                                                return FutureBuilderErrorWidget(
+                                                  error:
+                                                      snapshot.error.toString(),
+                                                );
                                               }
                                               List<QuestionType> questionTypes =
                                                   snapshot.data!;

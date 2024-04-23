@@ -35,6 +35,42 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
   String? correctAnswer;
   String? explanation;
 
+  void changeQuestion(String question) {
+    if (controller.text.isEmpty || controller.text.trim() == '') {
+      // show SnackBar
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Vui lòng chọn câu trả lời',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: Color.fromARGB(255, 233, 233, 233),
+        ),
+      );
+    } else {
+      List<String> correctAnswers = correctAnswer!.split('/');
+      if (correctAnswers.contains(controller.text.trim())) {
+        widget.inCreaseCorrectAnswerCount();
+        controller.clear();
+      } else {
+        widget.addExplanationQuestion(
+          ExplanationQuestion(
+            question: question,
+            questionImage: null,
+            answer: correctAnswer!,
+            answerImage: null,
+            explanation: explanation,
+          ),
+        );
+      }
+      widget.updateCurrentIndex();
+    }
+  }
+
   TextEditingController controller = TextEditingController();
 
   @override
@@ -115,6 +151,9 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
                                   Expanded(
                                     child: TextField(
                                       controller: controller,
+                                      onSubmitted: (value) {
+                                        changeQuestion(answer.question);
+                                      },
                                       style: const TextStyle(
                                         color: Colors.blue,
                                         fontSize: 20,
@@ -131,42 +170,7 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          if (controller.text.isEmpty ||
-                              controller.text.trim() == '') {
-                            // show SnackBar
-                            ScaffoldMessenger.of(context).clearSnackBars();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Vui lòng chọn câu trả lời',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                backgroundColor:
-                                    Color.fromARGB(255, 233, 233, 233),
-                              ),
-                            );
-                          } else {
-                            List<String> correctAnswers =
-                                correctAnswer!.split('/');
-                            if (correctAnswers
-                                .contains(controller.text.trim())) {
-                              widget.inCreaseCorrectAnswerCount();
-                              controller.clear();
-                            } else {
-                              widget.addExplanationQuestion(
-                                ExplanationQuestion(
-                                  question: answer.question,
-                                  answer: correctAnswer!,
-                                  answerImage: null,
-                                  explanation: explanation,
-                                ),
-                              );
-                            }
-                            widget.updateCurrentIndex();
-                          }
+                          changeQuestion(answer.question);
                         },
                         child: const Text('Tiếp tục'),
                       ),

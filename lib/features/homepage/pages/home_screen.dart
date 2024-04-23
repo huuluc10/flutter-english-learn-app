@@ -5,6 +5,7 @@ import 'package:flutter_englearn/features/homepage/widgets/topic_widget.dart';
 import 'package:flutter_englearn/features/learn/pages/topic_details_screen.dart';
 import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
 import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
+import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../model/response/history_learn_topic_response.dart';
@@ -127,6 +128,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   FutureBuilder<List<HistoryLearnTopicResponse>>(
                     future: _listTopicFuture,
                     builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else  if (snapshot.hasError) {
+                        return FutureBuilderErrorWidget(
+                          error: snapshot.error.toString(),
+                        );
+                      } else
                       if (snapshot.hasData) {
                         List<HistoryLearnTopicResponse> listTopic =
                             snapshot.data!;

@@ -24,6 +24,26 @@ Future<List<QuestionResponse>> fetchFillInBlankQuestions(
   return List.of(elements);
 }
 
+Future<List<QuestionResponse>> fetchSentenceUnscrambleQuestions(
+    WidgetRef ref, int lessonId, Function(int) updateTotalQuestion) async {
+  List<QuestionResponse> elements = await ref
+      .watch(exerciseServiceProvider)
+      .getListSentenceUnscrambleQuestion(lessonId);
+
+  updateTotalQuestion(elements.length);
+  return List.of(elements);
+}
+
+Future<List<QuestionResponse>> fetchSentenceTransformationQuestions(
+    WidgetRef ref, int lessonId, Function(int) updateTotalQuestion) async {
+  List<QuestionResponse> elements = await ref
+      .watch(exerciseServiceProvider)
+      .getListSentenceTransformationQuestion(lessonId);
+
+  updateTotalQuestion(elements.length);
+  return List.of(elements);
+}
+
 void updateCurrentIndexQuestion(BuildContext context, Function() refresh,
     int currentIndex, int totalQuestion, List<Object> arguments) {
   if (currentIndex < totalQuestion - 1) {
