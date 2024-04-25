@@ -104,7 +104,6 @@ class _FillInTheBlankQuestionScreenState
                       ),
                       FillInTheBlankWidget(
                         height: height,
-                        questionURl: snapshot.data![value].answerFileURL,
                         updateCurrentIndex: () {
                           updateCurrentIndexQuestion(
                             context,
@@ -120,6 +119,7 @@ class _FillInTheBlankQuestionScreenState
                             ],
                           );
                         },
+                        questionURl: snapshot.data![value].answerFileURL,
                         inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                         addExplanationQuestion: addExplanationQuestion,
                       ),

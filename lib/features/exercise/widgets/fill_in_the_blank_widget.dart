@@ -55,7 +55,6 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
       List<String> correctAnswers = correctAnswer!.split('/');
       if (correctAnswers.contains(controller.text.trim())) {
         widget.inCreaseCorrectAnswerCount();
-        controller.clear();
       } else {
         widget.addExplanationQuestion(
           ExplanationQuestion(
@@ -68,6 +67,7 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
         );
       }
       widget.updateCurrentIndex();
+      controller.clear();
     }
   }
 

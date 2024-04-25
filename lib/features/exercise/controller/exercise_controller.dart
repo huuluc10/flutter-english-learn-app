@@ -44,6 +44,16 @@ Future<List<QuestionResponse>> fetchSentenceTransformationQuestions(
   return List.of(elements);
 }
 
+Future<List<QuestionResponse>> fetchListeningQuestions(
+    WidgetRef ref, int lessonId, Function(int) updateTotalQuestion) async {
+  List<QuestionResponse> elements = await ref
+      .watch(exerciseServiceProvider)
+      .getListListeningQuestion(lessonId);
+
+  updateTotalQuestion(elements.length);
+  return List.of(elements);
+}
+
 void updateCurrentIndexQuestion(BuildContext context, Function() refresh,
     int currentIndex, int totalQuestion, List<Object> arguments) {
   if (currentIndex < totalQuestion - 1) {
@@ -59,4 +69,16 @@ void updateCurrentIndexQuestion(BuildContext context, Function() refresh,
       );
     });
   }
+}
+
+List<String> getWordsTransform(String sentence) {
+  List<String> words = sentence.split(' ');
+  words.shuffle();
+  return words;
+}
+
+List<String> getWordsUnscramble(String sentence) {
+  List<String> words = sentence.split('/');
+  words.shuffle();
+  return words;
 }

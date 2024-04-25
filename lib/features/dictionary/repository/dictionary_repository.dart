@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:en_vi_dic/en_vi_dic.dart';
 import 'package:flutter_englearn/model/response/dictionary_api_word_response.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
-import 'package:flutter_englearn/utils/const/base_header_http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 
@@ -24,9 +23,8 @@ class DictionaryRepository {
     log("Get word from API: $text", name: "DictionaryRepository");
     const authority = APIUrl.rootDictionaryAPI;
     final unencodedPath = APIUrl.pathDictionary + text;
-    Map<String, String> headers = BaseHeaderHttp.headers;
     final uri = Uri.https(authority, unencodedPath);
-    final response = await http.get(uri, headers: headers);
+    final response = await http.get(uri);
 
     List<DictionaryAPIWordResponse> words = [];
 

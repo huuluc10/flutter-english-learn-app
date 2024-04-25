@@ -3,9 +3,9 @@ import 'package:flutter_englearn/model/response/mission_response.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
+import 'package:flutter_englearn/utils/const/utils.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'package:flutter_englearn/utils/const/base_header_http.dart';
 
 class MissionRepository {
   final AuthRepository authRepository;
@@ -18,7 +18,7 @@ class MissionRepository {
     if (jwt == null) {
       log("JWT is null", name: "HomepageRepository");
     }
-    Map<String, String> headers = BaseHeaderHttp.headers;
+    Map<String, String> headers = Map.from(httpHeaders);
     headers['Authorization'] = 'Bearer $jwt';
 
     String authority = APIUrl.baseUrl;

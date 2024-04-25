@@ -3,9 +3,9 @@ import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
+import 'package:flutter_englearn/utils/const/utils.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'package:flutter_englearn/utils/const/base_header_http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FriendRepository {
@@ -24,7 +24,7 @@ class FriendRepository {
       log('Get list friend', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -71,7 +71,7 @@ class FriendRepository {
       log('Add friend', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -116,7 +116,7 @@ class FriendRepository {
       log('Add friend', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -168,7 +168,7 @@ class FriendRepository {
       log('Unfriend', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -247,7 +247,7 @@ class FriendRepository {
       log('Get users by username', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;

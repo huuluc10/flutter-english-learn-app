@@ -7,10 +7,10 @@ import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
+import 'package:flutter_englearn/utils/const/utils.dart';
 import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'package:flutter_englearn/utils/const/base_header_http.dart';
 import 'package:http_parser/http_parser.dart';
 
 class UserInfoRepository {
@@ -29,12 +29,13 @@ class UserInfoRepository {
 
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return 401;
     } else {
       log('Change password', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -51,6 +52,7 @@ class UserInfoRepository {
         return 200;
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
+        authRepository.removeJWT();
         return 401;
       } else {
         log('Change password failed', name: 'UserInfoRepository');
@@ -63,6 +65,7 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return '';
     } else {
       return jwtResponse.username;
@@ -74,12 +77,13 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Get user info', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -105,6 +109,7 @@ class UserInfoRepository {
             httpStatusCode: 200, data: userInfoResponse);
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
+        authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else {
         log('Change password failed', name: 'UserInfoRepository');
@@ -119,12 +124,13 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return 401;
     } else {
       log('Update user info', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -141,6 +147,7 @@ class UserInfoRepository {
         return 200;
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
+        authRepository.removeJWT();
         return 401;
       } else {
         log('Update user info failed', name: 'UserInfoRepository');
@@ -153,12 +160,13 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return 401;
     } else {
       log('Add email', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -182,6 +190,7 @@ class UserInfoRepository {
         return 200;
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
+        authRepository.removeJWT();
         return 401;
       } else if (response.statusCode == 400) {
         log('Send email failed', name: 'UserInfoRepository');
@@ -197,12 +206,13 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Count history learned lesson', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -223,6 +233,7 @@ class UserInfoRepository {
         return ResultReturn<int>(httpStatusCode: 200, data: count);
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
+        authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else {
         log('Count history learned lesson failed', name: 'UserInfoRepository');
@@ -235,12 +246,13 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Get lesson exercise done', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -260,6 +272,7 @@ class UserInfoRepository {
         return ResultReturn<int>(httpStatusCode: 200, data: count);
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
+        authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else {
         log('Get lesson exercise is done failed', name: 'UserInfoRepository');
@@ -272,12 +285,13 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Get lesson exercise done', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -297,6 +311,7 @@ class UserInfoRepository {
         return ResultReturn<int>(httpStatusCode: 200, data: count);
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
+        authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else {
         log('Get lesson exercise is done failed', name: 'UserInfoRepository');
@@ -309,12 +324,13 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Change avatar', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String url = "http://${APIUrl.baseUrl}/${APIUrl.pathUpdateAvatar}";
@@ -349,12 +365,13 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
+      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Update streak', name: 'UserInfoRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -370,6 +387,7 @@ class UserInfoRepository {
         return ResultReturn(httpStatusCode: 200, data: null);
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
+        authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else {
         log('Update streak failed', name: 'UserInfoRepository');
