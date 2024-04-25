@@ -5,9 +5,9 @@ import 'package:flutter_englearn/model/question_type.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
+import 'package:flutter_englearn/utils/const/utils.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'package:flutter_englearn/utils/const/base_header_http.dart';
 
 class LearnRepository {
   final AuthRepository authRepository;
@@ -25,7 +25,7 @@ class LearnRepository {
       log('Get list lesson of topic', name: 'LearnRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -74,7 +74,7 @@ class LearnRepository {
       log('Get lesson detail', name: 'LearnRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -108,7 +108,7 @@ class LearnRepository {
       log('Save history lesson', name: 'LearnRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
@@ -144,7 +144,7 @@ class LearnRepository {
       log('Get list exercise of lesson', name: 'LearnRepository');
 
       String jwt = jwtResponse.token;
-      Map<String, String> headers = BaseHeaderHttp.headers;
+      Map<String, String> headers = Map.from(httpHeaders);
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;

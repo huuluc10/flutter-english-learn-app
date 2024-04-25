@@ -2,7 +2,7 @@ import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/utils/const/api_url.dart';
-import 'package:flutter_englearn/utils/const/base_header_http.dart';
+import 'package:flutter_englearn/utils/const/utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 
@@ -19,7 +19,7 @@ class HomepageRepository {
     if (jwt == null) {
       log("JWT is null", name: "HomepageRepository");
     }
-    Map<String, String> headers = BaseHeaderHttp.headers;
+    Map<String, String> headers = Map.from(httpHeaders);
     headers['Authorization'] = 'Bearer $jwt';
 
     String authority = APIUrl.baseUrl;

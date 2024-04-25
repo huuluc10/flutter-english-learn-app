@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/answer.dart';
+import 'package:flutter_englearn/model/answer_choice.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'dart:developer';
 
 class ListeningWidget extends ConsumerStatefulWidget {
   const ListeningWidget({
@@ -26,15 +29,62 @@ class ListeningWidget extends ConsumerStatefulWidget {
 }
 
 class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
-  Future<Answer> _fetchAnswer() async {
-    return ref
-        .watch(exerciseServiceProvider)
-        .getAnswer(widget.questionURL);
+  Future<Answer> fetchAnswer() async {
+    if (_answer != null) {
+      return _answer!;
+    }
+    _answer =
+        await ref.read(exerciseServiceProvider).getAnswer(widget.questionURL);
+    correctAnswer = _answer!.correctAnswer!;
+    return _answer!;
   }
 
   String _selectedAnswer = '';
   String? correctAnswer;
   String? explanation;
+  Answer? _answer;
+  FlutterTts flutterTts = FlutterTts();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    refreshAnswer();
+  }
+
+  void refreshAnswer() {
+    setState(() {
+      fetchAnswer();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeTts();
+  }
+
+  Future<void> initializeTts() async {
+    var engine = await flutterTts.getDefaultEngine;
+    if (engine == null) {
+      return;
+    }
+
+    await flutterTts.awaitSpeakCompletion(true);
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.6);
+    await flutterTts.setVolume(1);
+    await flutterTts.setPitch(1);
+
+    flutterTts.setStartHandler(() {
+      log("Playing");
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    flutterTts.stop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +103,7 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
           child: SizedBox(
             height: widget.height * 0.8,
             child: FutureBuilder<Answer>(
-                future: _fetchAnswer(),
+                future: fetchAnswer(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -104,7 +154,10 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        await flutterTts
+                                            .speak(answer.correctAnswer!);
+                                      },
                                       icon: const Icon(Icons.volume_up),
                                     ),
                                   ],
@@ -133,6 +186,12 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                                 InkWell(
                                   onTap: () {
                                     setState(() {
+                                      answer.answers!.add(
+                                        AnswerChoice(
+                                          text: _selectedAnswer,
+                                          answerImage: null,
+                                        ),
+                                      );
                                       _selectedAnswer = '';
                                     });
                                   },
@@ -248,6 +307,8 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                                   ),
                                 );
                               }
+                              _selectedAnswer = '';
+                              _answer = null;
                               widget.updateCurrentIndex();
                             }
                           },

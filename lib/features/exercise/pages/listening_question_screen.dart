@@ -25,13 +25,21 @@ class ListeningQuestionScreen extends ConsumerStatefulWidget {
 class _ListeningQuestionScreenState
     extends ConsumerState<ListeningQuestionScreen> {
   Future<List<QuestionResponse>> _fetchQuestions() async {
-    return await fetchMultipleChoiceQuestions(
+    return await fetchListeningQuestions(
       ref,
       widget.lessonId,
       (totalQuestionCount) {
         _totalQuestionCount = totalQuestionCount;
       },
     );
+  }
+
+  late Future<List<QuestionResponse>> _questions;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _questions = _fetchQuestions();
   }
 
   void inCreaseCorrectAnswerCount() {
@@ -63,7 +71,7 @@ class _ListeningQuestionScreenState
         body: Column(
           children: [
             FutureBuilder<List<QuestionResponse>>(
-              future: _fetchQuestions(),
+              future: _questions,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -103,7 +111,6 @@ class _ListeningQuestionScreenState
                       ),
                       ListeningWidget(
                         height: height,
-                        questionURL: snapshot.data![value].answerFileURL,
                         updateCurrentIndex: () {
                           updateCurrentIndexQuestion(
                               context,
@@ -120,6 +127,7 @@ class _ListeningQuestionScreenState
                                 _explanationQuestions,
                               ]);
                         },
+                        questionURL: snapshot.data![value].answerFileURL,
                         inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                         addExplanationQuestion: addExplanationQuestion,
                       ),

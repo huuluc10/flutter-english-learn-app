@@ -33,6 +33,14 @@ class _SentenceUnscrambleQuestionScreenState
     );
   }
 
+  late Future<List<QuestionResponse>> _questions;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _questions = _fetchQuestions();
+  }
+
   void inCreaseCorrectAnswerCount() {
     _correctAnswerCount++;
   }
@@ -61,7 +69,7 @@ class _SentenceUnscrambleQuestionScreenState
           backgroundColor: Colors.transparent,
         ),
         body: FutureBuilder<List<QuestionResponse>>(
-          future: _fetchQuestions(),
+          future: _questions,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

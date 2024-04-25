@@ -33,6 +33,14 @@ class _SentenceTransformQuestionScreenState
     );
   }
 
+  late Future<List<QuestionResponse>> _questions;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _questions = _fetchQuestions();
+  }
+
   void inCreaseCorrectAnswerCount() {
     _correctAnswerCount++;
   }
@@ -60,7 +68,7 @@ class _SentenceTransformQuestionScreenState
           backgroundColor: Colors.transparent,
         ),
         body: FutureBuilder<List<QuestionResponse>>(
-          future: _fetchQuestions(),
+          future: _questions,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -101,13 +109,10 @@ class _SentenceTransformQuestionScreenState
                   SentenceWidget(
                     isUnscrambl: false,
                     height: height,
-                    questionURL: snapshot.data![value].answerFileURL,
                     updateCurrentIndex: () {
                       updateCurrentIndexQuestion(
                         context,
-                        () {
-                          currentIndexQuestion.value++;
-                        },
+                        () => currentIndexQuestion.value++,
                         value,
                         _totalQuestionCount,
                         [
@@ -117,6 +122,7 @@ class _SentenceTransformQuestionScreenState
                         ],
                       );
                     },
+                    questionURL: snapshot.data![value].answerFileURL,
                     inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                     addExplanationQuestion: addExplanationQuestion,
                   ),

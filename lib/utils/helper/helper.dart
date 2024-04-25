@@ -52,13 +52,13 @@ imgFromGallery(ImagePicker picker) async {
   }
 }
 
-String transformLocalURLMediaToURL(String URL) {
-  if (URL.contains('http://') || URL.contains('https://')) {
-    return URL;
+String transformLocalURLMediaToURL(String url) {
+  if (url.contains('http://') || url.contains('https://')) {
+    return url;
   }
   String authority = APIUrl.baseUrl;
   String linkAvatar =
-      Uri.http(authority, APIUrl.pathGetFile, {"path": URL}).toString();
+      Uri.http(authority, APIUrl.pathGetFile, {"path": url}).toString();
 
   return linkAvatar;
 }

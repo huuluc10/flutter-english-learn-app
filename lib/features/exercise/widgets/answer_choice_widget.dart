@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
@@ -68,8 +69,8 @@ class AnswerChoiceWidget extends ConsumerWidget {
                   ),
                   textAlign: TextAlign.center,
                 )
-              : Image.network(
-                  answer.answers![index].answerImage!,
+              : CachedNetworkImage(
+                  imageUrl: answer.answers![index].answerImage!,
                   fit: BoxFit.cover,
                   width: 100,
                   height: 100,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/features/exercise/widgets/answer_choice_widget.dart';
@@ -96,8 +97,8 @@ class _MultichoiceWidgetState extends ConsumerState<MultichoiceWidget> {
                                   ),
                                   const SizedBox(height: 3),
                                   if (answer.questionImage != null)
-                                    Image.network(
-                                      answer.questionImage!,
+                                    CachedNetworkImage(
+                                      imageUrl: answer.questionImage!,
                                       fit: BoxFit.cover,
                                     ),
                                 ],

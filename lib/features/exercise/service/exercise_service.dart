@@ -1,4 +1,4 @@
-import 'package:flutter_englearn/features/exercise/repository/exercise.repository.dart';
+import 'package:flutter_englearn/features/exercise/repository/exercise_repository.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
@@ -49,8 +49,17 @@ class ExerciseService {
 
   Future<List<QuestionResponse>> getListSentenceTransformationQuestion(
       int lessonId) async {
+    ResultReturn result = await exerciseRepository
+        .getListSentenceTransformationQuestion(lessonId);
+
+    List<QuestionResponse> list = result.data;
+    list.shuffle();
+    return list;
+  }
+
+  Future<List<QuestionResponse>> getListListeningQuestion(int lessonId) async {
     ResultReturn result =
-        await exerciseRepository.getListSentenceTransformationQuestion(lessonId);
+        await exerciseRepository.getListListeningQuestion(lessonId);
 
     List<QuestionResponse> list = result.data;
     list.shuffle();

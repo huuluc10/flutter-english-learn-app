@@ -18,3 +18,10 @@ List<String> listLibrary() => [
       'youtube_player_flutter',
       'stomp_dart_client'
     ];
+
+const Map<String, String> httpHeaders = {
+  'Content-Type': 'application/json; charset=UTF-8',
+  'Accept': '*/*',
+  'Connection': 'keep-alive',
+  'Accept-Encoding': 'gzip, deflate, br',
+};

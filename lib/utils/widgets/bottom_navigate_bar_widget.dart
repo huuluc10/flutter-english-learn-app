@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/chat/pages/chat_home_screen.dart';
 import 'package:flutter_englearn/features/dictionary/pages/dictionary_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
-import 'package:flutter_englearn/utils/service/control_index_navigate_bar.dart';
+import 'package:flutter_englearn/utils/provider/control_index_navigate_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BottomNavigateBarWidget extends ConsumerWidget {

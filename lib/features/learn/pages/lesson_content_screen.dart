@@ -73,7 +73,7 @@ class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
                             Theme.of(context).textTheme.headlineLarge!.copyWith(
                                   fontWeight: FontWeight.bold,
                                   textBaseline: TextBaseline.alphabetic,
-                                  fontSize: 37,
+                                  fontSize: 32,
                                 ),
                         textAlign: TextAlign.justify,
                       ),
@@ -199,20 +199,7 @@ class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
                                 ),
                               ),
                             )
-                          : Center(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                ),
-                                child: const Text(
-                                  "Đã học xong",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
+                          : Container(),
                     ],
                   );
                 }
