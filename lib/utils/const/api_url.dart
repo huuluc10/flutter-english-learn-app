@@ -83,6 +83,8 @@ class APIUrl {
       "/api/v1/question/findSentenceTransformationQuestionByLessonId";
   static const String pathGetListListeningQuestion =
       "/api/v1/question/findListeningQuestionByLessonId";
+  static const String pathGetListSpeakingQuestion =
+      "/api/v1/question/findSpeakingQuestionByLessonId";
 
   /* ----------------------------------------------------------------------------- */
 

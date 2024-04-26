@@ -1,9 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/exercise/controller/exercise_controller.dart';
+import 'package:flutter_englearn/features/exercise/widgets/speech_control_widget.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
-class SpeakingWidget extends ConsumerWidget {
+class SpeakingWidget extends ConsumerStatefulWidget {
   const SpeakingWidget({
     super.key,
     required this.height,
@@ -19,6 +26,53 @@ class SpeakingWidget extends ConsumerWidget {
   final Function() inCreaseCorrectAnswerCount;
   final Function(ExplanationQuestion) addExplanationQuestion;
 
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _SpeakingWidgetState();
+}
+
+class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
+  bool _hasSpeech = false;
+  double level = 0.0;
+  double minSoundLevel = 50000;
+  double maxSoundLevel = -50000;
+  String lastWords = '';
+  String lastError = '';
+  String lastStatus = '';
+  final SpeechToText speech = SpeechToText();
+
+  @override
+  void initState() {
+    super.initState();
+    initSpeechState();
+  }
+
+  void errorListener(SpeechRecognitionError error) {
+    logEvent('Received error status: $error, listening: ${speech.isListening}');
+    setState(() {
+      lastError = '${error.errorMsg} - ${error.permanent}';
+    });
+  }
+
+  Future<void> initSpeechState() async {
+    logEvent('Initialize');
+    try {
+      var hasSpeech = await speech.initialize(
+        onError: errorListener,
+        onStatus: statusListener,
+      );
+      if (!mounted) return;
+
+      setState(() {
+        _hasSpeech = hasSpeech;
+      });
+    } catch (e) {
+      setState(() {
+        lastError = 'Speech recognition failed: ${e.toString()}';
+        _hasSpeech = false;
+      });
+    }
+  }
+
   Future<Answer> _fetchAnswer() async {
     return await Future.delayed(
         const Duration(seconds: 0),
@@ -31,9 +85,50 @@ class SpeakingWidget extends ConsumerWidget {
             ));
   }
 
+  void resultListener(SpeechRecognitionResult result) {
+    logEvent(
+        'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
+    setState(() {
+      lastWords = result.recognizedWords;
+    });
+  }
+
+  void statusListener(String status) {
+    logEvent(
+        'Received listener status: $status, listening: ${speech.isListening}');
+    lastStatus = status;
+  }
+
+  void startListening() {
+    logEvent('start listening');
+    lastWords = '';
+    lastError = '';
+    final options = SpeechListenOptions(
+      listenMode: ListenMode.confirmation,
+      cancelOnError: true,
+      partialResults: true,
+      autoPunctuation: true,
+      enableHapticFeedback: true,
+    );
+    speech.listen(
+      onResult: resultListener,
+      listenFor: const Duration(seconds: 30),
+      pauseFor: const Duration(seconds: 3),
+      localeId: 'en_US',
+      listenOptions: options,
+    );
+  }
+
+  void stopListening() {
+    logEvent('stop');
+    speech.stop();
+    setState(() {
+      level = 0.0;
+    });
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    String selectedAnswer = 'Answer 2';
+  Widget build(BuildContext context) {
     String? correctAnswer;
     String? explanation;
     return Column(
@@ -49,7 +144,7 @@ class SpeakingWidget extends ConsumerWidget {
           context: context,
           removeTop: true,
           child: SizedBox(
-            height: height * 0.8,
+            height: widget.height * 0.8,
             child: FutureBuilder<Answer>(
                 future: _fetchAnswer(),
                 builder: (context, snapshot) {
@@ -76,7 +171,7 @@ class SpeakingWidget extends ConsumerWidget {
                         ),
                         constraints: BoxConstraints(
                           minHeight: 150,
-                          maxHeight: height * 0.20,
+                          maxHeight: widget.height * 0.20,
                         ),
                         child: Center(
                           child: Padding(
@@ -109,7 +204,7 @@ class SpeakingWidget extends ConsumerWidget {
                           right: 10,
                         ),
                         child: SizedBox(
-                          height: height * 0.46,
+                          height: widget.height * 0.46,
                           child: MediaQuery.removePadding(
                             context: context,
                             removeTop: true,
@@ -119,10 +214,12 @@ class SpeakingWidget extends ConsumerWidget {
                                 child: Column(
                                   children: [
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         const Expanded(
                                           child: Text(
-                                            'Nhấn vào biểu tượng bên cạnh để nói',
+                                            'Nhấn biểu tượng bên cạnh để nói',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16,
@@ -130,9 +227,15 @@ class SpeakingWidget extends ConsumerWidget {
                                             textAlign: TextAlign.justify,
                                           ),
                                         ),
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.mic),
+                                        SizedBox(
+                                          width: 150,
+                                          child: SpeechControlWidget(
+                                            hasSpeech: _hasSpeech,
+                                            isListening: speech.isListening,
+                                            startListening: startListening,
+                                            stopListening: stopListening,
+                                            level: level,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -149,7 +252,7 @@ class SpeakingWidget extends ConsumerWidget {
                                                       .style,
                                                   children: <TextSpan>[
                                                     TextSpan(
-                                                        text: selectedAnswer,
+                                                        text: lastWords,
                                                         style: const TextStyle(
                                                             fontWeight:
                                                                 FontWeight
@@ -176,7 +279,7 @@ class SpeakingWidget extends ConsumerWidget {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            if (selectedAnswer == '') {
+                            if (lastWords == '') {
                               // show SnackBar
                               ScaffoldMessenger.of(context).clearSnackBars();
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -193,10 +296,10 @@ class SpeakingWidget extends ConsumerWidget {
                                 ),
                               );
                             } else {
-                              if (selectedAnswer == correctAnswer) {
-                                inCreaseCorrectAnswerCount();
+                              if (lastWords == correctAnswer) {
+                                widget.inCreaseCorrectAnswerCount();
                               } else {
-                                addExplanationQuestion(
+                                widget.addExplanationQuestion(
                                   ExplanationQuestion(
                                     question: answer.question,
                                     questionImage: answer.questionImage,
@@ -206,7 +309,7 @@ class SpeakingWidget extends ConsumerWidget {
                                   ),
                                 );
                               }
-                              updateCurrentIndex();
+                              widget.updateCurrentIndex();
                             }
                           },
                           child: const Text('Tiếp tục'),

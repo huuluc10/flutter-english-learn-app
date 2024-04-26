@@ -3,6 +3,9 @@ import 'package:flutter_englearn/features/exercise/pages/result_exercise_screen.
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 Future<List<QuestionResponse>> fetchMultipleChoiceQuestions(
     WidgetRef ref, int lessonId, Function(int) updateTotalQuestion) async {
@@ -54,6 +57,16 @@ Future<List<QuestionResponse>> fetchListeningQuestions(
   return List.of(elements);
 }
 
+Future<List<QuestionResponse>> fetchSpeakingQuestions(
+    WidgetRef ref, int lessonId, Function(int) updateTotalQuestion) async {
+  List<QuestionResponse> elements = await ref
+      .watch(exerciseServiceProvider)
+      .getListSpeakingQuestion(lessonId);
+
+  updateTotalQuestion(elements.length);
+  return List.of(elements);
+}
+
 void updateCurrentIndexQuestion(BuildContext context, Function() refresh,
     int currentIndex, int totalQuestion, List<Object> arguments) {
   if (currentIndex < totalQuestion - 1) {
@@ -82,3 +95,9 @@ List<String> getWordsUnscramble(String sentence) {
   words.shuffle();
   return words;
 }
+
+void logEvent(String eventDescription) {
+  var eventTime = DateTime.now().toIso8601String();
+  debugPrint('$eventTime $eventDescription');
+}
+
