@@ -14,7 +14,14 @@ void showSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(message),
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: const Color.fromARGB(255, 233, 233, 233),
     ),
   );
 }

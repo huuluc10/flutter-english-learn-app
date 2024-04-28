@@ -1,6 +1,6 @@
 class APIUrl {
   // IP ADDRESS SERVER AND PORT
-  static const String ip = "192.168.226.233";
+  static const String ip = "huuluc.ddns.net";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 

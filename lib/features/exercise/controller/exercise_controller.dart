@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/pages/result_exercise_screen.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
+import 'package:flutter_englearn/model/answer.dart';
+import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:speech_to_text/speech_recognition_error.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
 Future<List<QuestionResponse>> fetchMultipleChoiceQuestions(
     WidgetRef ref, int lessonId, Function(int) updateTotalQuestion) async {
@@ -101,3 +101,33 @@ void logEvent(String eventDescription) {
   debugPrint('$eventTime $eventDescription');
 }
 
+void changeSpeakingQuestion(
+  BuildContext context,
+  String pronounce,
+  Function inCreaseCorrectAnswerCount,
+  Function addExplanationQuestion,
+  Function updateCurrentIndex,
+  Answer answer,
+) {
+  String correctAnswer = answer.correctAnswer!;
+  if (pronounce == '') {
+    showSnackBar(context, 'Vui lòng nói từ bạn đã nghe');
+  } else {
+    if (pronounce.toLowerCase() == correctAnswer.toLowerCase()) {
+      inCreaseCorrectAnswerCount();
+    } else {
+      addExplanationQuestion(
+        ExplanationQuestion(
+          question: answer.question,
+          questionImage: answer.questionImage,
+          answer: correctAnswer,
+          answerImage: answer.correctImage,
+          explanation: answer.explanation,
+        ),
+      );
+    }
+    if (context.mounted) {
+      updateCurrentIndex();
+    }
+  }
+}

@@ -22,63 +22,64 @@ class SpeechControlWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        GestureDetector(
-          onLongPress: !hasSpeech || isListening ? null : startListening,
-          onLongPressEnd: (details) {
-            isListening ? stopListening : null;
-          },
-          child: Stack(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
+        const Expanded(
+          child: Text(
+            'Nhấn biểu tượng bên cạnh để nói',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.justify,
+          ),
+        ),
+        SizedBox(
+          width: 150,
+          child: GestureDetector(
+            onLongPress: () {
+              if (!hasSpeech || isListening) {
+                return;
+              }
+              startListening();
+            },
+            onLongPressEnd: (details) {
+              if (isListening) {
+                stopListening();
+              }
+            },
+            child: Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  height: 60,
+                  width: 60,
                 ),
-                height: 40,
-                width: 40,
-              ),
-              Positioned.fill(
-                bottom: 10,
-                child: Align(
+                Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    width: 40,
-                    height: 40,
+                    width: 60,
+                    height: 60,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                            blurRadius: .26,
-                            spreadRadius: level * 1.5,
-                            color: Colors.black.withOpacity(.05))
+                          blurRadius: .26,
+                          spreadRadius: level * 1.5,
+                          color: Colors.black.withOpacity(.1),
+                        )
                       ],
-                      color: Colors.white,
+                      color: Colors.blueAccent,
                       borderRadius: const BorderRadius.all(Radius.circular(50)),
                     ),
                     child: const Icon(Icons.mic),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          color: Theme.of(context).colorScheme.background,
-          child: Center(
-            child: isListening
-                ? SizedBox(
-                    width: 50,
-                    child: const Text(
-                      "Đang nghe...",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  )
-                : SizedBox(
-                    width: 50,
-                  ),
-          ),
-        )
       ],
     );
   }

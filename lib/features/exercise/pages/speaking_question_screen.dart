@@ -26,14 +26,16 @@ class SpeakingQuestionScreen extends ConsumerStatefulWidget {
 
 class _SpeakingQuestionScreenState
     extends ConsumerState<SpeakingQuestionScreen> {
+  List<QuestionResponse>? questions;
   Future<List<QuestionResponse>> _fetchQuestions() async {
-    return await fetchMultipleChoiceQuestions(
+    questions ??= await fetchSpeakingQuestions(
       ref,
       widget.lessonId,
       (totalQuestionCount) {
         _totalQuestionCount = totalQuestionCount;
       },
     );
+    return questions!;
   }
 
   void inCreaseCorrectAnswerCount() {

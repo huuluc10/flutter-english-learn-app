@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/controller/exercise_controller.dart';
+import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
+import 'package:flutter_englearn/features/exercise/widgets/speaking_question_text_widget.dart';
 import 'package:flutter_englearn/features/exercise/widgets/speech_control_widget.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
@@ -35,10 +35,23 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
   double level = 0.0;
   double minSoundLevel = 50000;
   double maxSoundLevel = -50000;
-  String lastWords = '';
+  String pronounce = '';
   String lastError = '';
   String lastStatus = '';
   final SpeechToText speech = SpeechToText();
+
+  Answer? _answer;
+
+  Future<Answer> _fetchAnswer() async {
+    if (_answer == null) {
+      _answer = await ref
+          .watch(exerciseServiceProvider)
+          .getAnswer(widget.questionURL);
+      return _answer!;
+    } else {
+      return _answer!;
+    }
+  }
 
   @override
   void initState() {
@@ -48,9 +61,6 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
 
   void errorListener(SpeechRecognitionError error) {
     logEvent('Received error status: $error, listening: ${speech.isListening}');
-    setState(() {
-      lastError = '${error.errorMsg} - ${error.permanent}';
-    });
   }
 
   Future<void> initSpeechState() async {
@@ -73,23 +83,11 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
     }
   }
 
-  Future<Answer> _fetchAnswer() async {
-    return await Future.delayed(
-        const Duration(seconds: 0),
-        () => Answer(
-              question: 'Answer 2',
-              answers: [],
-              correctAnswer: 'Answer 2',
-              explanation:
-                  'Explanation Answer 2 Explanation Answer 2.\nExplanation Answer 2 Explanation Answer 2  ',
-            ));
-  }
-
   void resultListener(SpeechRecognitionResult result) {
     logEvent(
         'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
     setState(() {
-      lastWords = result.recognizedWords;
+      pronounce = result.recognizedWords;
     });
   }
 
@@ -101,7 +99,7 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
 
   void startListening() {
     logEvent('start listening');
-    lastWords = '';
+    pronounce = '';
     lastError = '';
     final options = SpeechListenOptions(
       listenMode: ListenMode.confirmation,
@@ -129,8 +127,6 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String? correctAnswer;
-    String? explanation;
     return Column(
       children: [
         const Text(
@@ -159,42 +155,26 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
                     );
                   }
                   Answer answer = snapshot.data!;
-                  correctAnswer = answer.correctAnswer;
+
+                  bool haveImage = !answer.question.contains('\n');
+                  String question = answer.question;
+                  String? wordQuestion;
+
+                  if (!haveImage) {
+                    List<String> questions = question.split('\n');
+                    question = questions[0];
+                    wordQuestion = questions[1];
+                  }
+
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        margin: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 233, 233, 233),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        constraints: BoxConstraints(
-                          minHeight: 150,
-                          maxHeight: widget.height * 0.20,
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  answer.question,
-                                  textAlign: TextAlign.justify,
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.volume_up),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      SpeakingQuestionTextWidget(
+                        height: widget.height,
+                        questionHaveImage: haveImage,
+                        question: question,
+                        pronounce: wordQuestion,
+                        imageUrl: answer.questionImage,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -212,62 +192,27 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
                               padding: const EdgeInsets.all(14),
                               child: Center(
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        const Expanded(
-                                          child: Text(
-                                            'Nhấn biểu tượng bên cạnh để nói',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
-                                            textAlign: TextAlign.justify,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 150,
-                                          child: SpeechControlWidget(
-                                            hasSpeech: _hasSpeech,
-                                            isListening: speech.isListening,
-                                            startListening: startListening,
-                                            stopListening: stopListening,
-                                            level: level,
-                                          ),
-                                        ),
-                                      ],
+                                    SpeechControlWidget(
+                                      hasSpeech: _hasSpeech,
+                                      isListening: speech.isListening,
+                                      startListening: startListening,
+                                      stopListening: stopListening,
+                                      level: level,
                                     ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Consumer(
-                                            builder: (context, ref, child) {
-                                              return RichText(
-                                                text: TextSpan(
-                                                  text: 'Từ phát âm của bạn: ',
-                                                  style: DefaultTextStyle.of(
-                                                          context)
-                                                      .style,
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                        text: lastWords,
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.volume_up),
-                                        ),
-                                      ],
+                                    RichText(
+                                      text: TextSpan(
+                                        text: 'Từ phát âm của bạn: ',
+                                        style:
+                                            DefaultTextStyle.of(context).style,
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: pronounce,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -279,38 +224,14 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            if (lastWords == '') {
-                              // show SnackBar
-                              ScaffoldMessenger.of(context).clearSnackBars();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Vui lòng nói từ bạn đã nghe',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  backgroundColor:
-                                      Color.fromARGB(255, 233, 233, 233),
-                                ),
-                              );
-                            } else {
-                              if (lastWords == correctAnswer) {
-                                widget.inCreaseCorrectAnswerCount();
-                              } else {
-                                widget.addExplanationQuestion(
-                                  ExplanationQuestion(
-                                    question: answer.question,
-                                    questionImage: answer.questionImage,
-                                    answer: correctAnswer!,
-                                    answerImage: answer.correctImage,
-                                    explanation: explanation,
-                                  ),
-                                );
-                              }
-                              widget.updateCurrentIndex();
-                            }
+                            changeSpeakingQuestion(
+                              context,
+                              pronounce,
+                              widget.inCreaseCorrectAnswerCount,
+                              widget.addExplanationQuestion,
+                              widget.updateCurrentIndex,
+                              answer,
+                            );
                           },
                           child: const Text('Tiếp tục'),
                         ),

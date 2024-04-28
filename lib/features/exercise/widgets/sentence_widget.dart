@@ -140,8 +140,9 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                                       String word = listWordIsChosen[index];
                                       return SentenceAnswerSelectWidget(
                                         word: word,
-                                        onTap: (word) {
-                                          listWordIsChosen.remove(word);
+                                        onTap: (value) {
+                                          listWordIsChosen.remove(value);
+                                          wordsAnswer.add(value);
                                           WidgetsBinding.instance
                                               .addPostFrameCallback((_) {
                                             setState(() {});
