@@ -57,6 +57,15 @@ class ExerciseService {
     return list;
   }
 
+  Future<List<QuestionResponse>> getListSpeakingQuestion(int lessonId) async {
+    ResultReturn result =
+        await exerciseRepository.getListSpeakingQuestion(lessonId);
+
+    List<QuestionResponse> list = result.data;
+    list.shuffle();
+    return list;
+  }
+
   Future<List<QuestionResponse>> getListListeningQuestion(int lessonId) async {
     ResultReturn result =
         await exerciseRepository.getListListeningQuestion(lessonId);

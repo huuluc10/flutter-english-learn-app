@@ -166,6 +166,57 @@ class ExerciseRepository {
     }
   }
 
+  Future<ResultReturn> getListSpeakingQuestion(int lessonId) async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'ExerciseRepository', time: DateTime.now());
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Get list speaking question by lesson id: $lessonId',
+          name: 'ExerciseRepository', time: DateTime.now());
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = Map.from(httpHeaders);
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathGetListSpeakingQuestion;
+
+      Map<String, String> body = {};
+      body['lessonId'] = lessonId.toString();
+
+      Uri uri = Uri.http(authority, unencodedPath);
+
+      var request = http.MultipartRequest('POST', uri)
+        ..headers.addAll(headers)
+        ..fields.addAll(body);
+
+      var response = await request.send();
+
+      if (response.statusCode == 401) {
+        log('Token is expired',
+            name: 'ExerciseRepository', time: DateTime.now());
+        return ResultReturn(httpStatusCode: 401, data: null);
+      } else if (response.statusCode == 400) {
+        log('Get list sentence uncramble question failed',
+            name: 'ExerciseRepository', time: DateTime.now());
+        return ResultReturn(httpStatusCode: 400, data: null);
+      } else {
+        log("Get list sentence uncramble question successfully",
+            name: 'ExerciseRepository', time: DateTime.now());
+
+        ResponseModel responseModel =
+            ResponseModel.fromJson(await response.stream.bytesToString());
+        List<QuestionResponse> list = (responseModel.data as List<dynamic>)
+            .map((item) => QuestionResponse.fromMap(item))
+            .toList();
+        return ResultReturn(httpStatusCode: 200, data: list);
+      }
+    }
+  }
+
   Future<ResultReturn> getListSentenceTransformationQuestion(
       int lessonId) async {
     // get jwt token from authRepository

@@ -1,6 +1,6 @@
 class APIUrl {
   // IP ADDRESS SERVER AND PORT
-  static const String ip = "192.168.226.233";
+  static const String ip = "huuluc.ddns.net";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -83,6 +83,8 @@ class APIUrl {
       "/api/v1/question/findSentenceTransformationQuestionByLessonId";
   static const String pathGetListListeningQuestion =
       "/api/v1/question/findListeningQuestionByLessonId";
+  static const String pathGetListSpeakingQuestion =
+      "/api/v1/question/findSpeakingQuestionByLessonId";
 
   /* ----------------------------------------------------------------------------- */
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/controller/exercise_controller.dart';
 import 'package:flutter_englearn/features/exercise/widgets/speaking_widget.dart';
@@ -24,14 +26,16 @@ class SpeakingQuestionScreen extends ConsumerStatefulWidget {
 
 class _SpeakingQuestionScreenState
     extends ConsumerState<SpeakingQuestionScreen> {
+  List<QuestionResponse>? questions;
   Future<List<QuestionResponse>> _fetchQuestions() async {
-    return await fetchMultipleChoiceQuestions(
+    questions ??= await fetchSpeakingQuestions(
       ref,
       widget.lessonId,
       (totalQuestionCount) {
         _totalQuestionCount = totalQuestionCount;
       },
     );
+    return questions!;
   }
 
   void inCreaseCorrectAnswerCount() {
@@ -74,8 +78,8 @@ class _SpeakingQuestionScreenState
                   }
                   if (snapshot.hasError) {
                     return FutureBuilderErrorWidget(
-                    error: snapshot.error.toString(),
-                  );
+                      error: snapshot.error.toString(),
+                    );
                   }
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -103,14 +107,11 @@ class _SpeakingQuestionScreenState
                       ),
                       SpeakingWidget(
                         height: height,
-                        questionURL: snapshot.data![value].answerFileURL,
                         updateCurrentIndex: () {
                           updateCurrentIndexQuestion(
                             context,
                             () {
-                              setState(() {
-                                currentIndexQuestion.value++;
-                              });
+                              currentIndexQuestion.value++;
                             },
                             value,
                             _totalQuestionCount,
@@ -121,6 +122,7 @@ class _SpeakingQuestionScreenState
                             ],
                           );
                         },
+                        questionURL: snapshot.data![value].answerFileURL,
                         inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                         addExplanationQuestion: addExplanationQuestion,
                       ),

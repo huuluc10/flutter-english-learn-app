@@ -45,6 +45,8 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
     }
   }
 
+  List<String> wordsAnswer = [];
+
   List<String> listWordIsChosen = [];
 
   @override
@@ -78,10 +80,11 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                     );
                   }
                   Answer answer = snapshot.data!;
-                  List<String> wordsAnswer = widget.isUnscrambl
-                      ? getWordsUnscramble(answer.question)
-                      : getWordsTransform(answer.correctAnswer!);
-
+                  if (wordsAnswer.isEmpty) {
+                    wordsAnswer = widget.isUnscrambl
+                        ? getWordsUnscramble(answer.question)
+                        : getWordsTransform(answer.correctAnswer!);
+                  }
                   for (String word in listWordIsChosen) {
                     wordsAnswer.remove(word);
                   }
@@ -137,8 +140,9 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                                       String word = listWordIsChosen[index];
                                       return SentenceAnswerSelectWidget(
                                         word: word,
-                                        onTap: (word) {
-                                          listWordIsChosen.remove(word);
+                                        onTap: (value) {
+                                          listWordIsChosen.remove(value);
+                                          wordsAnswer.add(value);
                                           WidgetsBinding.instance
                                               .addPostFrameCallback((_) {
                                             setState(() {});

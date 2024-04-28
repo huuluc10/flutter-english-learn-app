@@ -45,17 +45,6 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
   Answer? _answer;
   FlutterTts flutterTts = FlutterTts();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    refreshAnswer();
-  }
-
-  void refreshAnswer() {
-    setState(() {
-      fetchAnswer();
-    });
-  }
 
   @override
   void initState() {
@@ -84,6 +73,42 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
   void dispose() {
     super.dispose();
     flutterTts.stop();
+  }
+
+  void changeQuestion() {
+    if (_selectedAnswer == '') {
+      // show SnackBar
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Vui lòng chọn câu trả lời',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: Color.fromARGB(255, 233, 233, 233),
+        ),
+      );
+    } else {
+      if (_selectedAnswer == correctAnswer) {
+        widget.inCreaseCorrectAnswerCount();
+      } else {
+        widget.addExplanationQuestion(
+          ExplanationQuestion(
+            question: _answer!.question,
+            questionImage: _answer!.questionImage,
+            answer: correctAnswer!,
+            answerImage: _answer!.questionImage,
+            explanation: explanation,
+          ),
+        );
+      }
+      _selectedAnswer = '';
+      _answer = null;
+      widget.updateCurrentIndex();
+    }
   }
 
   @override
@@ -276,42 +301,7 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                       ),
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_selectedAnswer == '') {
-                              // show SnackBar
-                              ScaffoldMessenger.of(context).clearSnackBars();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Vui lòng chọn câu trả lời',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  backgroundColor:
-                                      Color.fromARGB(255, 233, 233, 233),
-                                ),
-                              );
-                            } else {
-                              if (_selectedAnswer == correctAnswer) {
-                                widget.inCreaseCorrectAnswerCount();
-                              } else {
-                                widget.addExplanationQuestion(
-                                  ExplanationQuestion(
-                                    question: answer.question,
-                                    questionImage: answer.questionImage,
-                                    answer: correctAnswer!,
-                                    answerImage: answer.questionImage,
-                                    explanation: explanation,
-                                  ),
-                                );
-                              }
-                              _selectedAnswer = '';
-                              _answer = null;
-                              widget.updateCurrentIndex();
-                            }
-                          },
+                          onPressed: changeQuestion,
                           child: const Text('Tiếp tục'),
                         ),
                       ),
