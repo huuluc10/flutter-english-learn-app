@@ -155,19 +155,24 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final correctAnswerCount = arguments[0] as int;
       final totalQuestionCount = arguments[1] as int;
       final explanationQuestions = arguments[2] as List<ExplanationQuestion>;
+      final typeExercise = arguments[3] as String;
       return MaterialPageRoute(
           builder: (context) => ResultExerciseScreen(
                 correctAnswerCount: correctAnswerCount,
                 totalQuestionCount: totalQuestionCount,
                 explanationQuestions: explanationQuestions,
+                typeExercise: typeExercise,
               ));
 
     case ExplanationResultScreen.routeName:
-      final explanationQuestions =
-          settings.arguments as List<ExplanationQuestion>;
+      final arguments = settings.arguments as List<Object>;
+      final explanationQuestions = arguments[0] as List<ExplanationQuestion>;
+      final typeExercise = arguments[1] as String;
       return MaterialPageRoute(
           builder: (context) => ExplanationResultScreen(
-              explanationQuestions: explanationQuestions));
+                explanationQuestions: explanationQuestions,
+                typeExercise: typeExercise,
+              ));
 
     case SentenceTransformQuestionScreen.routeName:
       final lessonId = settings.arguments as int;

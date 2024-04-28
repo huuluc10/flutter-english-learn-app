@@ -9,14 +9,15 @@ class ResultExerciseScreen extends StatefulWidget {
     required this.correctAnswerCount,
     required this.totalQuestionCount,
     required this.explanationQuestions,
+    required this.typeExercise,
   });
 
   static const routeName = '/result-exercise-screen';
 
   final int correctAnswerCount;
   final int totalQuestionCount;
-
   final List<ExplanationQuestion> explanationQuestions;
+  final String typeExercise;
 
   @override
   State<ResultExerciseScreen> createState() => _ResultExerciseScreenState();
@@ -104,10 +105,11 @@ class _ResultExerciseScreenState extends State<ResultExerciseScreen> {
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pushNamed(
-                          context,
-                          ExplanationResultScreen.routeName,
-                          arguments: widget.explanationQuestions,
-                        );
+                            context, ExplanationResultScreen.routeName,
+                            arguments: [
+                              widget.explanationQuestions,
+                              widget.typeExercise,
+                            ]);
                       },
                       child: const Text('Xem lời giải'),
                     ),
