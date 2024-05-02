@@ -4,7 +4,7 @@ This is a Flutter project for English learning.
 
 ## Description
 
-This application is designed to help users improve their English skills. It includes features such as...
+This application is designed to help users improve their English skills. It includes features such as learn lesson, do exercise, do exam, chatting with friend.
 
 ## Requirements
 
