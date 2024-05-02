@@ -106,6 +106,14 @@ class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
                                         ),
                                     textAlign: TextAlign.justify,
                                   ),
+                            if (content.imageUrl != null)
+                              Center(
+                                child: CachedNetworkImage(
+                                  imageUrl: content.imageUrl!,
+                                ),
+                              ),
+                            if (content.videoUrl != null)
+                              YoutubePlayerWidget(url: content.videoUrl!),
                             if (content.text != null)
                               Text(
                                 content.text!,
@@ -163,14 +171,6 @@ class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
                                 ),
                               ),
                             ],
-                            if (content.imageUrl != null)
-                              Center(
-                                child: CachedNetworkImage(
-                                  imageUrl: content.imageUrl!,
-                                ),
-                              ),
-                            if (content.videoUrl != null)
-                              YoutubePlayerWidget(url: content.videoUrl!),
                             const SizedBox(height: 16),
                           ],
                         ),

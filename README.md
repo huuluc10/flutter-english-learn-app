@@ -1,16 +1,22 @@
-# flutter_englearn
+# Flutter Englearn
 
-A new Flutter project.
+This is a Flutter project for English learning.
 
-## Getting Started
+## Description
 
-This project is a starting point for a Flutter application.
+This application is designed to help users improve their English skills. It includes features such as...
 
-A few resources to get you started if this is your first Flutter project:
+## Requirements
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+To run this project, you will need:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter SDK: version 3.16.9
+- Dart SDK: version 3.2.6
+- Android Studio or VS Code with Flutter plugin
+
+## Installation
+
+1. Clone the repository: `git clone https://github.com/huuluc10/flutter-english-learn-app.git`
+2. Navigate into the project directory: `cd flutter_englearn`
+3. Install dependencies: `flutter pub get`
+4. Run the app: `flutter run`

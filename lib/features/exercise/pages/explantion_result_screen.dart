@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
+import 'package:flutter_englearn/utils/const/utils.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 
 class ExplanationResultScreen extends StatefulWidget {
-  const ExplanationResultScreen(
-      {super.key, required this.explanationQuestions});
+  const ExplanationResultScreen({
+    super.key,
+    required this.explanationQuestions,
+    required this.typeExercise,
+  });
 
   static const routeName = '/explanation-result-screen';
 
@@ -13,6 +17,7 @@ class ExplanationResultScreen extends StatefulWidget {
       _ExplanationResultScreenState();
 
   final List<ExplanationQuestion> explanationQuestions;
+  final String typeExercise;
 }
 
 class _ExplanationResultScreenState extends State<ExplanationResultScreen> {
@@ -59,55 +64,86 @@ class _ExplanationResultScreenState extends State<ExplanationResultScreen> {
                             ),
                           )
                         : const SizedBox(width: 50),
-                    SingleChildScrollView(
-                      child: SizedBox(
+                    if (widget.typeExercise != TypeQuestion.speaking &&
+                        widget.typeExercise != TypeQuestion.listening)
+                      SingleChildScrollView(
+                        child: SizedBox(
+                          width: MediaQuery.sizeOf(context).width * 0.6,
+                          child: Column(
+                            children: [
+                              Text(
+                                widget.explanationQuestions[_currentIndex]
+                                    .question,
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              if (widget.explanationQuestions[_currentIndex]
+                                      .questionImage !=
+                                  null)
+                                Image.network(
+                                  widget.explanationQuestions[_currentIndex]
+                                      .questionImage!,
+                                ),
+                              const SizedBox(height: 10),
+                              widget.explanationQuestions[_currentIndex]
+                                          .answer !=
+                                      null
+                                  ? Text(
+                                      'Đáp án: ${widget.explanationQuestions[_currentIndex].answer}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    )
+                                  : Image.network(
+                                      widget.explanationQuestions[_currentIndex]
+                                          .answerImage!,
+                                    ),
+                              const SizedBox(height: 10),
+                              if (widget.explanationQuestions[_currentIndex]
+                                      .explanation !=
+                                  null)
+                                Text(
+                                  'Lời giải: ${widget.explanationQuestions[_currentIndex].explanation}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.justify,
+                                ),
+                            ],
+                          ),
+                        ),
+                      )
+                    else if (widget.typeExercise == TypeQuestion.speaking)
+                      SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.6,
                         child: Column(
                           children: [
-                            Text(
-                              widget
-                                  .explanationQuestions[_currentIndex].question,
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            if (widget.explanationQuestions[_currentIndex]
-                                    .questionImage !=
-                                null)
-                              Image.network(
-                                widget.explanationQuestions[_currentIndex]
-                                    .questionImage!,
-                              ),
-                            const SizedBox(height: 10),
-                            widget.explanationQuestions[_currentIndex].answer !=
-                                    null
-                                ? Text(
-                                    'Đáp án: ${widget.explanationQuestions[_currentIndex].answer}',
-                                    style: const TextStyle(
+                            widget.typeExercise == TypeQuestion.speaking
+                                ? const Text(
+                                    'Bạn cần luyện tập phát âm những từ sau nhiều lần để cải thiện kỹ năng phát âm của mình',
+                                    style: TextStyle(
                                       fontSize: 16,
                                     ),
                                   )
-                                : Image.network(
-                                    widget.explanationQuestions[_currentIndex]
-                                        .answerImage!,
+                                : const Text(
+                                    'Bạn cần luyện tập nghe những từ sau nhiều lần để cải thiện kỹ năng nghe của mình',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
                                   ),
-                            const SizedBox(height: 10),
-                            if (widget.explanationQuestions[_currentIndex]
-                                    .explanation !=
-                                null)
-                              Text(
-                                'Lời giải: ${widget.explanationQuestions[_currentIndex].explanation}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.justify,
+                            Text(
+                              'Từ cần luyện tập: ${widget.explanationQuestions[_currentIndex].answer}',
+                              style: const TextStyle(
+                                fontSize: 16,
                               ),
+                              textAlign: TextAlign.justify,
+                            ),
                           ],
                         ),
                       ),
-                    ),
                     _currentIndex < widget.explanationQuestions.length - 1
                         ? SizedBox(
                             width: 50,
