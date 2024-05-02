@@ -32,6 +32,10 @@ class HomepageRepository {
       headers: headers,
     );
 
+    if (response.statusCode == 401) {
+      await authRepository.removeJWT();
+    }
+
     if (response.statusCode == 200) {
       log("fetchTopic success", name: "HomepageRepository");
       ResponseModel responseModel = ResponseModel.fromJson(response.body);

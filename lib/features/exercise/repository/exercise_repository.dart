@@ -45,6 +45,7 @@ class ExerciseRepository {
       if (response.statusCode == 401) {
         log('Token is expired',
             name: 'ExerciseRepository', time: DateTime.now());
+        await authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {
         log('Get list multiple choice question failed',
@@ -96,6 +97,7 @@ class ExerciseRepository {
       if (response.statusCode == 401) {
         log('Token is expired',
             name: 'ExerciseRepository', time: DateTime.now());
+        await authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {
         log('Get list fill question failed',
@@ -145,6 +147,7 @@ class ExerciseRepository {
       var response = await request.send();
 
       if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired',
             name: 'ExerciseRepository', time: DateTime.now());
         return ResultReturn(httpStatusCode: 401, data: null);
@@ -196,6 +199,7 @@ class ExerciseRepository {
       var response = await request.send();
 
       if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired',
             name: 'ExerciseRepository', time: DateTime.now());
         return ResultReturn(httpStatusCode: 401, data: null);
@@ -248,6 +252,7 @@ class ExerciseRepository {
       var response = await request.send();
 
       if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired',
             name: 'ExerciseRepository', time: DateTime.now());
         return ResultReturn(httpStatusCode: 401, data: null);
@@ -299,6 +304,7 @@ class ExerciseRepository {
       var response = await request.send();
 
       if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired',
             name: 'ExerciseRepository', time: DateTime.now());
         return ResultReturn(httpStatusCode: 401, data: null);
@@ -344,6 +350,7 @@ class ExerciseRepository {
       if (response.statusCode == 401) {
         log('Token is expired',
             name: 'ExerciseRepository', time: DateTime.now());
+        await authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {
         log('Get question detail failed',

@@ -40,6 +40,7 @@ class MissionRepository {
 
       return ResultReturn(httpStatusCode: 200, data: listMission);
     } else if (response.statusCode == 401) {
+      await authRepository.removeJWT();
       log("Token is expired", name: "MissionRepository");
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
