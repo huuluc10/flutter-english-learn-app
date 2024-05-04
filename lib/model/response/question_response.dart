@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class QuestionResponse {
+  int questionId;
   int questionTypeId;
   String belongTo;
   int lessonId;
@@ -8,6 +9,7 @@ class QuestionResponse {
   String answerFileURL;
 
   QuestionResponse({
+    required this.questionId,
     required this.questionTypeId,
     required this.belongTo,
     required this.lessonId,
@@ -17,6 +19,7 @@ class QuestionResponse {
 
   factory QuestionResponse.fromMap(Map<String, dynamic> map) {
     return QuestionResponse(
+      questionId: map['questionId'] as int,
       questionTypeId: map['questionTypeId'] as int,
       belongTo: map['belongTo'] as String,
       lessonId: map['lessonId'] ?? 0,

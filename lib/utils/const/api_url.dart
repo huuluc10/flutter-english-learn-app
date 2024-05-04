@@ -55,6 +55,7 @@ class APIUrl {
       "/api/v1/user-question/count-lesson-have-exercises-done";
   static const String pathGetExerciseExamHistory =
       "/api/v1/user-question/count-exam-have-exercises-done";
+      static const String pathSaveAnswerQuestion = "/api/v1/user-question/save-user-question";
 
   // PATH FRIEND API
   static const String pathGetFriendByUsername = "/api/v1/friend-request/";

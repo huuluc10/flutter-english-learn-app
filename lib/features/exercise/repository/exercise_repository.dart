@@ -496,4 +496,46 @@ class ExerciseRepository {
       }
     }
   }
+
+  Future<ResultReturn> saveAnswerQuestion(String body) async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'ExerciseRepository', time: DateTime.now());
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Save answer question', name: 'ExerciseRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = Map.from(httpHeaders);
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathSaveAnswerQuestion;
+
+      Uri url = Uri.http(authority, unencodedPath);
+
+      // Call api to check
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 401) {
+        log('Token is expired',
+            name: 'ExerciseRepository', time: DateTime.now());
+        await authRepository.removeJWT();
+        return ResultReturn(httpStatusCode: 401, data: null);
+      } else if (response.statusCode == 200) {
+        log("Save answer question successfully", name: "ExerciseRepository");
+
+        return ResultReturn(httpStatusCode: 200, data: "Ok");
+      } else {
+        log("Save answer question failed", name: "ExerciseRepository");
+        return ResultReturn(httpStatusCode: 400, data: null);
+      }
+    }
+  }
 }

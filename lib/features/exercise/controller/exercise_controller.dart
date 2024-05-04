@@ -84,7 +84,6 @@ void updateCurrentIndexQuestion(BuildContext context, Function() refresh,
     });
   } else {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      
       Navigator.pushNamed(
         context,
         ResultExerciseScreen.routeName,
@@ -138,6 +137,26 @@ void changeSpeakingQuestion(
     }
     if (context.mounted) {
       updateCurrentIndex();
+    }
+  }
+}
+
+Future<void> saveAnswerQuestion(
+  BuildContext context,
+  WidgetRef ref,
+  int questionId,
+  bool isCorrect,
+) async {
+  String? save = await ref
+      .read(exerciseServiceProvider)
+      .saveAnswerQuestion(questionId, isCorrect);
+
+  if (save != null) {
+    logEvent('Save answer question success');
+  } else {
+    logEvent('Save answer question failed');
+    if (context.mounted) {
+      showSnackBar(context, 'Lưu câu trả lời thất bại');
     }
   }
 }

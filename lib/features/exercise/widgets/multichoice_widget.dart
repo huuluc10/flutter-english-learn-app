@@ -10,6 +10,7 @@ class MultichoiceWidget extends ConsumerStatefulWidget {
   const MultichoiceWidget({
     super.key,
     required this.height,
+    required this.questionId,
     required this.questionURL,
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
@@ -17,6 +18,7 @@ class MultichoiceWidget extends ConsumerStatefulWidget {
   });
 
   final double height;
+  final int questionId;
   final String questionURL;
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
@@ -116,6 +118,7 @@ class _MultichoiceWidgetState extends ConsumerState<MultichoiceWidget> {
                           child: SizedBox(
                             height: widget.height * 0.45,
                             child: AnswerChoiceWidget(
+                              questionId: widget.questionId,
                               answer: answer,
                               updateCurrentIndex: widget.updateCurrentIndex,
                               increaseCorrectAnswerCount:

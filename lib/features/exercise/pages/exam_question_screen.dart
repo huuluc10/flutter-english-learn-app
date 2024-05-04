@@ -158,6 +158,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                       typeNameQuestions[value] == TypeQuestion.multipleChoice
                           ? MultichoiceWidget(
                               height: height,
+                              questionId: snapshot.data![value].questionId,
                               updateCurrentIndex: () {
                                 updateCurrentIndexQuestion(
                                   context,

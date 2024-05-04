@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/exercise/controller/exercise_controller.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,12 +8,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class AnswerChoiceWidget extends ConsumerWidget {
   const AnswerChoiceWidget({
     super.key,
+    required this.questionId,
     required this.answer,
     required this.updateCurrentIndex,
     required this.increaseCorrectAnswerCount,
     required this.addExplanationQuestion,
   });
 
+  final int questionId;
   final Answer answer;
   final Function() updateCurrentIndex;
   final Function() increaseCorrectAnswerCount;
@@ -30,16 +33,17 @@ class AnswerChoiceWidget extends ConsumerWidget {
       children: List.generate(
         answer.answers!.length,
         (index) => TextButton(
-          onPressed: () {
-            // TODO: call API to save answer
-
+          onPressed: () async {
             if (answer.answers![index].text != null &&
                 answer.answers![index].text == answer.correctAnswer) {
               increaseCorrectAnswerCount();
+              await saveAnswerQuestion(context, ref, questionId, true);
             } else if (answer.answers![index].answerImage != null &&
                 answer.answers![index].answerImage == answer.correctImage) {
               increaseCorrectAnswerCount();
+              await saveAnswerQuestion(context, ref, questionId, true);
             } else {
+              await saveAnswerQuestion(context, ref, questionId, false);
               addExplanationQuestion(
                 ExplanationQuestion(
                   question: answer.question,
