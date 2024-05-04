@@ -22,16 +22,17 @@ class Content {
 
     if (map['example'] == null) {
       example = [];
-    } else
+    } else {
       for (var item in map['example']) {
         example.add(Example.fromMap(item as Map<String, dynamic>));
       }
+    }
     return Content(
-      title: map['title'] == null ? null : map['title'],
-      text: map['text'] == null ? null : map['text'],
+      title: map['title'],
+      text: map['text'],
       example: example,
-      imageUrl: map['image_url'] == null ? null : map['image_url'],
-      videoUrl: map['video_url'] == null ? null : map['video_url'],
+      imageUrl: map['image_url'],
+      videoUrl: map['video_url'],
     );
   }
 

@@ -5,13 +5,11 @@ class ItemDrawerWidget extends StatelessWidget {
     Key? key,
     required this.title,
     required this.image,
-    required this.routeName,
     required this.onTap,
   }) : super(key: key);
 
   final String title;
   final String image;
-  final String routeName;
   final Function()?  onTap;
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/exercise/controller/exercise_controller.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
@@ -8,6 +9,7 @@ class FillInTheBlankWidget extends ConsumerStatefulWidget {
   const FillInTheBlankWidget({
     super.key,
     required this.height,
+    required this.questionId,
     required this.questionURl,
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
@@ -15,6 +17,7 @@ class FillInTheBlankWidget extends ConsumerStatefulWidget {
   });
 
   final double height;
+  final int questionId;
   final String questionURl;
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
@@ -35,7 +38,7 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
   String? correctAnswer;
   String? explanation;
 
-  void changeQuestion(String question) {
+  void changeQuestion(String question) async {
     if (controller.text.isEmpty || controller.text.trim() == '') {
       // show SnackBar
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -54,8 +57,10 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
     } else {
       List<String> correctAnswers = correctAnswer!.split('/');
       if (correctAnswers.contains(controller.text.trim())) {
+        await saveAnswerQuestion(context, ref, widget.questionId, true);
         widget.inCreaseCorrectAnswerCount();
       } else {
+        await saveAnswerQuestion(context, ref, widget.questionId, false);
         widget.addExplanationQuestion(
           ExplanationQuestion(
             question: question,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/exercise/controller/exercise_controller.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/answer_choice.dart';
@@ -11,6 +12,7 @@ class ListeningWidget extends ConsumerStatefulWidget {
   const ListeningWidget({
     super.key,
     required this.height,
+    required this.questionId,
     required this.questionURL,
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
@@ -18,6 +20,7 @@ class ListeningWidget extends ConsumerStatefulWidget {
   });
 
   final double height;
+  final int questionId;
   final String questionURL;
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
@@ -74,7 +77,7 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
     flutterTts.stop();
   }
 
-  void changeQuestion() {
+  void changeQuestion() async {
     if (_selectedAnswer == '') {
       // show SnackBar
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -92,8 +95,10 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
       );
     } else {
       if (_selectedAnswer == correctAnswer) {
+        await saveAnswerQuestion(context, ref, widget.questionId, true);
         widget.inCreaseCorrectAnswerCount();
       } else {
+        await saveAnswerQuestion(context, ref, widget.questionId, false);
         widget.addExplanationQuestion(
           ExplanationQuestion(
             question: _answer!.question,

@@ -22,6 +22,7 @@ import 'package:flutter_englearn/features/friend/pages/find_friend_screen.dart';
 import 'package:flutter_englearn/features/friend/pages/list_friend_creen.dart';
 import 'package:flutter_englearn/features/homepage/pages/about_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
+import 'package:flutter_englearn/features/homepage/pages/leaderboard_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/settings_screen.dart';
 import 'package:flutter_englearn/features/learn/pages/lesson_content_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/result_exercise_screen.dart';
@@ -243,6 +244,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           onMarkAsDone: onMarkAsDone,
         ),
       );
+
+    case LeaderboardScreen.routeName:
+      return MaterialPageRoute(builder: (context) => const LeaderboardScreen());
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());

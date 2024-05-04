@@ -14,6 +14,7 @@ class SentenceWidget extends ConsumerStatefulWidget {
     super.key,
     required this.isUnscrambl,
     required this.height,
+    required this.questionId,
     required this.questionURL,
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
@@ -22,6 +23,7 @@ class SentenceWidget extends ConsumerStatefulWidget {
 
   final bool isUnscrambl;
   final double height;
+  final int questionId;
   final String questionURL;
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
@@ -42,6 +44,46 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
       return _answer!;
     } else {
       return _answer!;
+    }
+  }
+
+  void changeQuestion(Answer answer) async {
+    _answer = null;
+    String stringAnswer = listWordIsChosen.join(' ');
+    if (wordsAnswer.isEmpty) {
+      if (wordsAnswer.isEmpty &&
+          stringAnswer.length == answer.correctAnswer!.length) {
+        if (stringAnswer == answer.correctAnswer) {
+          await saveAnswerQuestion(
+            context,
+            ref,
+            widget.questionId,
+            true,
+          );
+          widget.inCreaseCorrectAnswerCount();
+        } else {
+          await saveAnswerQuestion(
+            context,
+            ref,
+            widget.questionId,
+            false,
+          );
+          widget.addExplanationQuestion(
+            ExplanationQuestion(
+              question: answer.question,
+              questionImage: answer.questionImage,
+              answer: answer.correctAnswer,
+              answerImage: answer.correctImage,
+              explanation: answer.explanation,
+            ),
+          );
+        }
+        widget.updateCurrentIndex();
+        listWordIsChosen.clear();
+        setState(() {});
+      }
+    } else {
+      showSnackBar(context, 'Vui lòng hoàn thành câu trả lời');
     }
   }
 
@@ -197,34 +239,8 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                       ),
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {
-                            _answer = null;
-                            String stringAnswer = listWordIsChosen.join(' ');
-                            if (wordsAnswer.isEmpty) {
-                              if (wordsAnswer.isEmpty &&
-                                  stringAnswer.length ==
-                                      answer.correctAnswer!.length) {
-                                if (stringAnswer == answer.correctAnswer) {
-                                  widget.inCreaseCorrectAnswerCount();
-                                } else {
-                                  widget.addExplanationQuestion(
-                                    ExplanationQuestion(
-                                      question: answer.question,
-                                      questionImage: answer.questionImage,
-                                      answer: answer.correctAnswer,
-                                      answerImage: answer.correctImage,
-                                      explanation: answer.explanation,
-                                    ),
-                                  );
-                                }
-                                widget.updateCurrentIndex();
-                                listWordIsChosen.clear();
-                                setState(() {});
-                              }
-                            } else {
-                              showSnackBar(
-                                  context, 'Vui lòng hoàn thành câu trả lời');
-                            }
+                          onPressed: () async {
+                            changeQuestion(answer);
                           },
                           child: const Text('Tiếp tục'),
                         ),

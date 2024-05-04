@@ -30,9 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_listTopicFuture == null) {
-      _listTopicFuture = getListTopic(context, ref);
-    }
+    _listTopicFuture = getListTopic(context, ref);
   }
 
   @override
@@ -132,12 +130,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else  if (snapshot.hasError) {
+                      } else if (snapshot.hasError) {
                         return FutureBuilderErrorWidget(
                           error: snapshot.error.toString(),
                         );
-                      } else
-                      if (snapshot.hasData) {
+                      } else if (snapshot.hasData) {
                         List<HistoryLearnTopicResponse> listTopic =
                             snapshot.data!;
                         // Filter the list based on the search term

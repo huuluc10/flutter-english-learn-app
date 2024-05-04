@@ -104,7 +104,6 @@ class _MultichoiceQuestionScreenState
                       ),
                       MultichoiceWidget(
                         height: height,
-                        questionURL: snapshot.data![value].answerFileURL,
                         updateCurrentIndex: () {
                           updateCurrentIndexQuestion(
                             context,
@@ -121,6 +120,8 @@ class _MultichoiceQuestionScreenState
                             ],
                           );
                         },
+                        questionId: snapshot.data![value].questionId,
+                        questionURL: snapshot.data![value].answerFileURL,
                         inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                         addExplanationQuestion: addExplanationQuestion,
                       ),

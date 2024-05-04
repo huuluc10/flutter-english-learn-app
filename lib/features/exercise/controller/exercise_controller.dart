@@ -84,7 +84,6 @@ void updateCurrentIndexQuestion(BuildContext context, Function() refresh,
     });
   } else {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      
       Navigator.pushNamed(
         context,
         ResultExerciseScreen.routeName,
@@ -113,19 +112,23 @@ void logEvent(String eventDescription) {
 
 void changeSpeakingQuestion(
   BuildContext context,
+  WidgetRef ref,
+  int questionId,
   String pronounce,
   Function inCreaseCorrectAnswerCount,
   Function addExplanationQuestion,
   Function updateCurrentIndex,
   Answer answer,
-) {
+) async {
   String correctAnswer = answer.correctAnswer!;
   if (pronounce == '') {
     showSnackBar(context, 'Vui lòng nói từ bạn đã nghe');
   } else {
     if (pronounce.toLowerCase() == correctAnswer.toLowerCase()) {
+      await saveAnswerQuestion(context, ref, questionId, true);
       inCreaseCorrectAnswerCount();
     } else {
+      await saveAnswerQuestion(context, ref, questionId, false);
       addExplanationQuestion(
         ExplanationQuestion(
           question: answer.question,
@@ -138,6 +141,26 @@ void changeSpeakingQuestion(
     }
     if (context.mounted) {
       updateCurrentIndex();
+    }
+  }
+}
+
+Future<void> saveAnswerQuestion(
+  BuildContext context,
+  WidgetRef ref,
+  int questionId,
+  bool isCorrect,
+) async {
+  String? save = await ref
+      .read(exerciseServiceProvider)
+      .saveAnswerQuestion(questionId, isCorrect);
+
+  if (save != null) {
+    logEvent('Save answer question success');
+  } else {
+    logEvent('Save answer question failed');
+    if (context.mounted) {
+      showSnackBar(context, 'Lưu câu trả lời thất bại');
     }
   }
 }

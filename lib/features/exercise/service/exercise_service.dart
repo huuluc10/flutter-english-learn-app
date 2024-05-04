@@ -1,5 +1,6 @@
 import 'package:flutter_englearn/features/exercise/repository/exercise_repository.dart';
 import 'package:flutter_englearn/model/answer.dart';
+import 'package:flutter_englearn/model/request/answer_question_request.dart';
 import 'package:flutter_englearn/model/response/exam_response.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
@@ -96,5 +97,14 @@ class ExerciseService {
         await exerciseRepository.getNameOfQuestionType(questionTypeId);
 
     return result.data;
+  }
+
+  Future<String?> saveAnswerQuestion(int questionId, bool isCorrect) async {
+    AnswerQuestionRequest request = AnswerQuestionRequest(
+        questionId: questionId, isCorrect: isCorrect );
+    ResultReturn resultReturn =
+        await exerciseRepository.saveAnswerQuestion(request.toJson());
+
+    return resultReturn.data;
   }
 }
