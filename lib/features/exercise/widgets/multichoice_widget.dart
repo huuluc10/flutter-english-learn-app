@@ -79,7 +79,7 @@ class _MultichoiceWidgetState extends ConsumerState<MultichoiceWidget> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           constraints: BoxConstraints(
-                            minHeight: 150,
+                            minHeight: 120,
                             maxHeight: widget.height * 0.27,
                           ),
                           child: Center(

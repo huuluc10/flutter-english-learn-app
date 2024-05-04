@@ -18,10 +18,10 @@ class FriendRepository {
     final jwtResponse = await authRepository.getJWTCurrent();
 
     if (jwtResponse == null) {
-      log('Token is null', name: 'UserInfoRepository');
+      log('Token is null', name: 'FriendRepository');
       return ResponseModel(status: '401', message: 'Token is null', data: null);
     } else {
-      log('Get list friend', name: 'UserInfoRepository');
+      log('Get list friend', name: 'FriendRepository');
 
       String jwt = jwtResponse.token;
       Map<String, String> headers = Map.from(httpHeaders);
@@ -35,8 +35,18 @@ class FriendRepository {
         headers: headers,
       );
 
+      if (response.statusCode == 401) {
+        log('Token is expired', name: 'FriendRepository');
+        await authRepository.removeJWT();
+        return ResponseModel(
+          status: response.statusCode.toString(),
+          message: 'Token is expired',
+          data: null,
+        );
+      }
+
       if (response.statusCode != 200) {
-        log('Get list friend failed', name: 'UserInfoRepository');
+        log('Get list friend failed', name: 'FriendRepository');
         return ResponseModel(
           status: response.statusCode.toString(),
           message: 'Get list friend failed',
@@ -44,7 +54,7 @@ class FriendRepository {
         );
       }
 
-      log("Get list friend successfully", name: 'UserInfoRepository');
+      log("Get list friend successfully", name: 'FriendRepository');
       ResponseModel responseModel = ResponseModel.fromJson(response.body);
 
       List<MainUserInfoResponse> listMainUserInfoResponse = [];
@@ -65,10 +75,10 @@ class FriendRepository {
     final jwtResponse = await authRepository.getJWTCurrent();
 
     if (jwtResponse == null) {
-      log('Token is null', name: 'UserInfoRepository');
+      log('Token is null', name: 'FriendRepository');
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
-      log('Add friend', name: 'UserInfoRepository');
+      log('Add friend', name: 'FriendRepository');
 
       String jwt = jwtResponse.token;
       Map<String, String> headers = Map.from(httpHeaders);
@@ -84,19 +94,20 @@ class FriendRepository {
       );
 
       if (response.statusCode == 401) {
-        log('Token is expired', name: 'UserInfoRepository');
+        log('Token is expired', name: 'FriendRepository');
+        await authRepository.removeJWT();
         return ResultReturn(
           httpStatusCode: response.statusCode,
           data: null,
         );
       } else if (response.statusCode == 400) {
-        log('Add friend failed', name: 'UserInfoRepository');
+        log('Add friend failed', name: 'FriendRepository');
         return ResultReturn(
           httpStatusCode: response.statusCode,
           data: null,
         );
       } else {
-        log("Add friend successfully", name: 'UserInfoRepository');
+        log("Add friend successfully", name: 'FriendRepository');
         return ResultReturn(
           httpStatusCode: 200,
           data: null,
@@ -110,10 +121,10 @@ class FriendRepository {
     final jwtResponse = await authRepository.getJWTCurrent();
 
     if (jwtResponse == null) {
-      log('Token is null', name: 'UserInfoRepository');
+      log('Token is null', name: 'FriendRepository');
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
-      log('Add friend', name: 'UserInfoRepository');
+      log('Add friend', name: 'FriendRepository');
 
       String jwt = jwtResponse.token;
       Map<String, String> headers = Map.from(httpHeaders);
@@ -129,20 +140,21 @@ class FriendRepository {
       );
 
       if (response.statusCode == 401) {
-        log('Token is expired', name: 'UserInfoRepository');
+        log('Token is expired', name: 'FriendRepository');
+        await authRepository.removeJWT();
         return ResultReturn(
           httpStatusCode: response.statusCode,
           data: null,
         );
       } else if (response.statusCode == 400) {
-        log('Get status of friend request failed', name: 'UserInfoRepository');
+        log('Get status of friend request failed', name: 'FriendRepository');
         return ResultReturn(
           httpStatusCode: response.statusCode,
           data: null,
         );
       } else {
         log("Get status of friend request successfully",
-            name: 'UserInfoRepository');
+            name: 'FriendRepository');
         ResponseModel responseModel = ResponseModel.fromJson(response.body);
         int status = -1;
 
@@ -162,10 +174,10 @@ class FriendRepository {
     final jwtResponse = await authRepository.getJWTCurrent();
 
     if (jwtResponse == null) {
-      log('Token is null', name: 'UserInfoRepository');
+      log('Token is null', name: 'FriendRepository');
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
-      log('Unfriend', name: 'UserInfoRepository');
+      log('Unfriend', name: 'FriendRepository');
 
       String jwt = jwtResponse.token;
       Map<String, String> headers = Map.from(httpHeaders);
@@ -181,19 +193,20 @@ class FriendRepository {
       );
 
       if (response.statusCode == 401) {
-        log('Token is expired', name: 'UserInfoRepository');
+        log('Token is expired', name: 'FriendRepository');
+        await authRepository.removeJWT();
         return ResultReturn(
           httpStatusCode: response.statusCode,
           data: null,
         );
       } else if (response.statusCode == 400) {
-        log('Unfriend failed', name: 'UserInfoRepository');
+        log('Unfriend failed', name: 'FriendRepository');
         return ResultReturn(
           httpStatusCode: response.statusCode,
           data: null,
         );
       } else {
-        log("Unfriend successfully", name: 'UserInfoRepository');
+        log("Unfriend successfully", name: 'FriendRepository');
         return ResultReturn(
           httpStatusCode: 200,
           data: null,
@@ -241,10 +254,10 @@ class FriendRepository {
     final jwtResponse = await authRepository.getJWTCurrent();
 
     if (jwtResponse == null) {
-      log('Token is null', name: 'UserInfoRepository');
+      log('Token is null', name: 'FriendRepository');
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
-      log('Get users by username', name: 'UserInfoRepository');
+      log('Get users by username', name: 'FriendRepository');
 
       String jwt = jwtResponse.token;
       Map<String, String> headers = Map.from(httpHeaders);
@@ -265,12 +278,13 @@ class FriendRepository {
       var response = await request.send();
 
       if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         ResultReturn(httpStatusCode: response.statusCode, data: null);
       } else if (response.statusCode == 400) {
-        log('Get users by username failed', name: 'UserInfoRepository');
+        log('Get users by username failed', name: 'FriendRepository');
         return ResultReturn(httpStatusCode: response.statusCode, data: null);
       }
-      log("Get users by username successfully", name: 'UserInfoRepository');
+      log("Get users by username successfully", name: 'FriendRepository');
 
       ResponseModel responseModel =
           ResponseModel.fromJson(await response.stream.bytesToString());

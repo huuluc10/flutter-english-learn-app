@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/model/topic.dart';
+import 'package:flutter_englearn/features/exercise/pages/exam_question_screen.dart';
+import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
+import 'package:flutter_englearn/model/response/exam_response.dart';
 import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ExamHomePageScreen extends ConsumerWidget {
-  const ExamHomePageScreen({super.key});
+class ExamHomePageScreen extends ConsumerStatefulWidget {
+   const ExamHomePageScreen({
+    super.key,
+    required this.topicId,
+  });
 
   static const String routeName = '/exam-homepage-screen';
 
-  Future<List<Topic>> getTopicsHasExam() async {
-    return await Future.delayed(
-      const Duration(seconds: 0),
-      () => <Topic>[
-        Topic(topicId: 1, topicName: 'Topic 1'),
-        Topic(topicId: 2, topicName: 'Topic 2'),
-        Topic(topicId: 3, topicName: 'Topic 3'),
-      ],
-    );
-  }
+  final int topicId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ExamHomePageScreenState();
+}
+
+class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
+
+  Future<List<ExamResponse>> getExams() async {
+      return await ref.watch(exerciseServiceProvider).getListExam(widget.topicId);
+    }
+
+ @override
+  Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    final height = MediaQuery.sizeOf(context).height;
+    
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -53,15 +60,15 @@ class ExamHomePageScreen extends ConsumerWidget {
                     child: Column(
                       children: [
                         const Text(
-                          'Lý thuyết',
+                          'Bài kiểm tra chủ đề',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 10),
-                        FutureBuilder<List<Topic>>(
-                          future: getTopicsHasExam(),
+                        FutureBuilder<List<ExamResponse>>(
+                          future: getExams(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -77,55 +84,57 @@ class ExamHomePageScreen extends ConsumerWidget {
                               return MediaQuery.removePadding(
                                 context: context,
                                 removeTop: true,
-                                child: SizedBox(
-                                  height: height - 180,
-                                  child: ListView.builder(
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data!.length,
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder: (context, index) {
-                                      return ExpansionTile(
-                                        title: Text(
-                                            'Bài kiểm tra chủ đề ${index + 1}'),
-                                        subtitle: Text(
-                                            snapshot.data![index].topicName),
-                                        leading: Image.asset('assets/exam.png'),
-                                        children: <Widget>[
-                                          ListTile(
-                                            title:
-                                                const Text('Mức độ Beginner'),
-                                            onTap: () {},
-                                          ),
-                                          ListTile(
-                                            title:
-                                                const Text('Mức độ Elementary'),
-                                            onTap: () {},
-                                          ),
-                                          ListTile(
-                                            title: const Text(
-                                                'Mức độ Pre-Intermediate'),
-                                            onTap: () {},
-                                          ),
-                                          ListTile(
-                                            title: const Text(
-                                                'Mức độ Intermediate'),
-                                            onTap: () {},
-                                          ),
-                                          ListTile(
-                                            title:
-                                                const Text('Mức độ Advanced'),
-                                            onTap: () {},
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    String examTime = (snapshot.data![index]
+                                                .examTimeWithSecond /
+                                            60)
+                                        .toStringAsFixed(0);
+                                    final String subtitle =
+                                        '${snapshot.data![index].examLevel} - $examTime phút - ${snapshot.data![index].examExperience} kinh nghiệm';
+                                    return ListTile(
+                                      leading: Image.asset('assets/exam.png'),
+                                      title:
+                                          Text(snapshot.data![index].examName),
+                                      subtitle: Text(subtitle),
+                                      trailing:
+                                          snapshot.data![index].examResult == 0
+                                              ? null
+                                              : SizedBox(
+                                                  width: 80,
+                                                  child: Text(
+                                                    '${snapshot.data![index].examResult} điểm',
+                                                    style: const TextStyle(
+                                                        color: Colors.red),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                      onTap: () {
+                                        if (snapshot.data![index].examResult ==
+                                            0) {
+                                          Navigator.pushNamed(
+                                            context,
+                                            ExamScreen.routeName,
+                                            arguments: [
+                                              snapshot.data![index].examId,
+                                              snapshot.data![index]
+                                                  .examTimeWithSecond,
+                                                  (mark) {
+                                                      setState(() {
+                                                        snapshot.data![index].examResult = mark;
+                                                      });
+                                                    }
+                                            ],
+                                          );
+                                        }
+                                      },
+                                    );
+                                  },
                                 ),
                               );
-                            } else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
                             }
                             return const CircularProgressIndicator();
                           },

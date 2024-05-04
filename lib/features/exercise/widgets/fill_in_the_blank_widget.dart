@@ -123,7 +123,7 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       constraints: BoxConstraints(
-                        minHeight: 150,
+                        minHeight: 120,
                         maxHeight: widget.height * 0.30,
                       ),
                       child: Center(

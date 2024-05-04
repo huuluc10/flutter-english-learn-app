@@ -43,14 +43,14 @@ class LearnRepository {
       var response = await request.send();
 
       if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {
         log('Get list lesson of topic failed', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 400, data: null);
       } else {
-        log("Get list lesson of topic successfully",
-            name: 'UserInfoRepository');
+        log("Get list lesson of topic successfully", name: 'LearnRepository');
 
         ResponseModel responseModel =
             ResponseModel.fromJson(await response.stream.bytesToString());
@@ -84,6 +84,7 @@ class LearnRepository {
       final response = await http.get(uri, headers: headers);
 
       if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {
@@ -121,6 +122,7 @@ class LearnRepository {
         body: body,
       );
       if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {
@@ -162,6 +164,7 @@ class LearnRepository {
         return ResultReturn(httpStatusCode: 500, data: null);
       }
       if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'LearnRepository');
         return ResultReturn(httpStatusCode: 401, data: null);
       } else if (response.statusCode == 400) {

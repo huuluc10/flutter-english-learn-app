@@ -29,7 +29,7 @@ class UserInfoRepository {
 
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
-      authRepository.removeJWT();
+      await authRepository.removeJWT();
       return 401;
     } else {
       log('Change password', name: 'UserInfoRepository');
@@ -51,6 +51,7 @@ class UserInfoRepository {
         log('Change password successfully', name: 'UserInfoRepository');
         return 200;
       } else if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'UserInfoRepository');
         authRepository.removeJWT();
         return 401;
@@ -77,7 +78,6 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
-      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Get user info', name: 'UserInfoRepository');
@@ -108,6 +108,7 @@ class UserInfoRepository {
         return ResultReturn<UserInfoResponse>(
             httpStatusCode: 200, data: userInfoResponse);
       } else if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'UserInfoRepository');
         authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
@@ -118,13 +119,10 @@ class UserInfoRepository {
     }
   }
 
-  // *Important: Transform local url avatar to get full url
-
   Future<int> updateInfo(String body) async {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
-      authRepository.removeJWT();
       return 401;
     } else {
       log('Update user info', name: 'UserInfoRepository');
@@ -146,6 +144,7 @@ class UserInfoRepository {
         log('Update user info successfully', name: 'UserInfoRepository');
         return 200;
       } else if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'UserInfoRepository');
         authRepository.removeJWT();
         return 401;
@@ -160,7 +159,6 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
-      authRepository.removeJWT();
       return 401;
     } else {
       log('Add email', name: 'UserInfoRepository');
@@ -189,6 +187,7 @@ class UserInfoRepository {
         log('Send email successfully', name: 'UserInfoRepository');
         return 200;
       } else if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'UserInfoRepository');
         authRepository.removeJWT();
         return 401;
@@ -206,7 +205,6 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
-      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Count history learned lesson', name: 'UserInfoRepository');
@@ -232,6 +230,7 @@ class UserInfoRepository {
 
         return ResultReturn<int>(httpStatusCode: 200, data: count);
       } else if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'UserInfoRepository');
         authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
@@ -246,7 +245,6 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
-      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Get lesson exercise done', name: 'UserInfoRepository');
@@ -271,6 +269,7 @@ class UserInfoRepository {
 
         return ResultReturn<int>(httpStatusCode: 200, data: count);
       } else if (response.statusCode == 401) {
+        await authRepository.removeJWT();
         log('Token is expired', name: 'UserInfoRepository');
         authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
@@ -285,7 +284,6 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
-      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Get lesson exercise done', name: 'UserInfoRepository');
@@ -311,7 +309,7 @@ class UserInfoRepository {
         return ResultReturn<int>(httpStatusCode: 200, data: count);
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
-        authRepository.removeJWT();
+        await authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else {
         log('Get lesson exercise is done failed', name: 'UserInfoRepository');
@@ -324,7 +322,6 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
-      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Change avatar', name: 'UserInfoRepository');
@@ -354,7 +351,12 @@ class UserInfoRepository {
       if (response.statusCode == 200) {
         log('Upload successfully', name: 'UserInfoRepository');
         return ResultReturn(httpStatusCode: 200, data: null);
-      } else {
+      } else if (response.statusCode == 401) {
+        log('Token is expired', name: 'UserInfoRepository');
+        await authRepository.removeJWT();
+        return ResultReturn(httpStatusCode: 401, data: null);
+      }
+      else {
         log('Upload failed', name: 'UserInfoRepository');
         return ResultReturn(httpStatusCode: 400, data: null);
       }
@@ -365,7 +367,6 @@ class UserInfoRepository {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
-      authRepository.removeJWT();
       return ResultReturn(httpStatusCode: 401, data: null);
     } else {
       log('Update streak', name: 'UserInfoRepository');
@@ -387,7 +388,7 @@ class UserInfoRepository {
         return ResultReturn(httpStatusCode: 200, data: null);
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
-        authRepository.removeJWT();
+        await authRepository.removeJWT();
         return ResultReturn(httpStatusCode: 401, data: null);
       } else {
         log('Update streak failed', name: 'UserInfoRepository');

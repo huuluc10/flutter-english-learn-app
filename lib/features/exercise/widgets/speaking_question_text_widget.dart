@@ -65,7 +65,7 @@ class _SpeakingQuestionTextWidgetState
         borderRadius: BorderRadius.circular(10),
       ),
       constraints: BoxConstraints(
-        minHeight: 150,
+        minHeight: 120,
         maxHeight: widget.height * 0.20,
       ),
       child: Center(

@@ -121,19 +121,33 @@ class _ExplanationResultScreenState extends State<ExplanationResultScreen> {
                         width: MediaQuery.sizeOf(context).width * 0.6,
                         child: Column(
                           children: [
-                            widget.typeExercise == TypeQuestion.speaking
-                                ? const Text(
-                                    'Bạn cần luyện tập phát âm những từ sau nhiều lần để cải thiện kỹ năng phát âm của mình',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  )
-                                : const Text(
-                                    'Bạn cần luyện tập nghe những từ sau nhiều lần để cải thiện kỹ năng nghe của mình',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                            const Text(
+                              'Bạn cần luyện tập phát âm những từ sau nhiều lần để cải thiện kỹ năng phát âm của mình',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              'Từ cần luyện tập: ${widget.explanationQuestions[_currentIndex].answer}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
+                      )
+                    else
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width * 0.6,
+                        child: Column(
+                          children: [
+                            const Text(
+                              'Bạn cần luyện tập nghe những từ sau nhiều lần để cải thiện kỹ năng nghe của mình',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
                             Text(
                               'Từ cần luyện tập: ${widget.explanationQuestions[_currentIndex].answer}',
                               style: const TextStyle(

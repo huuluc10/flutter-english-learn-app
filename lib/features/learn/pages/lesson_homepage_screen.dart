@@ -95,8 +95,8 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                           snapshot.data![index];
                                       return ExpansionTile(
                                         title: Text(lessonResponse.lessonName),
-                                        subtitle:
-                                            Text(lessonResponse.levelName),
+                                        subtitle: Text(
+                                            '${lessonResponse.levelName} - ${lessonResponse.lessonExperience} kinh nghiệm'),
                                         leading:
                                             Image.asset('assets/theory.png'),
                                         children: <Widget>[
