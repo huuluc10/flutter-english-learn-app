@@ -116,7 +116,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                             ],
                           ),
                           trailing: SizedBox(
-                            width: 100,
+                            width: 80,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
@@ -127,7 +127,9 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                                   height: 20,
                                 ),
                                 const SizedBox(width: 5),
-                                Text(listLeaderboard[index].level.toString()),
+                                Text(listLeaderboard[index]
+                                    .experience
+                                    .toString()),
                               ],
                             ),
                           ),
