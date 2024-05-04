@@ -67,6 +67,15 @@ Future<List<QuestionResponse>> fetchSpeakingQuestions(
   return List.of(elements);
 }
 
+Future<List<QuestionResponse>> fetchExamQuestion(
+    WidgetRef ref, int examId, Function(int) updateTotalQuestion) async {
+  List<QuestionResponse> elements =
+      await ref.watch(exerciseServiceProvider).getExamQuestion(examId);
+
+  updateTotalQuestion(elements.length);
+  return List.of(elements);
+}
+
 void updateCurrentIndexQuestion(BuildContext context, Function() refresh,
     int currentIndex, int totalQuestion, List<Object> arguments) {
   if (currentIndex < totalQuestion - 1) {
@@ -75,6 +84,7 @@ void updateCurrentIndexQuestion(BuildContext context, Function() refresh,
     });
   } else {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      
       Navigator.pushNamed(
         context,
         ResultExerciseScreen.routeName,

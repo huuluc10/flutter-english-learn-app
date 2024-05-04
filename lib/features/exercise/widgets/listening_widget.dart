@@ -45,7 +45,6 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
   Answer? _answer;
   FlutterTts flutterTts = FlutterTts();
 
-
   @override
   void initState() {
     super.initState();
@@ -136,8 +135,8 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                     );
                   }
                   if (snapshot.hasError) {
-                    return const Center(
-                      child: Text('Error'),
+                    return Center(
+                      child: Text('Error fetching data: ${snapshot.error}'),
                     );
                   }
                   Answer answer = snapshot.data!;
@@ -159,7 +158,7 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         constraints: BoxConstraints(
-                          minHeight: 150,
+                          minHeight: 100,
                           maxHeight: widget.height * 0.25,
                         ),
                         child: Column(

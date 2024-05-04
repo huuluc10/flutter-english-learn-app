@@ -85,6 +85,14 @@ class APIUrl {
       "/api/v1/question/findListeningQuestionByLessonId";
   static const String pathGetListSpeakingQuestion =
       "/api/v1/question/findSpeakingQuestionByLessonId";
+  static const String pathGetListQuestionExamByTopic =
+      "/api/v1/question/findQuestionExam";
+
+  // PATH GET EXAM API
+  static const String pathGetExamByTopic = "/api/v1/exam";
+
+  // PATH GET NAME OF QUESTION TYPE API
+  static const String pathGetNameOfQuestionType = "/api/v1/question-type";
 
   /* ----------------------------------------------------------------------------- */
 

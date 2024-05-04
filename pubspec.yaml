@@ -50,6 +50,7 @@ dependencies:
   stomp_dart_client: ^1.0.3
   flutter_tts: ^4.0.2
   speech_to_text: ^6.6.1  
+  circular_countdown_timer: ^0.2.3
   
 dev_dependencies:
   build_runner: ^2.4.8

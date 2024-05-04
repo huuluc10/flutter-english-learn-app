@@ -16,8 +16,8 @@ class ResultExerciseScreen extends StatefulWidget {
 
   final int correctAnswerCount;
   final int totalQuestionCount;
-  final List<ExplanationQuestion> explanationQuestions;
-  final String typeExercise;
+  final List<ExplanationQuestion>? explanationQuestions;
+  final String? typeExercise;
 
   @override
   State<ResultExerciseScreen> createState() => _ResultExerciseScreenState();
@@ -98,7 +98,9 @@ class _ResultExerciseScreenState extends State<ResultExerciseScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              if (widget.correctAnswerCount < widget.totalQuestionCount)
+              if (widget.correctAnswerCount < widget.totalQuestionCount &&
+                  widget.explanationQuestions != null &&
+                  widget.explanationQuestions!.isNotEmpty)
                 Column(
                   children: [
                     const SizedBox(height: 20),

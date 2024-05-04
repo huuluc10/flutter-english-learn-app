@@ -82,6 +82,7 @@ class TopicDetailsScreen extends ConsumerWidget {
                             Navigator.pushNamed(
                               context,
                               ExamHomePageScreen.routeName,
+                              arguments: topicResponse.topicId,
                             );
                           },
                         ),

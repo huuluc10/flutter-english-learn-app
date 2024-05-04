@@ -99,7 +99,7 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         constraints: BoxConstraints(
-                          minHeight: 150,
+                          minHeight: 120,
                           maxHeight: widget.height * 0.33,
                         ),
                         child: Center(
