@@ -169,7 +169,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               ));
 
     case ExplanationResultScreen.routeName:
-      final arguments = settings.arguments as List<Object>;
+      final arguments = settings.arguments as List<Object?>;
       final explanationQuestions = arguments[0] as List<ExplanationQuestion>;
       final typeExercise = arguments[1] as String;
       return MaterialPageRoute(
