@@ -112,19 +112,23 @@ void logEvent(String eventDescription) {
 
 void changeSpeakingQuestion(
   BuildContext context,
+  WidgetRef ref,
+  int questionId,
   String pronounce,
   Function inCreaseCorrectAnswerCount,
   Function addExplanationQuestion,
   Function updateCurrentIndex,
   Answer answer,
-) {
+) async {
   String correctAnswer = answer.correctAnswer!;
   if (pronounce == '') {
     showSnackBar(context, 'Vui lòng nói từ bạn đã nghe');
   } else {
     if (pronounce.toLowerCase() == correctAnswer.toLowerCase()) {
+      await saveAnswerQuestion(context, ref, questionId, true);
       inCreaseCorrectAnswerCount();
     } else {
+      await saveAnswerQuestion(context, ref, questionId, false);
       addExplanationQuestion(
         ExplanationQuestion(
           question: answer.question,

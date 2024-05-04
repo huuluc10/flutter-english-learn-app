@@ -9,6 +9,7 @@ import 'package:flutter_englearn/features/exercise/widgets/speaking_widget.dart'
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
 import 'package:flutter_englearn/utils/const/utils.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
 import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -146,9 +147,14 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                 height: 50,
                                 fillColor: Colors.blue,
                                 ringColor: Colors.grey,
-                                onComplete: () {
-                                  // TODO: show dialog to user know that time is up
-                                  //TODO: navigate to result screen (mark question are not answered as wrong)
+                                onComplete: () async {
+                                  showSnackBar(context, 'Hết giờ làm bài!');
+                                  for (var i = value;
+                                      i < snapshot.data!.length;
+                                      i++) {
+                                    await saveAnswerQuestion(context, ref,
+                                        snapshot.data![i].questionId, false);
+                                  }
                                 },
                               ),
                             ],
@@ -158,7 +164,6 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                       typeNameQuestions[value] == TypeQuestion.multipleChoice
                           ? MultichoiceWidget(
                               height: height,
-                              questionId: snapshot.data![value].questionId,
                               updateCurrentIndex: () {
                                 updateCurrentIndexQuestion(
                                   context,
@@ -177,6 +182,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                               },
                               inCreaseCorrectAnswerCount:
                                   inCreaseCorrectAnswerCount,
+                              questionId: snapshot.data![value].questionId,
                               questionURL: snapshot.data![value].answerFileURL,
                               addExplanationQuestion: addExplanationQuestion,
                             )
@@ -199,6 +205,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                       ],
                                     );
                                   },
+                                  questionId: snapshot.data![value].questionId,
                                   questionURl:
                                       snapshot.data![value].answerFileURL,
                                   inCreaseCorrectAnswerCount:
@@ -225,6 +232,8 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                           ],
                                         );
                                       },
+                                      questionId:
+                                          snapshot.data![value].questionId,
                                       questionURL:
                                           snapshot.data![value].answerFileURL,
                                       inCreaseCorrectAnswerCount:
@@ -237,8 +246,6 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                       ? SentenceWidget(
                                           isUnscrambl: true,
                                           height: height,
-                                          questionURL: snapshot
-                                              .data![value].answerFileURL,
                                           updateCurrentIndex: () {
                                             updateCurrentIndexQuestion(
                                               context,
@@ -255,6 +262,10 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                               ],
                                             );
                                           },
+                                          questionId:
+                                              snapshot.data![value].questionId,
+                                          questionURL: snapshot
+                                              .data![value].answerFileURL,
                                           inCreaseCorrectAnswerCount:
                                               inCreaseCorrectAnswerCount,
                                           addExplanationQuestion:
@@ -281,6 +292,8 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                                   ],
                                                 );
                                               },
+                                              questionId: snapshot
+                                                  .data![value].questionId,
                                               questionURL: snapshot
                                                   .data![value].answerFileURL,
                                               inCreaseCorrectAnswerCount:
@@ -306,6 +319,8 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                                       TypeQuestion.listening,
                                                     ]);
                                               },
+                                              questionId: snapshot
+                                                  .data![value].questionId,
                                               questionURL: snapshot
                                                   .data![value].answerFileURL,
                                               inCreaseCorrectAnswerCount:

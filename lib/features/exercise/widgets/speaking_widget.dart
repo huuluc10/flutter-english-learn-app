@@ -14,6 +14,7 @@ class SpeakingWidget extends ConsumerStatefulWidget {
   const SpeakingWidget({
     super.key,
     required this.height,
+    required this.questionId,
     required this.questionURL,
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
@@ -21,6 +22,7 @@ class SpeakingWidget extends ConsumerStatefulWidget {
   });
 
   final double height;
+  final int questionId;
   final String questionURL;
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
@@ -226,6 +228,8 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
                           onPressed: () {
                             changeSpeakingQuestion(
                               context,
+                              ref,
+                              widget.questionId,
                               pronounce,
                               widget.inCreaseCorrectAnswerCount,
                               widget.addExplanationQuestion,

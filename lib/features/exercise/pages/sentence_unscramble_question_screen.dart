@@ -111,7 +111,6 @@ class _SentenceUnscrambleQuestionScreenState
                   SentenceWidget(
                     isUnscrambl: true,
                     height: height,
-                    questionURL: snapshot.data![value].answerFileURL,
                     updateCurrentIndex: () {
                       updateCurrentIndexQuestion(
                         context,
@@ -128,6 +127,8 @@ class _SentenceUnscrambleQuestionScreenState
                         ],
                       );
                     },
+                    questionId: snapshot.data![value].questionId,
+                    questionURL: snapshot.data![value].answerFileURL,
                     inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                     addExplanationQuestion: addExplanationQuestion,
                   ),
