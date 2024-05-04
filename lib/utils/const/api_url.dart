@@ -1,6 +1,6 @@
 class APIUrl {
   // IP ADDRESS SERVER AND PORT
-  static const String ip = "192.168.113.233";
+  static const String ip = "192.168.1.174";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -39,7 +39,7 @@ class APIUrl {
   static const String pathUpdateUserInfo = "api/v1/user/update";
   static const String pathUpdateAvatar = "api/v1/user/updateAvatar";
   static const String pathFindFriend = "/api/v1/user/findUser";
-
+  static const String pathGetLeaderboard = "/api/v1/user/getLeaderboard";
   static const String pathUpdateStreak = "/api/v1/user/updateStreak";
 
   // PATH STORAGE API
@@ -55,7 +55,8 @@ class APIUrl {
       "/api/v1/user-question/count-lesson-have-exercises-done";
   static const String pathGetExerciseExamHistory =
       "/api/v1/user-question/count-exam-have-exercises-done";
-      static const String pathSaveAnswerQuestion = "/api/v1/user-question/save-user-question";
+  static const String pathSaveAnswerQuestion =
+      "/api/v1/user-question/save-user-question";
 
   // PATH FRIEND API
   static const String pathGetFriendByUsername = "/api/v1/friend-request/";
