@@ -63,7 +63,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        'Top ${listLeaderboard.length} người chơi cấp ${listLeaderboard[0].level}',
+                        'Top ${listLeaderboard.length} người cấp ${listLeaderboard[0].level}',
                         style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white,

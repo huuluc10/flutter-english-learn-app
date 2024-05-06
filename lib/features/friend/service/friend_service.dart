@@ -113,4 +113,43 @@ class FriendService {
     }
     return [];
   }
+
+  Future<List<MainUserInfoResponse>> getListWaitForAcceptFriendRequest(
+      BuildContext context) async {
+    ResultReturn response =
+        await friendRepository.getListRequestWaitForAccept();
+
+    if (response.httpStatusCode == '401') {
+      showSnackBar(context, 'Phiên đăng nhập đã hết hạn!');
+      Navigator.pushNamedAndRemoveUntil(
+          context, WelcomeScreen.routeName, (route) => false);
+      throw Exception('Phiên đăng nhập đã hết hạn!');
+    } else if (response.httpStatusCode == '400') {
+      showSnackBar(context, 'Lấy danh sách yêu cầu kết bạn thất bại!');
+      throw Exception('Lấy danh sách yêu cầu kết bạn thất bại!');
+    } else {
+      List<MainUserInfoResponse> listMainUserInfoResponse =
+          response.data as List<MainUserInfoResponse>;
+
+      // Update url avatar
+      for (int i = 0; i < listMainUserInfoResponse.length; i++) {
+        String oldURL = listMainUserInfoResponse[i].urlAvatar;
+        String newURL = transformLocalURLMediaToURL(oldURL);
+        listMainUserInfoResponse[i].urlAvatar = newURL;
+      }
+      return listMainUserInfoResponse;
+    }
+  }
+
+  Future<int> acceptFriendRequest(String sender) async {
+    // Get current user
+    String currentUsername =
+        await friendRepository.authRepository.getUserName();
+    FriendRequiredRequest request =
+        FriendRequiredRequest(sender: sender, receiver: currentUsername);
+    ResultReturn result =
+        await friendRepository.acceptFriendRequest(request.toJson());
+
+    return result.httpStatusCode;
+  }
 }

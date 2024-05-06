@@ -19,7 +19,8 @@ import 'package:flutter_englearn/features/exercise/pages/sentence_transform_ques
 import 'package:flutter_englearn/features/exercise/pages/sentence_unscramble_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/speaking_question_screen.dart';
 import 'package:flutter_englearn/features/friend/pages/find_friend_screen.dart';
-import 'package:flutter_englearn/features/friend/pages/list_friend_creen.dart';
+import 'package:flutter_englearn/features/friend/pages/list_friend_request_screen.dart';
+import 'package:flutter_englearn/features/friend/pages/list_friend_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/about_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/leaderboard_screen.dart';
@@ -247,6 +248,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case LeaderboardScreen.routeName:
       return MaterialPageRoute(builder: (context) => const LeaderboardScreen());
+
+    case ListFriendRequestScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => const ListFriendRequestScreen());
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());

@@ -295,4 +295,82 @@ class FriendRepository {
       return ResultReturn(httpStatusCode: 200, data: listMainUserInfoResponse);
     }
   }
+
+  Future<ResultReturn> getListRequestWaitForAccept() async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'FriendRepository');
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      String username = jwtResponse.username;
+      log('Get users by username: $username', name: 'FriendRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = Map.from(httpHeaders);
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathGetListWaitForAcceptFriendRequest;
+
+      var response = await http.get(
+        Uri.http(authority, unencodedPath),
+        headers: headers,
+      );
+
+      if (response.statusCode == 401) {
+        await authRepository.removeJWT();
+        return ResultReturn(httpStatusCode: response.statusCode, data: null);
+      } else if (response.statusCode == 400) {
+        log('Get list request wait for accept failed',
+            name: 'FriendRepository');
+        return ResultReturn(httpStatusCode: response.statusCode, data: null);
+      }
+      log("Get list request wait for accept successfully",
+          name: 'FriendRepository');
+
+      ResponseModel responseModel = ResponseModel.fromJson(response.body);
+      List<MainUserInfoResponse> listMainUserInfoResponse =
+          (responseModel.data as List<dynamic>)
+              .map((item) => MainUserInfoResponse.fromMap(item))
+              .toList();
+      return ResultReturn(httpStatusCode: 200, data: listMainUserInfoResponse);
+    }
+  }
+
+  Future<ResultReturn> acceptFriendRequest(String body) async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'FriendRepository');
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log('Accept friend request', name: 'FriendRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = Map.from(httpHeaders);
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathAcceptFriendRequest;
+
+      var response = await http.post(
+        Uri.http(authority, unencodedPath),
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 401) {
+        await authRepository.removeJWT();
+        return ResultReturn(httpStatusCode: response.statusCode, data: null);
+      } else if (response.statusCode == 400) {
+        log('Accept friend request failed', name: 'FriendRepository');
+        return ResultReturn(httpStatusCode: response.statusCode, data: null);
+      }
+      log("Accept friend request successfully", name: 'FriendRepository');
+      return ResultReturn(httpStatusCode: 200, data: null);
+    }
+  }
 }

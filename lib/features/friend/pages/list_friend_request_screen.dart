@@ -1,0 +1,146 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
+import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
+import 'package:flutter_englearn/model/response/main_user_info_request.dart';
+import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class ListFriendRequestScreen extends ConsumerStatefulWidget {
+  const ListFriendRequestScreen({super.key});
+
+  static const String routeName = '/list-friend-request-screen';
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ListFriendRequestScreenState();
+}
+
+class _ListFriendRequestScreenState
+    extends ConsumerState<ListFriendRequestScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Danh sách yêu cầu kết bạn'),
+          bottom: const TabBar(
+            indicatorColor: Colors.blue,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.grey,
+            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+            tabs: [
+              Tab(text: 'Chờ xác nhận'),
+              Tab(text: 'Đã gửi'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            const ConfirmationWidget(),
+            Container(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ConfirmationWidget extends ConsumerStatefulWidget {
+  const ConfirmationWidget({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ConfirmationWidgetState();
+}
+
+class _ConfirmationWidgetState extends ConsumerState<ConfirmationWidget> {
+  List<MainUserInfoResponse> listFriendRequest = [];
+
+  Future<List<MainUserInfoResponse>> fetchFriendRequest() async {
+    if (listFriendRequest.isEmpty) {
+      listFriendRequest = await ref
+          .read(friendServiceProvider)
+          .getListWaitForAcceptFriendRequest(context);
+    }
+    return listFriendRequest;
+  }
+
+  void acceptFriendRequest(String username) async {
+    int accept =
+        await ref.read(friendServiceProvider).acceptFriendRequest(username);
+
+    if (accept == 200) {
+      setState(() {});
+    } else if (accept == 401) {
+      if (mounted) {
+        showSnackBar(context, 'Phiên đăng nhập đã hết hạn!');
+        Navigator.pushNamedAndRemoveUntil(
+            context, WelcomeScreen.routeName, (route) => false);
+      }
+    } else {
+      if (mounted) {
+        showSnackBar(context, 'Xác nhận yêu cầu kết bạn thất bại!');
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: FutureBuilder<List<MainUserInfoResponse>>(
+        future: fetchFriendRequest(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return FutureBuilderErrorWidget(error: snapshot.error.toString());
+          } else {
+            if (listFriendRequest.isEmpty) {
+              return const Center(
+                child: Text(
+                  'Trống',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              );
+            }
+            return ListView.builder(
+              itemCount: listFriendRequest.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(listFriendRequest[index].urlAvatar),
+                  ),
+                  title: Text(
+                    listFriendRequest[index].username,
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  subtitle: Text(
+                    listFriendRequest[index].fullName,
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                  trailing: ElevatedButton(
+                    onPressed: () {
+                      acceptFriendRequest(listFriendRequest[index].username);
+                    },
+                    child: const Text('Xác nhận'),
+                  ),
+                );
+              },
+            );
+          }
+        },
+      ),
+    );
+  }
+}

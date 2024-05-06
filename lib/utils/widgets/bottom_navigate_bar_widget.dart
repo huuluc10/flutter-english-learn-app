@@ -1,12 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/chat/pages/chat_home_screen.dart';
 import 'package:flutter_englearn/features/dictionary/pages/dictionary_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
+import 'package:flutter_englearn/utils/const/api_url.dart';
 import 'package:flutter_englearn/utils/provider/control_index_navigate_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stomp_dart_client/stomp.dart';
+import 'package:stomp_dart_client/stomp_config.dart';
+import 'package:stomp_dart_client/stomp_frame.dart';
 
-class BottomNavigateBarWidget extends ConsumerWidget {
+class BottomNavigateBarWidget extends ConsumerStatefulWidget {
   const BottomNavigateBarWidget({
     Key? key,
     required this.index,
@@ -15,7 +22,38 @@ class BottomNavigateBarWidget extends ConsumerWidget {
   final int index;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _BottomNavigateBarWidgetState();
+}
+
+class _BottomNavigateBarWidgetState
+    extends ConsumerState<BottomNavigateBarWidget> {
+  final String webSocketUrl = APIUrl.baseUrlSocket;
+  late StompClient _client;
+
+  @override
+  void initState() {
+    super.initState();
+    _client = StompClient(
+        config: StompConfig(url: webSocketUrl, onConnect: onConnectCallback));
+    _client.activate();
+  }
+
+  void onConnectCallback(StompFrame connectFrame) {
+    _client.subscribe(
+        destination: '/user/test/queue/chats',
+        headers: {},
+        callback: (frame) {
+          var decodedMessage = jsonDecode(frame.body!);
+          var payload = decodedMessage['payload'];
+          log(frame.body!);
+          // Received a frame for this subscription
+          // messages = jsonDecode(frame.body!).reversed.toList();
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
@@ -38,7 +76,7 @@ class BottomNavigateBarWidget extends ConsumerWidget {
           unselectedFontSize: 12,
           elevation: 0,
           iconSize: 22,
-          currentIndex: index,
+          currentIndex: widget.index,
           onTap: (value) {
             ref
                 .read(indexBottomNavbarProvider.notifier)
