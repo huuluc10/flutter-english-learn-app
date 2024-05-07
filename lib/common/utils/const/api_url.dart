@@ -1,6 +1,6 @@
 class APIUrl {
   // IP ADDRESS SERVER AND PORT
-  static const String ip = "192.168.52.22";
+  static const String ip = "192.168.1.174";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 

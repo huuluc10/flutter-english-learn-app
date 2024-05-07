@@ -1,7 +1,7 @@
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/model/result_return.dart';
-import 'package:flutter_englearn/utils/const/api_url.dart';
-import 'package:flutter_englearn/utils/const/utils.dart';
+import 'package:flutter_englearn/common/utils/const/api_url.dart';
+import 'package:flutter_englearn/common/utils/const/utils.dart';
 import 'package:http/http.dart';
 
 class ChatRepositopry {

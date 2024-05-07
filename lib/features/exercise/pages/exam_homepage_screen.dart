@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/pages/exam_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/response/exam_response.dart';
-import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExamHomePageScreen extends ConsumerStatefulWidget {

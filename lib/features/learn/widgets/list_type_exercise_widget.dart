@@ -6,7 +6,7 @@ import 'package:flutter_englearn/features/learn/widgets/sentence_transform_exerc
 import 'package:flutter_englearn/features/learn/widgets/sentence_unscramble_item_exercise.dart';
 import 'package:flutter_englearn/features/learn/widgets/speaking_item_widget.dart';
 import 'package:flutter_englearn/model/question_type.dart';
-import 'package:flutter_englearn/utils/const/utils.dart';
+import 'package:flutter_englearn/common/utils/const/utils.dart';
 
 class ListTypeExerciseWidget extends StatelessWidget {
   const ListTypeExerciseWidget({

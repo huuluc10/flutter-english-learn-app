@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/model/request/sign_up_request.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/utils/helper/helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> signUp(

@@ -4,7 +4,7 @@ import 'package:flutter_englearn/features/exercise/provider/exercise_provider.da
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/utils/helper/helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<List<QuestionResponse>> fetchMultipleChoiceQuestions(

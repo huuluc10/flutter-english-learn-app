@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/mission/repository/mission_repository.dart';
 import 'package:flutter_englearn/model/response/mission_response.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/utils/helper/helper.dart';
 
 class MissionService {
   final MissionRepository missionRepository;

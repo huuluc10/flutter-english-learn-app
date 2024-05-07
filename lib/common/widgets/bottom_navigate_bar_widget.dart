@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/chat/pages/chat_home_screen.dart';
 import 'package:flutter_englearn/features/dictionary/pages/dictionary_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
-import 'package:flutter_englearn/utils/const/api_url.dart';
-import 'package:flutter_englearn/utils/provider/control_index_navigate_bar.dart';
+import 'package:flutter_englearn/common/utils/const/api_url.dart';
+import 'package:flutter_englearn/common/provider/control_index_navigate_bar.dart';
+import 'package:flutter_englearn/common/websocket/web_socket_singleton.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
@@ -30,10 +31,29 @@ class _BottomNavigateBarWidgetState
     extends ConsumerState<BottomNavigateBarWidget> {
   final String webSocketUrl = APIUrl.baseUrlSocket;
   late StompClient _client;
+  late StompSingleton stompSingleton;
 
+  Future<void> sendMessage(String message) async {
+    print("Sending message");
+    Future.delayed(Duration(seconds: 5)).then(
+      (value) => _client.send(
+        destination: '/app/chat/2', // Replace with your chat ID
+        body: json.encode({
+          'chatId': 2,
+          'message': message,
+          'type': 'text',
+          'sender': 'huuluc10',
+          'receiver': 'test',
+          'timestamp': DateTime.now().toIso8601String()
+        }), // Format the message as needed
+      ),
+    );
+  }
   @override
   void initState() {
     super.initState();
+    stompSingleton = StompSingleton(context);
+    stompSingleton.connect();
     _client = StompClient(
         config: StompConfig(url: webSocketUrl, onConnect: onConnectCallback));
     _client.activate();

@@ -7,7 +7,7 @@ import 'package:flutter_englearn/model/request/change_password_request.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'dart:developer' as logger;
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/utils/helper/helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 

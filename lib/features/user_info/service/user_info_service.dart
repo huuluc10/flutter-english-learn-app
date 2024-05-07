@@ -11,7 +11,7 @@ import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'dart:developer';
 
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/utils/helper/helper.dart';
 
 class UserInfoService {
   final UserInfoRepository userInfoRepository;

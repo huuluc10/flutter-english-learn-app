@@ -3,9 +3,9 @@ import 'package:flutter_englearn/model/response/history_learn_topic_response.dar
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/result_return.dart';
-import 'package:flutter_englearn/utils/const/api_url.dart';
-import 'package:flutter_englearn/utils/const/utils.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/utils/const/api_url.dart';
+import 'package:flutter_englearn/common/utils/const/utils.dart';
+import 'package:flutter_englearn/common/utils/helper/helper.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 

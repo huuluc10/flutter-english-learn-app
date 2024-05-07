@@ -38,7 +38,7 @@ import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
-import 'package:flutter_englearn/utils/pages/error_screen.dart';
+import 'package:flutter_englearn/common/pages/error_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {

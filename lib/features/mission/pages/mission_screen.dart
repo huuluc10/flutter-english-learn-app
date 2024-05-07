@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/mission/providers/mission_providers.dart';
 import 'package:flutter_englearn/model/response/mission_response.dart';
-import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MissionScreen extends ConsumerWidget {

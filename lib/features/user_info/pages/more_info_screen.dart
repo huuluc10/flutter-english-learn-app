@@ -7,7 +7,7 @@ import 'package:flutter_englearn/features/user_info/widgets/normal_info_widget.d
 import 'package:flutter_englearn/model/request/update_info_request.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 import 'dart:developer';
 
 class MoreUserInfoScreen extends ConsumerStatefulWidget {

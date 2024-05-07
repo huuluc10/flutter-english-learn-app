@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter_englearn/model/response/jwt_response.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
-import 'package:flutter_englearn/utils/const/api_url.dart';
-import 'package:flutter_englearn/utils/const/utils.dart';
+import 'package:flutter_englearn/common/utils/const/api_url.dart';
+import 'package:flutter_englearn/common/utils/const/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 

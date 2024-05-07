@@ -4,8 +4,8 @@ import 'package:flutter_englearn/model/response/lesson_response.dart';
 import 'package:flutter_englearn/model/question_type.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/result_return.dart';
-import 'package:flutter_englearn/utils/const/api_url.dart';
-import 'package:flutter_englearn/utils/const/utils.dart';
+import 'package:flutter_englearn/common/utils/const/api_url.dart';
+import 'package:flutter_englearn/common/utils/const/utils.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 

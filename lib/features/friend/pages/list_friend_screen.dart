@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/user_info/pages/user_info_screen.dart';
 
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 
 class ListFriendScreen extends StatefulWidget {
   const ListFriendScreen({

@@ -3,10 +3,10 @@ import 'package:flutter_englearn/features/homepage/controller/homepage_controlle
 import 'package:flutter_englearn/features/homepage/widgets/drawer_home_widget.dart';
 import 'package:flutter_englearn/features/homepage/widgets/topic_widget.dart';
 import 'package:flutter_englearn/features/learn/pages/topic_details_screen.dart';
-import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
-import 'package:flutter_englearn/utils/provider/control_index_navigate_bar.dart';
-import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/bottom_navigate_bar_widget.dart';
+import 'package:flutter_englearn/common/provider/control_index_navigate_bar.dart';
+import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../model/response/history_learn_topic_response.dart';
 

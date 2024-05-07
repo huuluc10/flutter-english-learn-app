@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/utils/helper/helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class StatusFriend extends ConsumerStatefulWidget {
