@@ -1,6 +1,6 @@
 class APIUrl {
   // IP ADDRESS SERVER AND PORT
-  static const String ip = "192.168.1.174";
+  static const String ip = "192.168.52.22";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -41,6 +41,7 @@ class APIUrl {
   static const String pathFindFriend = "/api/v1/user/findUser";
   static const String pathGetLeaderboard = "/api/v1/user/getLeaderboard";
   static const String pathUpdateStreak = "/api/v1/user/updateStreak";
+  static const String pathGetAvatarUrl = "/api/v1/user/getAvatar";
 
   // PATH STORAGE API
   static const String pathGetFile = "storage/getfile";
@@ -102,6 +103,7 @@ class APIUrl {
 
   /* ----------------------------------------------------------------------------- */
 
-  // PATH GET ALL ROOM CHAT API
+  // PATH GET CHAT API
   static const String pathGetAllChatRoom = "/api/chat-room";
+  static const String pathMarkAsRead = "/api/chat-room/update";
 }

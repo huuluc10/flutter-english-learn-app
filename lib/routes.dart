@@ -116,8 +116,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case ChatHome.routeName:
       return MaterialPageRoute(builder: (context) => const ChatHome());
 
-    case ChatRoom.routeName:
-      return MaterialPageRoute(builder: (context) => const ChatRoom());
+    case ChatRoomScreen.routeName:
+      final arguments = settings.arguments as List<String>;
+      final chatId = arguments[0];
+      final usernameReceiver = arguments[1];
+      final receriverAvatar = arguments[2];
+      return MaterialPageRoute(
+          builder: (context) => ChatRoomScreen(
+                chatId: chatId,
+                usernameReceiver: usernameReceiver,
+                receriverAvatar: receriverAvatar,
+              ));
 
     case TopicDetailsScreen.routeName:
       final argruments = settings.arguments as List<dynamic>;

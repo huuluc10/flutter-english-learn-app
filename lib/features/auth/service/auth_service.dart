@@ -12,7 +12,7 @@ import 'package:flutter_englearn/model/request/reset_password_request.dart';
 import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/request/verify_code_request.dart';
 import 'package:flutter_englearn/model/response/jwt_response.dart';
-import 'package:flutter_englearn/common/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 import 'dart:developer';
 
 class AuthService {

@@ -8,3 +8,11 @@ final indexBottomNavbarProvider = StateProvider<int>((ref) {
 final haveNewMessageProvider = StateProvider<bool>((ref) {
   return false;
 });
+
+final currentUsernameProvider = StateProvider<String>((ref) {
+  return '';
+});
+
+final currentAvatarProvider = StateProvider<String?>((ref) {
+  return null;
+});

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/common/provider/common_provider.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_englearn/model/request/change_password_request.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'dart:developer' as logger;
-import 'package:flutter_englearn/common/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -123,6 +124,14 @@ Future<Map<String, Object>> getInfo(
     final userInfo =
         await ref.read(userInfoServiceProvider).getUserInfo(context, username);
 
+    String currentAvatar = await ref.read(currentAvatarProvider)!;
+
+    if (userInfo.urlAvatar != currentAvatar) {
+      ref
+          .read(currentAvatarProvider.notifier)
+          .update((state) => userInfo.urlAvatar);
+    }
+
     final countHistoryLearnedLesson =
         await ref.read(userInfoServiceProvider).countHistoryLearnedLesson();
 
@@ -201,6 +210,10 @@ Future<void> changePassword(
 
 Future<List<MainUserInfoResponse>> getFriend(
     BuildContext context, WidgetRef ref, String username) async {
+  if (username.isEmpty || username == '') {
+    username = await ref.watch(authServiceProvicer).getUsername();
+    ref.read(currentUsernameProvider.notifier).update((state) => username);
+  }
   return await getFriends(
     context,
     ref,

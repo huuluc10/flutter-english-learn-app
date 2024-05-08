@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/friend/providers/friend_provider.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
-import 'package:flutter_englearn/common/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

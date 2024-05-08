@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/common/utils/const/utils.dart';
+import 'package:flutter_englearn/common/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AboutScreen extends ConsumerWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/common/utils/utils.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
-import 'package:flutter_englearn/common/utils/const/utils.dart';
 import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 
 class ExplanationResultScreen extends StatefulWidget {

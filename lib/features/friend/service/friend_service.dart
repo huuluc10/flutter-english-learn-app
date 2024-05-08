@@ -6,7 +6,7 @@ import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'dart:developer';
-import 'package:flutter_englearn/common/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 
 class FriendService {
   final FriendRepository friendRepository;

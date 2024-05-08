@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/common/provider/common_provider.dart';
 import 'package:flutter_englearn/features/auth/pages/otp_input_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
@@ -11,7 +12,8 @@ import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'dart:developer';
 
-import 'package:flutter_englearn/common/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserInfoService {
   final UserInfoRepository userInfoRepository;
@@ -41,15 +43,19 @@ class UserInfoService {
     log('Get user info', name: 'UserInfoService');
 
     if (result.httpStatusCode == 401) {
-      log('Token is expired', name: 'UserInfoService');
-      Navigator.pushNamedAndRemoveUntil(
-          context, WelcomeScreen.routeName, (route) => false);
+      if (context.mounted) {
+        log('Token is expired', name: 'UserInfoService');
+        Navigator.pushNamedAndRemoveUntil(
+            context, WelcomeScreen.routeName, (route) => false);
+      }
     }
 
     if (result.httpStatusCode == 400) {
       log('Get user info failed', name: 'UserInfoService');
-      showSnackBar(context, 'Get user info failed');
-      Navigator.pop(context);
+      if (context.mounted) {
+        showSnackBar(context, 'Get user info failed');
+        Navigator.pop(context);
+      }
     }
 
     log('Get user info successfully', name: 'UserInfoService');
@@ -143,14 +149,17 @@ class UserInfoService {
               {
                 showSnackBar(context, "Xác thực mã OTP thành công!"),
                 await updateUserInfo(context, updateInfoRequest),
-                Navigator.pop(context),
-                Navigator.pop(context),
-                Navigator.pop(context),
-                Navigator.pushNamed(
-                  context,
-                  MoreUserInfoScreen.routeName,
-                  arguments: [true, userInfo],
-                ),
+                if (context.mounted)
+                  {
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                    Navigator.pushNamed(
+                      context,
+                      MoreUserInfoScreen.routeName,
+                      arguments: [true, userInfo],
+                    ),
+                  }
               }
             else if (value == 'Code is incorrect')
               {
@@ -236,6 +245,29 @@ class UserInfoService {
       log('Update streak failed', name: 'UserInfoService');
       if (!context.mounted) return;
       showSnackBar(context, 'Update streak failed');
+    }
+  }
+
+  Future<String?> getAvatar(BuildContext context, WidgetRef ref) async {
+    ResultReturn resultReturn = await userInfoRepository.getAvatar();
+
+    if (resultReturn.httpStatusCode == 401) {
+      log('Token is expired', name: 'UserInfoService');
+      if (!context.mounted) return '';
+      showSnackBar(
+          context, 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!');
+      Navigator.pushNamedAndRemoveUntil(
+          context, WelcomeScreen.routeName, (route) => false);
+      return '';
+    } else if (resultReturn.httpStatusCode == 200) {
+      log('Get avatar successfully', name: 'UserInfoService');
+      ref
+          .read(currentAvatarProvider.notifier)
+          .update((state) => resultReturn.data);
+      return resultReturn.data;
+    } else {
+      log('Get avatar failed', name: 'UserInfoService');
+      return null;
     }
   }
 }

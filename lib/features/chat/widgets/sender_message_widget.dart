@@ -1,15 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 
-class SendingMessageWidget extends StatelessWidget {
-  const SendingMessageWidget({
+class SenderMessageWidget extends StatelessWidget {
+  SenderMessageWidget({
     super.key,
     required this.message,
+    this.avatarUrl,
   });
 
   final String message;
+  String? avatarUrl;
 
   @override
   Widget build(BuildContext context) {
+    avatarUrl = transformLocalURLMediaToURL(avatarUrl!);
     return Padding(
       padding: const EdgeInsets.only(
         top: 5,
@@ -39,9 +44,9 @@ class SendingMessageWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 5),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 20,
-            backgroundImage: AssetImage('assets/female.jpg'),
+            backgroundImage: CachedNetworkImageProvider(avatarUrl!),
           ),
         ],
       ),

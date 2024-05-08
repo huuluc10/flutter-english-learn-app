@@ -7,7 +7,7 @@ import 'package:flutter_englearn/model/question_type.dart';
 import 'package:flutter_englearn/model/response/lesson_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/model/user_lesson.dart';
-import 'package:flutter_englearn/common/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 
 class LearnService {
   final LearnRepository learnRepository;
