@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_englearn/common/provider/common_provider.dart';
 import 'package:flutter_englearn/common/utils/api_url.dart';
 import 'package:flutter_englearn/features/chat/pages/chat_room_screen.dart';
@@ -30,7 +29,6 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
   late StompClient _client;
   String username = '';
   List<MessageChatRoom> chatRooms = [];
-  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -196,13 +194,7 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
                             child: FutureBuilder(
                                 future: _fetchChatRooms(),
                                 builder: (context, snapshot) {
-                                  SchedulerBinding.instance
-                                      .addPostFrameCallback((_) {
-                                    scrollController.jumpTo(scrollController
-                                        .position.maxScrollExtent);
-                                  });
                                   return ListView.builder(
-                                    controller: scrollController,
                                     itemCount: chatRooms.length,
                                     itemBuilder: (context, index) {
                                       if (chatRooms.isEmpty) {

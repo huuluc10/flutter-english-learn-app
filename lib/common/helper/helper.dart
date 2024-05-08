@@ -14,6 +14,7 @@ void showSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
+      duration: const Duration(seconds: 2),
       content: Text(
         message,
         style: const TextStyle(
@@ -24,6 +25,10 @@ void showSnackBar(BuildContext context, String message) {
       backgroundColor: const Color.fromARGB(255, 233, 233, 233),
     ),
   );
+}
+
+void clearSnackBar(BuildContext context) {
+  ScaffoldMessenger.of(context).clearSnackBars();
 }
 
 extension StringCasingExtension on String {
