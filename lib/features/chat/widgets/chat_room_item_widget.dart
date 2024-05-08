@@ -7,11 +7,13 @@ import 'package:intl/intl.dart';
 class ChatRoomItem extends StatelessWidget {
   final MessageChatRoom chatRoom;
   final String currentUsername;
+  final bool isRead;
 
   const ChatRoomItem({
     Key? key,
     required this.chatRoom,
     required this.currentUsername,
+    required this.isRead,
   }) : super(key: key);
 
   @override
@@ -48,7 +50,12 @@ class ChatRoomItem extends StatelessWidget {
         children: [
           Text(
             date,
-            style: const TextStyle(fontSize: 14),
+            style: isRead
+                ? const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  )
+                : const TextStyle(fontSize: 14),
           ),
           Text(
             time,

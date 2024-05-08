@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/common/utils/utils.dart';
 import 'package:flutter_englearn/features/exercise/controller/exercise_controller.dart';
-import 'package:flutter_englearn/features/exercise/pages/exam_homepage_screen.dart';
-import 'package:flutter_englearn/features/exercise/pages/result_exercise_screen.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/features/exercise/widgets/fill_in_the_blank_widget.dart';
 import 'package:flutter_englearn/features/exercise/widgets/listening_widget.dart';
