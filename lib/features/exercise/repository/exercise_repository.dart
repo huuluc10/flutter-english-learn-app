@@ -1,13 +1,13 @@
+import 'package:flutter_englearn/common/utils/api_url.dart';
+import 'package:flutter_englearn/common/utils/utils.dart';
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/response/exam_response.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
 import 'package:flutter_englearn/model/response/response_model.dart';
 import 'package:flutter_englearn/model/result_return.dart';
-import 'package:flutter_englearn/utils/const/utils.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import 'package:flutter_englearn/utils/const/api_url.dart';
 
 class ExerciseRepository {
   final AuthRepository authRepository;

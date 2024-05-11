@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter_englearn/model/answer_choice.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 
 class Answer {
   String question;

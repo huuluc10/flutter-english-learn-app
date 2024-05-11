@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:en_vi_dic/en_vi_dic.dart';
+import 'package:flutter_englearn/common/utils/api_url.dart';
 import 'package:flutter_englearn/model/response/dictionary_api_word_response.dart';
-import 'package:flutter_englearn/utils/const/api_url.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 

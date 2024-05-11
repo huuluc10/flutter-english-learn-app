@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/features/friend/pages/list_friend_creen.dart';
+import 'package:flutter_englearn/common/provider/common_provider.dart';
+import 'package:flutter_englearn/features/friend/pages/list_friend_request_screen.dart';
+import 'package:flutter_englearn/features/friend/pages/list_friend_screen.dart';
 import 'package:flutter_englearn/features/user_info/controller/user_info_controller.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +15,7 @@ class FriendSummaryInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    String currentUsername = ref.watch(currentUsernameProvider);
     return FutureBuilder(
       future: getFriend(context, ref, username),
       builder: (context, snapshot) {
@@ -61,10 +64,18 @@ class FriendSummaryInfo extends ConsumerWidget {
                     ),
                   ),
                   const Spacer(),
-                  const Text(
-                    'Danh sách yêu cầu',
-                    style: TextStyle(color: Colors.blueAccent, fontSize: 17),
-                  ),
+                  if (currentUsername == username)
+                    InkWell(
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        ListFriendRequestScreen.routeName,
+                      ),
+                      child: const Text(
+                        'Danh sách yêu cầu',
+                        style:
+                            TextStyle(color: Colors.blueAccent, fontSize: 17),
+                      ),
+                    )
                 ],
               ),
             ),

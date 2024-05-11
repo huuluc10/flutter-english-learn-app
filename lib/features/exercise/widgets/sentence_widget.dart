@@ -5,8 +5,8 @@ import 'package:flutter_englearn/features/exercise/widgets/sentence_answer_selec
 import 'package:flutter_englearn/features/exercise/widgets/sentence_word_widget.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
-import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
+import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SentenceWidget extends ConsumerStatefulWidget {

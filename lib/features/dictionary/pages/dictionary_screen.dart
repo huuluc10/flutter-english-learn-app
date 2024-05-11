@@ -1,14 +1,14 @@
 import 'package:en_vi_dic/en_vi_dic.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/common/provider/common_provider.dart';
 import 'package:flutter_englearn/features/dictionary/providers/control_source_dictionary.dart';
 import 'package:flutter_englearn/features/dictionary/providers/dictionary_provider.dart';
 import 'package:flutter_englearn/features/dictionary/widgets/api_dictionary_widget.dart';
 import 'package:flutter_englearn/features/homepage/widgets/button_choose_source_dictionary_widget.dart';
 import 'package:flutter_englearn/features/dictionary/widgets/en_vi_dic_widget.dart';
 import 'package:flutter_englearn/model/response/dictionary_api_word_response.dart';
-import 'package:flutter_englearn/utils/provider/control_index_navigate_bar.dart';
-import 'package:flutter_englearn/utils/widgets/bottom_navigate_bar_widget.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/bottom_navigate_bar_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DictionaryScreen extends ConsumerStatefulWidget {

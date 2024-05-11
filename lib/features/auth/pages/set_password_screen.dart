@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/controller/auth_controller.dart';
 import 'package:flutter_englearn/features/auth/widgets/auth_text_field_widget.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SetPasswordScreen extends ConsumerWidget {

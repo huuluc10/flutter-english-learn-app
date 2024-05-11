@@ -4,7 +4,7 @@ import 'package:flutter_englearn/features/learn/controller/learn_controller.dart
 import 'package:flutter_englearn/features/learn/provider/learn_provider.dart';
 import 'package:flutter_englearn/features/learn/widgets/youtube_player_widget.dart';
 import 'package:flutter_englearn/model/lesson_content.dart';
-import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
+import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LessonContentScreen extends ConsumerStatefulWidget {

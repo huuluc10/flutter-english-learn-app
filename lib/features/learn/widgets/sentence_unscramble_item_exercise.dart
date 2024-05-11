@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/pages/sentence_unscramble_question_screen.dart';
-import 'package:flutter_englearn/utils/widgets/custom_alert_dialog.dart';
+import 'package:flutter_englearn/common/widgets/custom_alert_dialog.dart';
 
 class SentenceUnscrambleExerciseWidget extends StatelessWidget {
   const SentenceUnscrambleExerciseWidget({

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/pages/exam_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/response/exam_response.dart';
-import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExamHomePageScreen extends ConsumerStatefulWidget {
-   const ExamHomePageScreen({
+  const ExamHomePageScreen({
     super.key,
     required this.topicId,
   });
@@ -17,19 +17,18 @@ class ExamHomePageScreen extends ConsumerStatefulWidget {
   final int topicId;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ExamHomePageScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ExamHomePageScreenState();
 }
 
 class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
-
   Future<List<ExamResponse>> getExams() async {
-      return await ref.watch(exerciseServiceProvider).getListExam(widget.topicId);
-    }
+    return await ref.watch(exerciseServiceProvider).getListExam(widget.topicId);
+  }
 
- @override
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -56,7 +55,7 @@ class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
                   ),
                   child: Container(
                     width: width,
-                    padding: const EdgeInsets.all(14),
+                    padding: const EdgeInsets.all(8),
                     child: Column(
                       children: [
                         const Text(
@@ -122,11 +121,12 @@ class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
                                               snapshot.data![index].examId,
                                               snapshot.data![index]
                                                   .examTimeWithSecond,
-                                                  (mark) {
-                                                      setState(() {
-                                                        snapshot.data![index].examResult = mark;
-                                                      });
-                                                    }
+                                              (mark) {
+                                                setState(() {
+                                                  snapshot.data![index]
+                                                      .examResult = mark;
+                                                });
+                                              }
                                             ],
                                           );
                                         }

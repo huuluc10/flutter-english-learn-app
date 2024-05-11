@@ -1,12 +1,12 @@
 class APIUrl {
   // IP ADDRESS SERVER AND PORT
-  static const String ip = "192.168.1.174";
+  static const String ip = "192.168.52.22";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
   // BASE URL
   static const String baseUrl = "$ip:$portEngLearn";
-  static const String baseUrlSocket = "ws://$ip:$portSocket";
+  static const String baseUrlSocket = "ws://$ip:$portSocket/websocket";
   static const String baseUrlSocketHttp = "$ip:$portSocket";
 
   // PATH DICTIONARY API
@@ -41,6 +41,7 @@ class APIUrl {
   static const String pathFindFriend = "/api/v1/user/findUser";
   static const String pathGetLeaderboard = "/api/v1/user/getLeaderboard";
   static const String pathUpdateStreak = "/api/v1/user/updateStreak";
+  static const String pathGetAvatarUrl = "/api/v1/user/getAvatar";
 
   // PATH STORAGE API
   static const String pathGetFile = "storage/getfile";
@@ -64,6 +65,10 @@ class APIUrl {
   static const String pathGetStatusOfRequestFriend =
       "/api/v1/friend-request/status";
   static const String pathUnFriend = "/api/v1/friend-request/delete";
+  static const String pathGetListWaitForAcceptFriendRequest =
+      "/api/v1/friend-request/receiver";
+  static const String pathGetListRequestSent = "/api/v1/friend-request/sender";
+  static const String pathAcceptFriendRequest = "/api/v1/friend-request/accept";
 
   // PATH LESSON API
   static const String pathGetListLessonOfTopic = "/api/v1/lessons/topic";
@@ -98,6 +103,7 @@ class APIUrl {
 
   /* ----------------------------------------------------------------------------- */
 
-  // PATH GET ALL ROOM CHAT API
+  // PATH GET CHAT API
   static const String pathGetAllChatRoom = "/api/chat-room";
+  static const String pathMarkAsRead = "/api/chat-room/update";
 }

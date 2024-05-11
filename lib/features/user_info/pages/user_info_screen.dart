@@ -6,8 +6,8 @@ import 'package:flutter_englearn/features/user_info/widgets/statistics_widget.da
 import 'package:flutter_englearn/features/user_info/widgets/status_friend_widget.dart';
 import 'package:flutter_englearn/features/user_info/widgets/user_friend_summary_info_widget.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
-import 'package:flutter_englearn/utils/widgets/future_builder_error_widget.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserInfoScreen extends ConsumerStatefulWidget {

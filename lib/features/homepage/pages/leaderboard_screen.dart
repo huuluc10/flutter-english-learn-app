@@ -63,7 +63,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        'Top ${listLeaderboard.length} người chơi cấp ${listLeaderboard[0].level}',
+                        'Top ${listLeaderboard.length} người cấp ${listLeaderboard[0].level}',
                         style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white,
@@ -116,7 +116,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                             ],
                           ),
                           trailing: SizedBox(
-                            width: 100,
+                            width: 80,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
@@ -127,7 +127,9 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                                   height: 20,
                                 ),
                                 const SizedBox(width: 5),
-                                Text(listLeaderboard[index].level.toString()),
+                                Text(listLeaderboard[index]
+                                    .experience
+                                    .toString()),
                               ],
                             ),
                           ),

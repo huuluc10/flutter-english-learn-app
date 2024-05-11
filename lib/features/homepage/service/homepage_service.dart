@@ -7,7 +7,7 @@ import 'dart:developer';
 
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/result_return.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 
 class HomepageService {
   final HomepageRepository homepageRepository;

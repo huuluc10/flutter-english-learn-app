@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/model/response/dictionary_api_word_response.dart';
-import 'package:flutter_englearn/utils/helper/helper.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 
 class MeaningDictionaryWidget extends StatelessWidget {
   const MeaningDictionaryWidget({

@@ -19,7 +19,8 @@ import 'package:flutter_englearn/features/exercise/pages/sentence_transform_ques
 import 'package:flutter_englearn/features/exercise/pages/sentence_unscramble_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/pages/speaking_question_screen.dart';
 import 'package:flutter_englearn/features/friend/pages/find_friend_screen.dart';
-import 'package:flutter_englearn/features/friend/pages/list_friend_creen.dart';
+import 'package:flutter_englearn/features/friend/pages/list_friend_request_screen.dart';
+import 'package:flutter_englearn/features/friend/pages/list_friend_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/about_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 import 'package:flutter_englearn/features/homepage/pages/leaderboard_screen.dart';
@@ -37,7 +38,7 @@ import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
-import 'package:flutter_englearn/utils/pages/error_screen.dart';
+import 'package:flutter_englearn/common/pages/error_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -115,8 +116,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case ChatHome.routeName:
       return MaterialPageRoute(builder: (context) => const ChatHome());
 
-    case ChatRoom.routeName:
-      return MaterialPageRoute(builder: (context) => const ChatRoom());
+    case ChatRoomScreen.routeName:
+      final arguments = settings.arguments as List<String>;
+      final chatId = arguments[0];
+      final usernameReceiver = arguments[1];
+      final receriverAvatar = arguments[2];
+      return MaterialPageRoute(
+          builder: (context) => ChatRoomScreen(
+                chatId: chatId,
+                usernameReceiver: usernameReceiver,
+                receriverAvatar: receriverAvatar,
+              ));
 
     case TopicDetailsScreen.routeName:
       final argruments = settings.arguments as List<dynamic>;
@@ -247,6 +257,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case LeaderboardScreen.routeName:
       return MaterialPageRoute(builder: (context) => const LeaderboardScreen());
+
+    case ListFriendRequestScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => const ListFriendRequestScreen());
 
     default:
       return MaterialPageRoute(builder: (context) => const WelcomeScreen());

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/common/utils/utils.dart';
 import 'package:flutter_englearn/features/learn/widgets/fill_in_the_blank_item_exercise_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/listening_exercise_item_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/multichoice_exercies_item_widget.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_englearn/features/learn/widgets/sentence_transform_exerc
 import 'package:flutter_englearn/features/learn/widgets/sentence_unscramble_item_exercise.dart';
 import 'package:flutter_englearn/features/learn/widgets/speaking_item_widget.dart';
 import 'package:flutter_englearn/model/question_type.dart';
-import 'package:flutter_englearn/utils/const/utils.dart';
 
 class ListTypeExerciseWidget extends StatelessWidget {
   const ListTypeExerciseWidget({
@@ -27,7 +27,8 @@ class ListTypeExerciseWidget extends StatelessWidget {
             return MultichoiceExerciseWidget(lessonId: lessonId);
           } else if (e.questionTypeName == TypeQuestion.fillInBlank) {
             return FillInTheBlankExerciseWidget(lessonId: lessonId);
-          } else if (e.questionTypeName == TypeQuestion.sentenceTransformation) {
+          } else if (e.questionTypeName ==
+              TypeQuestion.sentenceTransformation) {
             return SenntenceTransformExcerciseWidget(lessonId: lessonId);
           } else if (e.questionTypeName == TypeQuestion.sentenceUnscramble) {
             return SentenceUnscrambleExerciseWidget(lessonId: lessonId);

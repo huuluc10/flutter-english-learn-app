@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
-import 'package:flutter_englearn/utils/widgets/line_gradient_background_widget.dart';
+import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

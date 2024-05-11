@@ -3,7 +3,7 @@ import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
 import 'package:flutter_englearn/features/homepage/pages/home_screen.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/routes.dart';
-import 'package:flutter_englearn/utils/pages/error_screen.dart';
+import 'package:flutter_englearn/common/pages/error_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 

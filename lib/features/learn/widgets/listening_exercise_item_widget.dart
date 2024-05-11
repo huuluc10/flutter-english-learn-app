@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/pages/listening_question_screen.dart';
-import 'package:flutter_englearn/utils/widgets/custom_alert_dialog.dart';
+import 'package:flutter_englearn/common/widgets/custom_alert_dialog.dart';
 
 class ListeningExerciseWidget extends StatelessWidget {
   const ListeningExerciseWidget({

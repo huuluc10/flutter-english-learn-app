@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_englearn/utils/const/api_url.dart';
+import 'package:flutter_englearn/common/utils/api_url.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -68,6 +68,18 @@ String transformLocalURLMediaToURL(String url) {
       Uri.http(authority, APIUrl.pathGetFile, {"path": url}).toString();
 
   return linkAvatar;
+}
+
+String transformURLAvatarToLocalURL(String url) {
+  // .....storage/getfile?path=avatar/2021/10/13/1634120000_6166b1d0b4b7b.jpg
+  // => avatar/2021/10/13/1634120000_6166b1d0b4b7b.jpg
+
+  int index = url.indexOf("${APIUrl.pathGetFile}?path=");
+  if (index != -1) {
+    return url.substring(index + "${APIUrl.pathGetFile}?path=".length);
+  }
+
+  return url;
 }
 
 DateTime convertUTCtoLocal(DateTime dateTimeUTC) {
