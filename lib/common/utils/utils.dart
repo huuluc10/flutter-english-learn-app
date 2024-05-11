@@ -33,4 +33,5 @@ class TypeQuestion {
   static const String sentenceTransformation = 'Sentence unscramble';
   static const String listening = 'Listening';
   static const String speaking = 'Speaking';
+  static const String exam = 'Exam';
 }

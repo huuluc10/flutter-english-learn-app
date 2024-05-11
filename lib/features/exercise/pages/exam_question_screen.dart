@@ -155,6 +155,22 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                     await saveAnswerQuestion(context, ref,
                                         snapshot.data![i].questionId, false);
                                   }
+                                  clearSnackBar(context);
+                                  updateCurrentIndexQuestion(
+                                    context,
+                                    () {
+                                      currentIndexQuestion.value =
+                                          _totalQuestionCount - 1;
+                                    },
+                                    _totalQuestionCount - 1,
+                                    _totalQuestionCount,
+                                    [
+                                      _correctAnswerCount,
+                                      _totalQuestionCount,
+                                      [],
+                                      TypeQuestion.fillInBlank
+                                    ],
+                                  );
                                 },
                               ),
                             ],
