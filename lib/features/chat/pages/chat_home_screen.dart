@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 import 'package:flutter_englearn/common/provider/common_provider.dart';
 import 'package:flutter_englearn/common/utils/api_url.dart';
 import 'package:flutter_englearn/features/chat/pages/chat_room_screen.dart';
@@ -163,17 +164,40 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
                                   for (int i = 0; i < friends.length; i++)
                                     Padding(
                                       padding: const EdgeInsets.only(right: 10),
-                                      child: Column(
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
+                                      child: InkWell(
+                                        onTap: () async {
+                                          String? chatRoomId = await ref
+                                              .watch(chatServiceProvider)
+                                              .getChatRoomIdWithParticipants(
+                                                  context, friends[i].username);
+
+                                          if (chatRoomId == null) {
+                                            showSnackBar(context,
+                                                'Có lỗi xảy ra, vui lòng thử lại sau');
+                                          }
+
+                                          Navigator.pushNamed(
+                                            context,
+                                            ChatRoomScreen.routeName,
+                                            arguments: [
+                                              chatRoomId,
+                                              friends[i].username,
                                               friends[i].urlAvatar,
+                                            ],
+                                          );
+                                        },
+                                        child: Column(
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                friends[i].urlAvatar,
+                                              ),
+                                              radius: 25,
                                             ),
-                                            radius: 25,
-                                          ),
-                                          Text(friends[i].username),
-                                        ],
+                                            Text(friends[i].username),
+                                          ],
+                                        ),
                                       ),
                                     )
                                 ],

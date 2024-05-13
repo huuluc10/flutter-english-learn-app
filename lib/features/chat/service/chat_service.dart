@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/common/helper/helper.dart';
-import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/chat/repository/chat_repository.dart';
 import 'package:flutter_englearn/model/message.dart';
 import 'package:flutter_englearn/model/message_chatroom.dart';
@@ -16,13 +15,6 @@ class ChatService {
 
     if (result.httpStatusCode == 200) {
       return result.data as List<MessageChatRoom>;
-    } else if (result.httpStatusCode == 401) {
-      if (context.mounted) {
-        showSnackBar(
-            context, 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
-        Navigator.pushNamedAndRemoveUntil(
-            context, WelcomeScreen.routeName, (route) => false);
-      }
     } else {
       if (context.mounted) {
         showSnackBar(context, 'Có lỗi xảy ra, vui lòng thử lại sau');
@@ -35,11 +27,7 @@ class ChatService {
       BuildContext context, String chatRoomId) async {
     ResultReturn result = await chatRepository.markMessageAsRead(chatRoomId);
 
-    if (result.httpStatusCode == 401) {
-      showSnackBar(context, 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
-      Navigator.pushNamedAndRemoveUntil(
-          context, WelcomeScreen.routeName, (route) => false);
-    } else if (result.httpStatusCode != 200) {
+    if (result.httpStatusCode != 200) {
       showSnackBar(
           context, 'Có lỗi xảy ra khi cập nhật dữ liệu, vui lòng thử lại sau');
     }
@@ -49,14 +37,7 @@ class ChatService {
       BuildContext context, String chatRoomId) async {
     ResultReturn result = await chatRepository.getHistoryChat(chatRoomId);
 
-    if (result.httpStatusCode == 401) {
-      if (context.mounted) {
-        showSnackBar(
-            context, 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
-        Navigator.pushNamedAndRemoveUntil(
-            context, WelcomeScreen.routeName, (route) => false);
-      }
-    } else if (result.httpStatusCode != 200) {
+    if (result.httpStatusCode != 200) {
       if (context.mounted) {
         showSnackBar(context,
             'Có lỗi xảy ra khi cập nhật dữ liệu, vui lòng thử lại sau');
@@ -64,5 +45,19 @@ class ChatService {
     }
 
     return result.data as List<Message>;
+  }
+
+  Future<String?> getChatRoomIdWithParticipants(
+      BuildContext context, String friendName) async {
+    ResultReturn result = await chatRepository.getChatRoom(friendName);
+
+    if (result.httpStatusCode == 200) {
+      MessageChatRoom chatRoom = result.data as MessageChatRoom;
+      return chatRoom.chatId;
+    } else if (result.httpStatusCode == 204) {
+      String? chatId = await chatRepository.createChatRoom(friendName);
+      return chatId;
+    }
+    return null;
   }
 }

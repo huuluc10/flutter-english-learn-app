@@ -1,6 +1,6 @@
 class APIUrl {
   // IP ADDRESS SERVER AND PORT
-  static const String ip = "192.168.52.22";
+  static const String ip = "192.168.1.174";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -106,4 +106,6 @@ class APIUrl {
   // PATH GET CHAT API
   static const String pathGetAllChatRoom = "/api/chat-room";
   static const String pathMarkAsRead = "/api/chat-room/update";
+  static const String getChatRoom = "api/chat-room/get";
+  static const String createChatRoom = "api/chat-room";
 }
