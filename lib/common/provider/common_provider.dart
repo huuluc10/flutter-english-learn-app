@@ -4,7 +4,6 @@ final indexBottomNavbarProvider = StateProvider<int>((ref) {
   return 0;
 });
 
-
 final haveNewMessageProvider = StateProvider<bool>((ref) {
   return false;
 });
@@ -14,5 +13,5 @@ final currentUsernameProvider = StateProvider<String>((ref) {
 });
 
 final currentAvatarProvider = StateProvider<String?>((ref) {
-  return null;
+  return '';
 });

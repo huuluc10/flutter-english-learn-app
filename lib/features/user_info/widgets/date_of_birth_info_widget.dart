@@ -33,6 +33,7 @@ class _DateAttributeWidgetState extends State<DateAttributeWidget> {
     BottomPicker.date(
       title: 'Chọn ngày sinh',
       dateOrder: DatePickerDateOrder.dmy,
+      initialDateTime: _value ?? DateTime.now(),
       pickerTextStyle: const TextStyle(
         color: Colors.blue,
         fontWeight: FontWeight.bold,

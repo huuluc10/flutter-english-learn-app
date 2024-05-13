@@ -72,69 +72,70 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height - 50 - 56 - 24,
-                    color: Colors.white,
-                    child: ListView.builder(
-                      itemCount: listLeaderboard.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: SizedBox(
-                            width: 60,
-                            height: 60,
-                            child: ClipOval(
-                              child: CachedNetworkImage(
-                                imageUrl: listLeaderboard[index].urlAvatar,
-                                filterQuality: FilterQuality.high,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          title: Text(
-                            listLeaderboard[index].username,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                            ),
-                          ),
-                          subtitle: Row(
-                            children: [
-                              Image.asset(
-                                'assets/fire.png',
-                                width: 20,
-                                height: 20,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                listLeaderboard[index].streak.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.red,
+                  Expanded(
+                    child: Container(
+                      color: Colors.white,
+                      child: ListView.builder(
+                        itemCount: listLeaderboard.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            leading: SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: listLeaderboard[index].urlAvatar,
+                                  filterQuality: FilterQuality.high,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                            ],
-                          ),
-                          trailing: SizedBox(
-                            width: 80,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.min,
+                            ),
+                            title: Text(
+                              listLeaderboard[index].username,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            subtitle: Row(
                               children: [
                                 Image.asset(
-                                  'assets/experience.png',
+                                  'assets/fire.png',
                                   width: 20,
                                   height: 20,
                                 ),
                                 const SizedBox(width: 5),
-                                Text(listLeaderboard[index]
-                                    .experience
-                                    .toString()),
+                                Text(
+                                  listLeaderboard[index].streak.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        );
-                      },
+                            trailing: SizedBox(
+                              width: 80,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(
+                                    'assets/experience.png',
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(listLeaderboard[index]
+                                      .experience
+                                      .toString()),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

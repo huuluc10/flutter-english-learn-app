@@ -124,7 +124,7 @@ Future<Map<String, Object>> getInfo(
     final userInfo =
         await ref.read(userInfoServiceProvider).getUserInfo(context, username);
 
-    String currentAvatar = await ref.read(currentAvatarProvider)!;
+    String? currentAvatar = await ref.read(currentAvatarProvider);
 
     if (userInfo.urlAvatar != currentAvatar) {
       ref
