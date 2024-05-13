@@ -16,7 +16,10 @@ List<String> listLibrary() => [
       'cached_network_image',
       'http_parser',
       'youtube_player_flutter',
-      'stomp_dart_client'
+      'stomp_dart_client',
+      'flutter_tts',
+      'speech_to_text',
+      'circular_countdown_timer'
     ];
 
 const Map<String, String> httpHeaders = {

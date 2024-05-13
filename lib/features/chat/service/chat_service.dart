@@ -14,7 +14,8 @@ class ChatService {
     ResultReturn result = await chatRepository.getAllChatRoom();
 
     if (result.httpStatusCode == 200) {
-      return result.data as List<MessageChatRoom>;
+      List<MessageChatRoom> chatRooms = result.data as List<MessageChatRoom>;
+      return chatRooms;
     } else {
       if (context.mounted) {
         showSnackBar(context, 'Có lỗi xảy ra, vui lòng thử lại sau');

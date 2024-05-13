@@ -31,7 +31,7 @@ class ChatRepository {
           jsonResponse.map((item) => MessageChatRoom.fromMap(item)).toList();
 
       return ResultReturn(httpStatusCode: 200, data: chatRooms);
-    } 
+    }
     return ResultReturn(httpStatusCode: response.statusCode, data: null);
   }
 
@@ -44,7 +44,7 @@ class ChatRepository {
 
     if (response.statusCode == 200) {
       return ResultReturn(httpStatusCode: 200, data: null);
-    } 
+    }
     return ResultReturn(httpStatusCode: response.statusCode, data: null);
   }
 
@@ -61,7 +61,7 @@ class ChatRepository {
       messages = jsonResponse.map((item) => Message.fromMap(item)).toList();
 
       return ResultReturn(httpStatusCode: 200, data: messages);
-    } 
+    }
     return ResultReturn(httpStatusCode: response.statusCode, data: null);
   }
 
@@ -69,10 +69,13 @@ class ChatRepository {
     String myUsername = await authRepository.getUserName();
     Uri url = Uri.http(APIUrl.baseUrlSocketHttp, APIUrl.getChatRoom);
 
+    Map<String, String> headers = Map.from(httpHeaders);
+
     CreateChatRoomRequest request = CreateChatRoomRequest(
         chatId: null, participants: [myUsername, friendName]);
 
-    final Response response = await post(url, body: request.toJson());
+    final Response response =
+        await post(url, headers: headers, body: request.toJson());
 
     if (response.statusCode == 200) {
       MessageChatRoom chatRoom = MessageChatRoom.fromJson(response.body);
@@ -80,7 +83,7 @@ class ChatRepository {
       return ResultReturn(httpStatusCode: 200, data: chatRoom);
     } else if (response.statusCode == 204) {
       return ResultReturn(httpStatusCode: 204, data: null);
-    } 
+    }
     return ResultReturn(httpStatusCode: response.statusCode, data: null);
   }
 
@@ -88,17 +91,19 @@ class ChatRepository {
     String myUsername = await authRepository.getUserName();
     Uri url = Uri.http(APIUrl.baseUrlSocketHttp, APIUrl.createChatRoom);
 
+    Map<String, String> headers = Map.from(httpHeaders);
     Map<String, List<String>> body = {
       "participants": [myUsername, friendName]
     };
 
-    final Response response = await post(url, body: json.encode(body));
+    final Response response =
+        await post(url, headers: headers, body: json.encode(body));
 
     if (response.statusCode == 200) {
       MessageChatRoom chatRoom = MessageChatRoom.fromJson(response.body);
 
       return chatRoom.chatId;
-    } 
+    }
     return null;
   }
 }

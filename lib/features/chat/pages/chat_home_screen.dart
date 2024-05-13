@@ -178,17 +178,17 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
                                           if (chatRoomId == null) {
                                             showSnackBar(context,
                                                 'Có lỗi xảy ra, vui lòng thử lại sau');
+                                          } else {
+                                            Navigator.pushNamed(
+                                              context,
+                                              ChatRoomScreen.routeName,
+                                              arguments: [
+                                                chatRoomId,
+                                                friends[i].username,
+                                                friends[i].urlAvatar,
+                                              ],
+                                            );
                                           }
-
-                                          Navigator.pushNamed(
-                                            context,
-                                            ChatRoomScreen.routeName,
-                                            arguments: [
-                                              chatRoomId,
-                                              friends[i].username,
-                                              friends[i].urlAvatar,
-                                            ],
-                                          );
                                         },
                                         child: Column(
                                           children: [
@@ -221,69 +221,59 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
                           child: MediaQuery.removePadding(
                             context: context,
                             removeTop: true,
-                            child: RefreshIndicator(
-                              onRefresh: () async {
-                                chatRooms = await ref
-                                    .watch(chatServiceProvider)
-                                    .getAllChatRoom(context);
-                                setState(() {});
-                              },
-                              child: FutureBuilder(
-                                  future: _fetchChatRooms(),
-                                  builder: (context, snapshot) {
-                                    return ListView.builder(
-                                      itemCount: chatRooms.length,
-                                      itemBuilder: (context, index) {
-                                        if (chatRooms.isEmpty) {
-                                          return const Text(
-                                              'Không có tin nhắn');
-                                        }
-                                        final chatRoom = chatRooms[index];
-                                        return InkWell(
-                                          onTap: () async {
-                                            await ref
-                                                .watch(chatServiceProvider)
-                                                .markMessageAsRead(
-                                                    context, chatRoom.chatId);
+                            child: FutureBuilder(
+                                future: _fetchChatRooms(),
+                                builder: (context, snapshot) {
+                                  return ListView.builder(
+                                    itemCount: chatRooms.length,
+                                    itemBuilder: (context, index) {
+                                      if (chatRooms.isEmpty) {
+                                        return const Text('Không có tin nhắn');
+                                      }
+                                      final chatRoom = chatRooms[index];
+                                      return InkWell(
+                                        onTap: () async {
+                                          await ref
+                                              .watch(chatServiceProvider)
+                                              .markMessageAsRead(
+                                                  context, chatRoom.chatId);
 
-                                            String receiverUsername =
-                                                chatRoom.participants[0] ==
-                                                        username
-                                                    ? chatRoom.participants[1]
-                                                    : chatRoom.participants[0];
+                                          String receiverUsername =
+                                              chatRoom.participants[0] ==
+                                                      username
+                                                  ? chatRoom.participants[1]
+                                                  : chatRoom.participants[0];
 
-                                            String receiverAvatar =
-                                                receiverUsername ==
-                                                        chatRoom
-                                                            .lastMessage.sender
-                                                    ? chatRoom.lastMessage
-                                                        .senderAvatar
-                                                    : chatRoom.lastMessage
-                                                        .receiverAvatar;
+                                          String receiverAvatar =
+                                              receiverUsername ==
+                                                      chatRoom
+                                                          .lastMessage!.sender
+                                                  ? chatRoom
+                                                      .lastMessage!.senderAvatar
+                                                  : chatRoom.lastMessage!
+                                                      .receiverAvatar;
 
-                                            await Navigator.pushNamed(
-                                              context,
-                                              ChatRoomScreen.routeName,
-                                              arguments: [
-                                                chatRoom.chatId,
-                                                receiverUsername,
-                                                receiverAvatar,
-                                              ],
-                                            ).then((value) => setState(() {
-                                                  chatRooms[index].isSeen =
-                                                      true;
-                                                }));
-                                          },
-                                          child: ChatRoomItem(
-                                            currentUsername: username,
-                                            chatRoom: chatRoom,
-                                            isRead: chatRoom.isSeen,
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }),
-                            ),
+                                          await Navigator.pushNamed(
+                                            context,
+                                            ChatRoomScreen.routeName,
+                                            arguments: [
+                                              chatRoom.chatId,
+                                              receiverUsername,
+                                              receiverAvatar,
+                                            ],
+                                          ).then((value) => setState(() {
+                                                chatRooms[index].isSeen = true;
+                                              }));
+                                        },
+                                        child: ChatRoomItem(
+                                          currentUsername: username,
+                                          chatRoom: chatRoom,
+                                          isRead: chatRoom.isSeen,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }),
                           ),
                         ),
                       ],
