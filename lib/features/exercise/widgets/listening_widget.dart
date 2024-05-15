@@ -99,16 +99,19 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
         widget.inCreaseCorrectAnswerCount();
       } else {
         await saveAnswerQuestion(context, ref, widget.questionId, false);
-        widget.addExplanationQuestion(
+        
+      }
+      widget.addExplanationQuestion(
           ExplanationQuestion(
             question: _answer!.question,
             questionImage: _answer!.questionImage,
             answer: correctAnswer!,
             answerImage: _answer!.questionImage,
+            selectedAnswer: _selectedAnswer,
+            selectedAnswerImage: null,
             explanation: explanation,
           ),
         );
-      }
       _selectedAnswer = '';
       _answer = null;
       widget.updateCurrentIndex();

@@ -61,16 +61,18 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
         widget.inCreaseCorrectAnswerCount();
       } else {
         await saveAnswerQuestion(context, ref, widget.questionId, false);
-        widget.addExplanationQuestion(
-          ExplanationQuestion(
-            question: question,
-            questionImage: null,
-            answer: correctAnswer!,
-            answerImage: null,
-            explanation: explanation,
-          ),
-        );
       }
+      widget.addExplanationQuestion(
+        ExplanationQuestion(
+          question: question,
+          questionImage: null,
+          answer: correctAnswer!,
+          answerImage: null,
+          selectedAnswer: controller.text.trim(),
+          selectedAnswerImage: null,
+          explanation: explanation,
+        ),
+      );
       widget.updateCurrentIndex();
       controller.clear();
     }

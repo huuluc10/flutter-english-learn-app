@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_englearn/common/helper/helper.dart';
 import 'package:flutter_englearn/common/provider/common_provider.dart';
 import 'package:flutter_englearn/common/utils/api_url.dart';

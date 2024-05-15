@@ -91,6 +91,9 @@ class AuthRepository {
       ResponseModel responseModel = ResponseModel.fromJson(response.body);
       JwtResponse jwtResponse =
           JwtResponse.fromMap(responseModel.data as Map<String, dynamic>);
+      if (jwtResponse.roles.contains('ROLE_ADMIN')) {
+        return null;
+      }
       await saveJWT(jwtResponse);
       return jwtResponse;
     } else {

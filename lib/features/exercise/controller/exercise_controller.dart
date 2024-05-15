@@ -129,17 +129,19 @@ void changeSpeakingQuestion(
       inCreaseCorrectAnswerCount();
     } else {
       await saveAnswerQuestion(context, ref, questionId, false);
+    }
+    if (context.mounted) {
       addExplanationQuestion(
         ExplanationQuestion(
           question: answer.question,
           questionImage: answer.questionImage,
           answer: correctAnswer,
           answerImage: answer.correctImage,
+          selectedAnswer: pronounce,
+          selectedAnswerImage: null,
           explanation: answer.explanation,
         ),
       );
-    }
-    if (context.mounted) {
       updateCurrentIndex();
     }
   }

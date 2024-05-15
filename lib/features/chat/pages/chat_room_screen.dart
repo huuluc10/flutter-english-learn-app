@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_englearn/common/helper/helper.dart';
@@ -126,9 +124,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
         headers: {},
         callback: (frame) {
           ref.watch(haveNewMessageProvider.notifier).update((value) => true);
-          Map<String, dynamic> map =
-              json.decode(frame.body!) as Map<String, dynamic>;
-          Message newMessage = Message.fromMap(map['payload']);
+          Message newMessage = Message.fromJson(frame.body!);
           // Cập nhật danh sách chat và hiển thị tin nhắn mới nhất
 
           setState(() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/common/widgets/custom_alert_dialog.dart';
 import 'package:flutter_englearn/features/exercise/pages/exam_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/response/exam_response.dart';
@@ -112,24 +113,30 @@ class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
                                                   ),
                                                 ),
                                       onTap: () {
-                                        if (snapshot.data![index].examResult ==
-                                            0) {
-                                          Navigator.pushNamed(
-                                            context,
-                                            ExamScreen.routeName,
-                                            arguments: [
-                                              snapshot.data![index].examId,
-                                              snapshot.data![index]
-                                                  .examTimeWithSecond,
-                                              (mark) {
-                                                setState(() {
-                                                  snapshot.data![index]
-                                                      .examResult = mark;
-                                                });
-                                              }
-                                            ],
-                                          );
-                                        }
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              CustomAlertDialog(
+                                            content:
+                                                'Bạn có muốn dành $examTime phút để hoàn thành? Bạn không thể thoát trong quá trình làm.',
+                                            onConfirm: () =>
+                                                Navigator.pushNamed(
+                                              context,
+                                              ExamScreen.routeName,
+                                              arguments: [
+                                                snapshot.data![index].examId,
+                                                snapshot.data![index]
+                                                    .examTimeWithSecond,
+                                                (mark) {
+                                                  setState(() {
+                                                    snapshot.data![index]
+                                                        .examResult = mark;
+                                                  });
+                                                }
+                                              ],
+                                            ),
+                                          ),
+                                        );
                                       },
                                     );
                                   },

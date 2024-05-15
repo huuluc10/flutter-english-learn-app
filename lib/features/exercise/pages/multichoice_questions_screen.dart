@@ -4,19 +4,18 @@ import 'package:flutter_englearn/features/exercise/controller/exercise_controlle
 import 'package:flutter_englearn/features/exercise/widgets/multichoice_widget.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
-import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class MultichoiceQuestionScreen extends ConsumerStatefulWidget {
   const MultichoiceQuestionScreen({
     super.key,
-    required this.lessonId,
+    required this.questions,
   });
 
   static const String routeName = '/multichoice-question-screen';
 
-  final int lessonId;
+  final List<QuestionResponse> questions;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -25,16 +24,6 @@ class MultichoiceQuestionScreen extends ConsumerStatefulWidget {
 
 class _MultichoiceQuestionScreenState
     extends ConsumerState<MultichoiceQuestionScreen> {
-  Future<List<QuestionResponse>> _fetchQuestions() async {
-    return await fetchMultipleChoiceQuestions(
-      ref,
-      widget.lessonId,
-      (totalQuestionCount) {
-        _totalQuestionCount = totalQuestionCount;
-      },
-    );
-  }
-
   void inCreaseCorrectAnswerCount() {
     _correctAnswerCount++;
   }
@@ -49,6 +38,15 @@ class _MultichoiceQuestionScreenState
   ValueNotifier<int> currentIndexQuestion = ValueNotifier<int>(0);
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _totalQuestionCount = widget.questions.length;
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
     return PopScope(
@@ -61,76 +59,57 @@ class _MultichoiceQuestionScreenState
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
         ),
-        body: Column(
-          children: [
-            FutureBuilder<List<QuestionResponse>>(
-              future: _fetchQuestions(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasError) {
-                  return FutureBuilderErrorWidget(
-                    error: snapshot.error.toString(),
-                  );
-                }
-                return ValueListenableBuilder<int>(
-                  valueListenable: currentIndexQuestion,
-                  builder: (context, value, child) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: LinearPercentIndicator(
-                            lineHeight: 22.0,
-                            percent: value / snapshot.data!.length,
-                            center: Text(
-                              "${(value / snapshot.data!.length * 100).toStringAsFixed(2)} %",
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            barRadius: const Radius.circular(20),
-                            backgroundColor: Colors.grey,
-                            progressColor: Colors.blue,
-                          ),
-                        ),
+        body: ValueListenableBuilder<int>(
+          valueListenable: currentIndexQuestion,
+          builder: (context, value, child) => Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: LinearPercentIndicator(
+                    lineHeight: 22.0,
+                    percent: value / widget.questions.length,
+                    center: Text(
+                      "${(value / widget.questions.length * 100).toStringAsFixed(2)} %",
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                      MultichoiceWidget(
-                        height: height,
-                        updateCurrentIndex: () {
-                          updateCurrentIndexQuestion(
-                            context,
-                            () {
-                              currentIndexQuestion.value++;
-                            },
-                            value,
-                            _totalQuestionCount,
-                            [
-                              _correctAnswerCount,
-                              _totalQuestionCount,
-                              _explanationQuestions,
-                              TypeQuestion.multipleChoice,
-                            ],
-                          );
-                        },
-                        questionId: snapshot.data![value].questionId,
-                        questionURL: snapshot.data![value].answerFileURL,
-                        inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
-                        addExplanationQuestion: addExplanationQuestion,
-                      ),
-                    ],
+                    ),
+                    barRadius: const Radius.circular(20),
+                    backgroundColor: Colors.grey,
+                    progressColor: Colors.blue,
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+              ),
+              MultichoiceWidget(
+                height: height,
+                updateCurrentIndex: () {
+                  updateCurrentIndexQuestion(
+                    context,
+                    () {
+                      currentIndexQuestion.value++;
+                    },
+                    value,
+                    _totalQuestionCount,
+                    [
+                      _correctAnswerCount,
+                      _totalQuestionCount,
+                      _explanationQuestions,
+                      TypeQuestion.multipleChoice,
+                    ],
+                  );
+                },
+                questionId: widget.questions[value].questionId,
+                questionURL: widget.questions[value].answerFileURL,
+                inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
+                addExplanationQuestion: addExplanationQuestion,
+              ),
+            ],
+          ),
         ),
       ),
     );

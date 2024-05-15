@@ -44,16 +44,18 @@ class AnswerChoiceWidget extends ConsumerWidget {
               await saveAnswerQuestion(context, ref, questionId, true);
             } else {
               await saveAnswerQuestion(context, ref, questionId, false);
-              addExplanationQuestion(
-                ExplanationQuestion(
-                  question: answer.question,
-                  questionImage: answer.questionImage,
-                  answer: answer.correctAnswer,
-                  answerImage: answer.correctImage,
-                  explanation: answer.explanation,
-                ),
-              );
             }
+            addExplanationQuestion(
+              ExplanationQuestion(
+                question: answer.question,
+                questionImage: answer.questionImage,
+                answer: answer.correctAnswer,
+                answerImage: answer.correctImage,
+                selectedAnswer: answer.answers![index].text,
+                selectedAnswerImage: answer.answers![index].answerImage,
+                explanation: answer.explanation,
+              ),
+            );
             updateCurrentIndex();
           },
           style: TextButton.styleFrom(

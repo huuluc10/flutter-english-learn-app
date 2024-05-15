@@ -4,6 +4,8 @@ class ExplanationQuestion {
   String? questionImage;
   String? answer;
   String? answerImage;
+  String? selectedAnswer;
+  String? selectedAnswerImage;
   String? explanation;
 
   ExplanationQuestion({
@@ -11,6 +13,8 @@ class ExplanationQuestion {
     required this.questionImage,
     required this.answer,
     required this.answerImage,
+    required this.selectedAnswer,
+    required this.selectedAnswerImage,
     required this.explanation,
   });
 }

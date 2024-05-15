@@ -12,9 +12,9 @@ class SenntenceTransformExcerciseWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: const Text('Bài tập dịch câu'),
-      onTap: () {
+    return TextButton(
+      child: const Text('Bài tập dịch câu'),
+      onPressed: () {
         showDialog(
           context: context,
           builder: (context) => CustomAlertDialog(

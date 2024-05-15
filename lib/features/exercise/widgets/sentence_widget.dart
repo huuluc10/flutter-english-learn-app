@@ -68,16 +68,19 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
             widget.questionId,
             false,
           );
-          widget.addExplanationQuestion(
+          
+        }
+        widget.addExplanationQuestion(
             ExplanationQuestion(
               question: answer.question,
               questionImage: answer.questionImage,
               answer: answer.correctAnswer,
               answerImage: answer.correctImage,
+              selectedAnswer: stringAnswer,
+              selectedAnswerImage: null,
               explanation: answer.explanation,
             ),
           );
-        }
         widget.updateCurrentIndex();
         listWordIsChosen.clear();
         setState(() {});
