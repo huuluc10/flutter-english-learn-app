@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_englearn/common/widgets/custom_alert_dialog.dart';
 import 'package:flutter_englearn/features/exercise/pages/exam_question_screen.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/response/exam_response.dart';
@@ -29,6 +30,7 @@ class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -53,38 +55,37 @@ class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Container(
-                    width: width,
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Bài kiểm tra chủ đề',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Bài kiểm tra chủ đề',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 10),
-                        FutureBuilder<List<ExamResponse>>(
-                          future: getExams(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (snapshot.hasError)
-                              // ignore: curly_braces_in_flow_control_structures
-                              return FutureBuilderErrorWidget(
-                                error: snapshot.error.toString(),
-                              );
-                            if (snapshot.hasData) {
-                              return MediaQuery.removePadding(
-                                context: context,
-                                removeTop: true,
+                      ),
+                      FutureBuilder<List<ExamResponse>>(
+                        future: getExams(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (snapshot.hasError)
+                            // ignore: curly_braces_in_flow_control_structures
+                            return FutureBuilderErrorWidget(
+                              error: snapshot.error.toString(),
+                            );
+                          if (snapshot.hasData) {
+                            return MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: Container(
+                                height: height - 140,
                                 child: ListView.builder(
                                   shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {
                                     String examTime = (snapshot.data![index]
@@ -112,35 +113,43 @@ class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
                                                   ),
                                                 ),
                                       onTap: () {
-                                        if (snapshot.data![index].examResult ==
-                                            0) {
-                                          Navigator.pushNamed(
-                                            context,
-                                            ExamScreen.routeName,
-                                            arguments: [
-                                              snapshot.data![index].examId,
-                                              snapshot.data![index]
-                                                  .examTimeWithSecond,
-                                              (mark) {
-                                                setState(() {
-                                                  snapshot.data![index]
-                                                      .examResult = mark;
-                                                });
-                                              }
-                                            ],
-                                          );
-                                        }
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              CustomAlertDialog(
+                                            content:
+                                                'Bạn có muốn dành $examTime phút để hoàn thành? Bạn không thể thoát trong quá trình làm.',
+                                            onConfirm: () =>
+                                                Navigator.pushNamed(
+                                              context,
+                                              ExamScreen.routeName,
+                                              arguments: [
+                                                snapshot.data![index].examId,
+                                                snapshot.data![index]
+                                                    .examTimeWithSecond,
+                                                (mark) {
+                                                  setState(() {
+                                                    snapshot.data![index]
+                                                        .examResult = mark;
+                                                  });
+                                                },
+                                                snapshot
+                                                    .data![index].examExperience
+                                              ],
+                                            ),
+                                          ),
+                                        );
                                       },
                                     );
                                   },
                                 ),
-                              );
-                            }
-                            return const CircularProgressIndicator();
-                          },
-                        ),
-                      ],
-                    ),
+                              ),
+                            );
+                          }
+                          return const CircularProgressIndicator();
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ],

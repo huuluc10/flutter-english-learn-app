@@ -5,6 +5,7 @@ import 'package:flutter_englearn/common/utils/utils.dart';
 import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/model/message.dart';
 import 'package:flutter_englearn/model/message_chatroom.dart';
+import 'package:flutter_englearn/model/request/create_chat_room.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:http/http.dart';
 
@@ -30,8 +31,6 @@ class ChatRepository {
           jsonResponse.map((item) => MessageChatRoom.fromMap(item)).toList();
 
       return ResultReturn(httpStatusCode: 200, data: chatRooms);
-    } else if (response.statusCode == 401) {
-      await authRepository.removeJWT();
     }
     return ResultReturn(httpStatusCode: response.statusCode, data: null);
   }
@@ -45,9 +44,6 @@ class ChatRepository {
 
     if (response.statusCode == 200) {
       return ResultReturn(httpStatusCode: 200, data: null);
-    } else if (response.statusCode == 401) {
-      await authRepository.removeJWT();
-      return ResultReturn(httpStatusCode: 401, data: null);
     }
     return ResultReturn(httpStatusCode: response.statusCode, data: null);
   }
@@ -65,9 +61,49 @@ class ChatRepository {
       messages = jsonResponse.map((item) => Message.fromMap(item)).toList();
 
       return ResultReturn(httpStatusCode: 200, data: messages);
-    } else if (response.statusCode == 401) {
-      await authRepository.removeJWT();
     }
     return ResultReturn(httpStatusCode: response.statusCode, data: null);
+  }
+
+  Future<ResultReturn> getChatRoom(String friendName) async {
+    String myUsername = await authRepository.getUserName();
+    Uri url = Uri.http(APIUrl.baseUrlSocketHttp, APIUrl.getChatRoom);
+
+    Map<String, String> headers = Map.from(httpHeaders);
+
+    CreateChatRoomRequest request = CreateChatRoomRequest(
+        chatId: null, participants: [myUsername, friendName]);
+
+    final Response response =
+        await post(url, headers: headers, body: request.toJson());
+
+    if (response.statusCode == 200) {
+      MessageChatRoom chatRoom = MessageChatRoom.fromJson(response.body);
+
+      return ResultReturn(httpStatusCode: 200, data: chatRoom);
+    } else if (response.statusCode == 204) {
+      return ResultReturn(httpStatusCode: 204, data: null);
+    }
+    return ResultReturn(httpStatusCode: response.statusCode, data: null);
+  }
+
+  Future<String?> createChatRoom(String friendName) async {
+    String myUsername = await authRepository.getUserName();
+    Uri url = Uri.http(APIUrl.baseUrlSocketHttp, APIUrl.createChatRoom);
+
+    Map<String, String> headers = Map.from(httpHeaders);
+    Map<String, List<String>> body = {
+      "participants": [myUsername, friendName]
+    };
+
+    final Response response =
+        await post(url, headers: headers, body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      MessageChatRoom chatRoom = MessageChatRoom.fromJson(response.body);
+
+      return chatRoom.chatId;
+    }
+    return null;
   }
 }

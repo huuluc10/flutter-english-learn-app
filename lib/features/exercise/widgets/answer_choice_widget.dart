@@ -13,6 +13,7 @@ class AnswerChoiceWidget extends ConsumerWidget {
     required this.updateCurrentIndex,
     required this.increaseCorrectAnswerCount,
     required this.addExplanationQuestion,
+    required this.makeFor,
   });
 
   final int questionId;
@@ -20,6 +21,7 @@ class AnswerChoiceWidget extends ConsumerWidget {
   final Function() updateCurrentIndex;
   final Function() increaseCorrectAnswerCount;
   final Function(ExplanationQuestion) addExplanationQuestion;
+  final String makeFor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,23 +39,29 @@ class AnswerChoiceWidget extends ConsumerWidget {
             if (answer.answers![index].text != null &&
                 answer.answers![index].text == answer.correctAnswer) {
               increaseCorrectAnswerCount();
-              await saveAnswerQuestion(context, ref, questionId, true);
+              await saveAnswerQuestion(context, ref, questionId, makeFor, true);
             } else if (answer.answers![index].answerImage != null &&
                 answer.answers![index].answerImage == answer.correctImage) {
               increaseCorrectAnswerCount();
-              await saveAnswerQuestion(context, ref, questionId, true);
+              await saveAnswerQuestion(context, ref, questionId, makeFor, true);
             } else {
-              await saveAnswerQuestion(context, ref, questionId, false);
-              addExplanationQuestion(
-                ExplanationQuestion(
-                  question: answer.question,
-                  questionImage: answer.questionImage,
-                  answer: answer.correctAnswer,
-                  answerImage: answer.correctImage,
-                  explanation: answer.explanation,
-                ),
-              );
+              await saveAnswerQuestion(
+                  context, ref, questionId, makeFor, false);
             }
+            addExplanationQuestion(
+              ExplanationQuestion(
+                question: answer.question,
+                questionImage: answer.questionImage,
+                answer: answer.correctAnswer,
+                answerImage: answer.correctImage,
+                selectedAnswer: answer.answers![index].text,
+                selectedAnswerImage: answer.answers![index].answerImage,
+                explanation: answer.explanation,
+                isCorrect: answer.answers![index].text ==
+                        answer.correctAnswer &&
+                    answer.answers![index].answerImage == answer.correctImage,
+              ),
+            );
             updateCurrentIndex();
           },
           style: TextButton.styleFrom(

@@ -5,7 +5,7 @@ import 'package:flutter_englearn/model/message.dart';
 class MessageChatRoom {
   String chatId;
   List<String> participants;
-  Message lastMessage;
+  Message? lastMessage;
   bool isSeen;
 
   MessageChatRoom({
@@ -16,10 +16,13 @@ class MessageChatRoom {
   });
 
   factory MessageChatRoom.fromMap(Map<String, dynamic> map) {
+    print("Par: " + List<String>.from(map['participants']).toString());
     return MessageChatRoom(
       chatId: map['chatId'] as String,
-      participants: List<String>.from(map['participants'] as List<dynamic>),
-      lastMessage: Message.fromMap(map['lastMessage'] as Map<String, dynamic>),
+      participants: List<String>.from(map['participants']),
+      lastMessage: map['lastMessage'] != null
+          ? Message.fromMap(map['lastMessage']! as Map<String, dynamic>)
+          : null,
       isSeen: map['seen'] as bool,
     );
   }

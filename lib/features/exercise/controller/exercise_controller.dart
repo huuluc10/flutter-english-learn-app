@@ -76,14 +76,20 @@ Future<List<QuestionResponse>> fetchExamQuestion(
   return List.of(elements);
 }
 
-void updateCurrentIndexQuestion(BuildContext context, Function() refresh,
-    int currentIndex, int totalQuestion, List<Object> arguments) {
+void updateCurrentIndexQuestion(
+    BuildContext context,
+    Function() refresh,
+    Function increaseExpAfterExam,
+    int currentIndex,
+    int totalQuestion,
+    List<Object> arguments) async {
   if (currentIndex < totalQuestion - 1) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       refresh();
     });
   } else {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      increaseExpAfterExam();
       Navigator.pushNamed(
         context,
         ResultExerciseScreen.routeName,
@@ -114,6 +120,7 @@ void changeSpeakingQuestion(
   BuildContext context,
   WidgetRef ref,
   int questionId,
+  String makeFor,
   String pronounce,
   Function inCreaseCorrectAnswerCount,
   Function addExplanationQuestion,
@@ -125,21 +132,25 @@ void changeSpeakingQuestion(
     showSnackBar(context, 'Vui lòng nói từ bạn đã nghe');
   } else {
     if (pronounce.toLowerCase() == correctAnswer.toLowerCase()) {
-      await saveAnswerQuestion(context, ref, questionId, true);
+      await saveAnswerQuestion(context, ref, questionId, makeFor, true);
       inCreaseCorrectAnswerCount();
     } else {
-      await saveAnswerQuestion(context, ref, questionId, false);
+      await saveAnswerQuestion(context, ref, questionId, makeFor, false);
+    }
+    if (context.mounted) {
       addExplanationQuestion(
         ExplanationQuestion(
           question: answer.question,
           questionImage: answer.questionImage,
           answer: correctAnswer,
           answerImage: answer.correctImage,
+          selectedAnswer: pronounce,
+          selectedAnswerImage: null,
           explanation: answer.explanation,
+          isCorrect: answer.questionImage == answer.correctImage &&
+              correctAnswer == pronounce,
         ),
       );
-    }
-    if (context.mounted) {
       updateCurrentIndex();
     }
   }
@@ -149,11 +160,12 @@ Future<void> saveAnswerQuestion(
   BuildContext context,
   WidgetRef ref,
   int questionId,
+  String makeFor,
   bool isCorrect,
 ) async {
   String? save = await ref
       .read(exerciseServiceProvider)
-      .saveAnswerQuestion(questionId, isCorrect);
+      .saveAnswerQuestion(questionId, makeFor, isCorrect);
 
   if (save != null) {
     logEvent('Save answer question success');
@@ -163,4 +175,10 @@ Future<void> saveAnswerQuestion(
       showSnackBar(context, 'Lưu câu trả lời thất bại');
     }
   }
+}
+
+Future<void> increaseExpAfterExam(BuildContext context, WidgetRef ref,
+    int expOfExam, int correctAnswer, int totalQuestion) async {
+  await ref.watch(exerciseServiceProvider).increaseExpAfterCompletingExam(
+      context, expOfExam, correctAnswer, totalQuestion);
 }

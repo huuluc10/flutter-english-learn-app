@@ -16,7 +16,10 @@ List<String> listLibrary() => [
       'cached_network_image',
       'http_parser',
       'youtube_player_flutter',
-      'stomp_dart_client'
+      'stomp_dart_client',
+      'flutter_tts',
+      'speech_to_text',
+      'circular_countdown_timer'
     ];
 
 const Map<String, String> httpHeaders = {
@@ -29,8 +32,8 @@ const Map<String, String> httpHeaders = {
 class TypeQuestion {
   static const String multipleChoice = 'Multiple choice';
   static const String fillInBlank = 'Fill in the blank';
-  static const String sentenceUnscramble = 'Sentence transformation';
-  static const String sentenceTransformation = 'Sentence unscramble';
+  static const String sentenceUnscramble = 'Sentence unscramble';
+  static const String sentenceTransformation = 'Sentence transformation';
   static const String listening = 'Listening';
   static const String speaking = 'Speaking';
   static const String exam = 'Exam';

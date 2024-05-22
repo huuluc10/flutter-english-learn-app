@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
 import 'package:flutter_englearn/common/provider/common_provider.dart';
 import 'package:flutter_englearn/common/utils/api_url.dart';
 import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
@@ -55,13 +54,15 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
   _fetchData() async {
     String? currentAvatar = ref.watch(currentAvatarProvider);
 
-    if (currentAvatar != null) {
+    if (currentAvatar != "" && currentAvatar != null) {
       senderAvatar = currentAvatar;
     } else {
       currentAvatar =
           await ref.watch(userInfoServiceProvider).getAvatar(context, ref);
       senderAvatar = currentAvatar!;
     }
+
+    senderAvatar = transformLocalURLMediaToURL(senderAvatar);
 
     if (messages.isEmpty) {
       if (mounted) {
@@ -95,6 +96,17 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
         destination: '/app/chat',
         body: message.toJson(), //
       );
+      setState(() {
+        messages.add(Message(
+          chatRoomId: widget.chatId,
+          sender: currentUsername,
+          senderAvatar: senderAvatar,
+          receiver: widget.usernameReceiver,
+          receiverAvatar: widget.receriverAvatar,
+          lastMessage: _messageController.text,
+          timestamp: DateTime.now(),
+        ));
+      });
       _messageController.clear();
     }
   }
@@ -112,9 +124,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
         headers: {},
         callback: (frame) {
           ref.watch(haveNewMessageProvider.notifier).update((value) => true);
-          Map<String, dynamic> map =
-              json.decode(frame.body!) as Map<String, dynamic>;
-          Message newMessage = Message.fromMap(map['payload']);
+          Message newMessage = Message.fromJson(frame.body!);
           // Cập nhật danh sách chat và hiển thị tin nhắn mới nhất
 
           setState(() {
@@ -184,8 +194,10 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                             error: snapshot.error.toString());
                       }
                       SchedulerBinding.instance.addPostFrameCallback((_) {
-                        messageController
-                            .jumpTo(messageController.position.maxScrollExtent);
+                        if (messageController.hasClients) {
+                          messageController.jumpTo(
+                              messageController.position.maxScrollExtent);
+                        }
                       });
                       return ListView.builder(
                         controller: messageController,
@@ -204,6 +216,8 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                             );
                           }
                         },
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
                       );
                     },
                   ),
@@ -217,12 +231,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 10,
-                bottom: 10,
-              ),
+              padding: const EdgeInsets.all(10),
               child: TextFormField(
                 controller: _messageController,
                 onFieldSubmitted: (value) {
@@ -258,6 +267,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                   hintText: "Aa",
                   contentPadding: const EdgeInsets.all(5),
                 ),
+                textInputAction: TextInputAction.send,
               ),
             ),
           ),

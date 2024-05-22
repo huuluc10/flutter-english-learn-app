@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -6,10 +7,12 @@ class TopicWidget extends StatelessWidget {
     super.key,
     required this.nameTopic,
     required this.percent,
+    required this.imageUrl,
   });
 
   final String nameTopic;
   final double percent;
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -18,37 +21,36 @@ class TopicWidget extends StatelessWidget {
         color: const Color.fromARGB(255, 248, 247, 247),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Center(
-        child: Column(
-          children: [
-            CircularPercentIndicator(
-              radius: 60.0,
-              lineWidth: 6.0,
-              percent: percent,
-              header: const Text(
-                'Chủ đề',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Opacity(
+              opacity: 0.63,
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.cover,
               ),
-              center: Stack(
+            ),
+          ),
+          Positioned(
+            child: Center(
+              child: Column(
                 children: [
-                  const Opacity(
-                    opacity: 0.5,
-                    child: Image(
-                      image: AssetImage(
-                        'assets/lesson.png',
+                  CircularPercentIndicator(
+                    radius: 60.0,
+                    lineWidth: 6.0,
+                    percent: percent,
+                    header: const Text(
+                      'Chủ đề',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
                       ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 5,
-                    left: 0,
-                    right: 0,
-                    child: Center(
+                    center: Center(
                       child: Text(
                         nameTopic,
                         textAlign: TextAlign.center,
@@ -59,23 +61,23 @@ class TopicWidget extends StatelessWidget {
                         ),
                       ),
                     ),
+                    footer: Text(
+                      '${(percent * 100).toStringAsFixed(0)}%',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    backgroundColor: Colors.grey,
+                    progressColor: const Color.fromARGB(255, 31, 184, 0),
                   ),
                 ],
               ),
-              footer: Text(
-                '${(percent * 100).toStringAsFixed(0)}%',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              backgroundColor: Colors.grey,
-              progressColor: const Color.fromARGB(255, 31, 184, 0),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

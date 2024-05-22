@@ -12,11 +12,13 @@ class LessonHomePageScreen extends ConsumerStatefulWidget {
   const LessonHomePageScreen({
     super.key,
     required this.topicId,
+    required this.successRate,
   });
 
   static const String routeName = '/lesson-homepage-screen';
 
   final int topicId;
+  final double successRate;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -58,9 +60,9 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                     padding: const EdgeInsets.all(14),
                     child: Column(
                       children: [
-                        const Text(
-                          'Lý thuyết',
-                          style: TextStyle(
+                        Text(
+                          'Lý thuyết ${(widget.successRate * 100).toStringAsFixed(2)}%',
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -95,63 +97,88 @@ class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
                                           snapshot.data![index];
                                       return ExpansionTile(
                                         title: Text(lessonResponse.lessonName),
+                                        collapsedBackgroundColor:
+                                            lessonResponse.completed == 'Yes'
+                                                ? Colors.green[100]
+                                                : Colors.white,
+                                        backgroundColor:
+                                            lessonResponse.completed == 'Yes'
+                                                ? Colors.green[100]
+                                                : Colors.white,
                                         subtitle: Text(
                                             '${lessonResponse.levelName} - ${lessonResponse.lessonExperience} kinh nghiệm'),
                                         leading:
                                             Image.asset('assets/theory.png'),
+                                        expandedCrossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          ListTile(
-                                            title: const Text('Lý thuyết'),
-                                            trailing:
-                                                lessonResponse.completed ==
-                                                        'Yes'
-                                                    ? const Icon(
-                                                        Icons.check,
-                                                        color: Colors.green,
-                                                      )
-                                                    : null,
-                                            onTap: () {
-                                              Navigator.pushNamed(context,
-                                                  LessonContentScreen.routeName,
-                                                  arguments: [
-                                                    lessonResponse.lessonId,
-                                                    lessonResponse.contentURL,
-                                                    lessonResponse.completed,
-                                                    () {
-                                                      setState(() {
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              TextButton(
+                                                child: const Text('Lý thuyết'),
+                                                onPressed: () {
+                                                  Navigator.pushNamed(
+                                                      context,
+                                                      LessonContentScreen
+                                                          .routeName,
+                                                      arguments: [
+                                                        lessonResponse.lessonId,
                                                         lessonResponse
-                                                            .completed = 'Yes';
-                                                      });
-                                                    }
-                                                  ]);
-                                            },
+                                                            .contentURL,
+                                                        lessonResponse
+                                                            .completed,
+                                                        () {
+                                                          setState(() {
+                                                            lessonResponse
+                                                                    .completed =
+                                                                'Yes';
+                                                          });
+                                                        }
+                                                      ]);
+                                                },
+                                              ),
+                                              lessonResponse.completed == 'Yes'
+                                                  ? const Icon(
+                                                      Icons.check,
+                                                      color: Colors.green,
+                                                    )
+                                                  : Container(),
+                                            ],
                                           ),
-                                          FutureBuilder<List<QuestionType>>(
-                                            future: getListExerciseOfLesson(
-                                              context,
-                                              ref,
-                                              lessonResponse.lessonId,
-                                            ),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return const CircularProgressIndicator();
-                                              }
-                                              if (snapshot.hasError) {
-                                                return FutureBuilderErrorWidget(
-                                                  error:
-                                                      snapshot.error.toString(),
-                                                );
-                                              }
-                                              List<QuestionType> questionTypes =
-                                                  snapshot.data!;
+                                          MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: FutureBuilder<
+                                                List<QuestionType>>(
+                                              future: getListExerciseOfLesson(
+                                                context,
+                                                ref,
+                                                lessonResponse.lessonId,
+                                              ),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return const CircularProgressIndicator();
+                                                }
+                                                if (snapshot.hasError) {
+                                                  return FutureBuilderErrorWidget(
+                                                    error: snapshot.error
+                                                        .toString(),
+                                                  );
+                                                }
+                                                List<QuestionType>
+                                                    questionTypes =
+                                                    snapshot.data!;
 
-                                              return ListTypeExerciseWidget(
-                                                lessonId:
-                                                    lessonResponse.lessonId,
-                                                questionTypes: questionTypes,
-                                              );
-                                            },
+                                                return ListTypeExerciseWidget(
+                                                  lessonId:
+                                                      lessonResponse.lessonId,
+                                                  questionTypes: questionTypes,
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ],
                                       );

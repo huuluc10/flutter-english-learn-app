@@ -7,7 +7,6 @@ class UserInfoResponse extends MainUserInfoResponse {
   bool gender;
   DateTime dateOfBirth;
   String? email;
-  
 
   UserInfoResponse({
     required super.username,

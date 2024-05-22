@@ -165,12 +165,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           listTopic[index],
                                           () {
                                             setState(() {});
-                                          }
+                                          },
+                                          listTopic[index].successRate
                                         ]),
                                     child: TopicWidget(
                                       nameTopic:
                                           'Topic ${listTopic[index].topicId}: ${listTopic[index].topicName}',
                                       percent: listTopic[index].successRate,
+                                      imageUrl: listTopic[index].imageUrl,
                                     ),
                                   ),
                                 ),

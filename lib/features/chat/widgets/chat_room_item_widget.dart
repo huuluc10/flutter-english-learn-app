@@ -18,17 +18,17 @@ class ChatRoomItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String avatar = chatRoom.lastMessage.sender != currentUsername
-        ? chatRoom.lastMessage.senderAvatar
-        : chatRoom.lastMessage.receiverAvatar;
+    String avatar = chatRoom.lastMessage!.sender != currentUsername
+        ? chatRoom.lastMessage!.senderAvatar
+        : chatRoom.lastMessage!.receiverAvatar;
     avatar = transformLocalURLMediaToURL(avatar);
 
-    final username = chatRoom.lastMessage.sender != currentUsername
-        ? chatRoom.lastMessage.sender
-        : chatRoom.lastMessage.receiver;
+    final username = chatRoom.lastMessage!.sender != currentUsername
+        ? chatRoom.lastMessage!.sender
+        : chatRoom.lastMessage!.receiver;
 
-    String date = DateFormat.yMd().format(chatRoom.lastMessage.timestamp);
-    String time = DateFormat.Hm().format(chatRoom.lastMessage.timestamp);
+    String date = DateFormat.yMd().format(chatRoom.lastMessage!.timestamp);
+    String time = DateFormat.Hm().format(chatRoom.lastMessage!.timestamp);
 
     return ListTile(
       leading:
@@ -42,7 +42,7 @@ class ChatRoomItem extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        chatRoom.lastMessage.lastMessage,
+        chatRoom.lastMessage!.lastMessage,
         style: const TextStyle(fontSize: 16),
       ),
       trailing: Column(

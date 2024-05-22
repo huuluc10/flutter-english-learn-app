@@ -37,6 +37,7 @@ import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/request/sign_up_request.dart';
 import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
 import 'package:flutter_englearn/model/response/main_user_info_request.dart';
+import 'package:flutter_englearn/model/response/question_response.dart';
 import 'package:flutter_englearn/model/response/user_info_response.dart';
 import 'package:flutter_englearn/common/pages/error_screen.dart';
 
@@ -132,16 +133,23 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final argruments = settings.arguments as List<dynamic>;
       final topicResponse = argruments[0] as HistoryLearnTopicResponse;
       final refresh = argruments[1] as Function();
+      final successRate = argruments[2] as double;
       return MaterialPageRoute(
           builder: (context) => TopicDetailsScreen(
                 topicResponse: topicResponse,
                 refresh: refresh,
+                successRate: successRate,
               ));
 
     case LessonHomePageScreen.routeName:
-      final topicId = settings.arguments as int;
+      final arguments = settings.arguments as List<dynamic>;
+      final topicId = arguments[0] as int;
+      final successRate = arguments[1] as double;
       return MaterialPageRoute(
-          builder: (context) => LessonHomePageScreen(topicId: topicId));
+          builder: (context) => LessonHomePageScreen(
+                topicId: topicId,
+                successRate: successRate,
+              ));
 
     case LessonContentScreen.routeName:
       final arguments = settings.arguments as List<dynamic>;
@@ -158,9 +166,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               ));
 
     case MultichoiceQuestionScreen.routeName:
-      final lessonId = settings.arguments as int;
+      final questions = settings.arguments as List<QuestionResponse>;
       return MaterialPageRoute(
-          builder: (context) => MultichoiceQuestionScreen(lessonId: lessonId));
+          builder: (context) =>
+              MultichoiceQuestionScreen(questions: questions));
 
     case ResultExerciseScreen.routeName:
       final arguments = settings.arguments as List<Object>;
@@ -190,38 +199,38 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               ));
 
     case SentenceTransformQuestionScreen.routeName:
-      final lessonId = settings.arguments as int;
+      final question = settings.arguments as List<QuestionResponse>;
       return MaterialPageRoute(
           builder: (context) => SentenceTransformQuestionScreen(
-                lessonId: lessonId,
+                questions: question,
               ));
 
     case FillInTheBlankQuestionScreen.routeName:
-      final lessonId = settings.arguments as int;
+      final question = settings.arguments as List<QuestionResponse>;
       return MaterialPageRoute(
           builder: (context) => FillInTheBlankQuestionScreen(
-                lessonId: lessonId,
+                questions: question,
               ));
 
     case SentenceUnscrambleQuestionScreen.routeName:
-      final lessonId = settings.arguments as int;
+      final questions = settings.arguments as List<QuestionResponse>;
       return MaterialPageRoute(
           builder: (context) => SentenceUnscrambleQuestionScreen(
-                lessonId: lessonId,
+                questions: questions,
               ));
 
     case SpeakingQuestionScreen.routeName:
-      final lessonId = settings.arguments as int;
+      final questions = settings.arguments as List<QuestionResponse>;
       return MaterialPageRoute(
           builder: (context) => SpeakingQuestionScreen(
-                lessonId: lessonId,
+                questions: questions,
               ));
 
     case ListeningQuestionScreen.routeName:
-      final lessonId = settings.arguments as int;
+      final questions = settings.arguments as List<QuestionResponse>;
       return MaterialPageRoute(
           builder: (context) => ListeningQuestionScreen(
-                lessonId: lessonId,
+                questions: questions,
               ));
 
     case ExamHomePageScreen.routeName:
@@ -247,11 +256,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final int examId = arguments[0] as int;
       final int duration = arguments[1] as int;
       final onMarkAsDone = arguments[2] as Function(double);
+      final int exp = arguments[3] as int;
       return MaterialPageRoute(
         builder: (context) => ExamScreen(
           examId: examId,
           duration: duration,
           onMarkAsDone: onMarkAsDone,
+          exp: exp,
         ),
       );
 

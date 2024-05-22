@@ -21,6 +21,7 @@ class ListTypeExerciseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: List.of(questionTypes).map(
         (e) {
           if (e.questionTypeName == TypeQuestion.multipleChoice) {

@@ -15,6 +15,7 @@ class MultichoiceWidget extends ConsumerStatefulWidget {
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
     required this.addExplanationQuestion,
+    required this.makeFor,
   });
 
   final double height;
@@ -23,6 +24,7 @@ class MultichoiceWidget extends ConsumerStatefulWidget {
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
   final Function(ExplanationQuestion) addExplanationQuestion;
+  final String makeFor;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -129,6 +131,7 @@ class _MultichoiceWidgetState extends ConsumerState<MultichoiceWidget> {
                                     explanationQuestion;
                                 widget.addExplanationQuestion(explanation);
                               },
+                              makeFor: widget.makeFor,
                             ),
                           ),
                         ),

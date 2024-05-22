@@ -4,18 +4,17 @@ import 'package:flutter_englearn/features/exercise/controller/exercise_controlle
 import 'package:flutter_englearn/features/exercise/widgets/sentence_widget.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
-import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class SentenceTransformQuestionScreen extends ConsumerStatefulWidget {
   const SentenceTransformQuestionScreen({
     super.key,
-    required this.lessonId,
+    required this.questions,
   });
 
   static const String routeName = '/sentence-transform-question-screen';
-  final int lessonId;
+  final List<QuestionResponse> questions;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -24,22 +23,13 @@ class SentenceTransformQuestionScreen extends ConsumerStatefulWidget {
 
 class _SentenceTransformQuestionScreenState
     extends ConsumerState<SentenceTransformQuestionScreen> {
-  Future<List<QuestionResponse>> _fetchQuestions() async {
-    return await fetchSentenceTransformationQuestions(
-      ref,
-      widget.lessonId,
-      (totalQuestionCount) {
-        _totalQuestionCount = totalQuestionCount;
-      },
-    );
-  }
-
-  late Future<List<QuestionResponse>> _questions;
-
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _questions = _fetchQuestions();
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _totalQuestionCount = widget.questions.length;
+      setState(() {});
+    });
   }
 
   void inCreaseCorrectAnswerCount() {
@@ -55,6 +45,7 @@ class _SentenceTransformQuestionScreenState
 
   final List<ExplanationQuestion> _explanationQuestions = [];
   ValueNotifier<int> currentIndexQuestion = ValueNotifier<int>(0);
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
@@ -68,71 +59,58 @@ class _SentenceTransformQuestionScreenState
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
         ),
-        body: FutureBuilder<List<QuestionResponse>>(
-          future: _questions,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              return FutureBuilderErrorWidget(
-                error: snapshot.error.toString(),
-              );
-            }
-            return ValueListenableBuilder<int>(
-              valueListenable: currentIndexQuestion,
-              builder: (context, value, child) => Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: LinearPercentIndicator(
-                        lineHeight: 22.0,
-                        percent: value / snapshot.data!.length,
-                        center: Text(
-                          "${(value / snapshot.data!.length * 100).toStringAsFixed(2)} %",
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        barRadius: const Radius.circular(20),
-                        backgroundColor: Colors.grey,
-                        progressColor: Colors.blue,
+        body: ValueListenableBuilder<int>(
+          valueListenable: currentIndexQuestion,
+          builder: (context, value, child) => Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: LinearPercentIndicator(
+                    lineHeight: 22.0,
+                    percent: value / widget.questions.length,
+                    center: Text(
+                      "${(value / widget.questions.length * 100).toStringAsFixed(2)} %",
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                    barRadius: const Radius.circular(20),
+                    backgroundColor: Colors.grey,
+                    progressColor: Colors.blue,
                   ),
-                  SentenceWidget(
-                    isUnscrambl: false,
-                    height: height,
-                    updateCurrentIndex: () {
-                      updateCurrentIndexQuestion(
-                        context,
-                        () => currentIndexQuestion.value++,
-                        value,
-                        _totalQuestionCount,
-                        [
-                          _correctAnswerCount,
-                          _totalQuestionCount,
-                          _explanationQuestions,
-                          TypeQuestion.sentenceTransformation,
-                        ],
-                      );
-                    },
-                    questionId: snapshot.data![value].questionId,
-                    questionURL: snapshot.data![value].answerFileURL,
-                    inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
-                    addExplanationQuestion: addExplanationQuestion,
-                  ),
-                ],
+                ),
               ),
-            );
-          },
+              SentenceWidget(
+                isUnscrambl: false,
+                height: height,
+                updateCurrentIndex: () {
+                  updateCurrentIndexQuestion(
+                    context,
+                    () => currentIndexQuestion.value++,
+                    () {},
+                    value,
+                    _totalQuestionCount,
+                    [
+                      _correctAnswerCount,
+                      _totalQuestionCount,
+                      _explanationQuestions,
+                      TypeQuestion.sentenceTransformation,
+                    ],
+                  );
+                },
+                questionId: widget.questions[value].questionId,
+                questionURL: widget.questions[value].answerFileURL,
+                inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
+                addExplanationQuestion: addExplanationQuestion,
+                makeFor: "LESSON",
+              ),
+            ],
+          ),
         ),
       ),
     );

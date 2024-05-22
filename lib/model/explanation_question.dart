@@ -4,13 +4,19 @@ class ExplanationQuestion {
   String? questionImage;
   String? answer;
   String? answerImage;
+  String? selectedAnswer;
+  String? selectedAnswerImage;
   String? explanation;
+  bool isCorrect;
 
   ExplanationQuestion({
     required this.question,
     required this.questionImage,
     required this.answer,
     required this.answerImage,
+    required this.selectedAnswer,
+    required this.selectedAnswerImage,
     required this.explanation,
+    required this.isCorrect,
   });
 }
