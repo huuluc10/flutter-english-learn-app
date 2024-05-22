@@ -21,6 +21,7 @@ class ExamScreen extends ConsumerStatefulWidget {
     required this.examId,
     required this.duration,
     required this.onMarkAsDone,
+    required this.exp,
   });
 
   static const String routeName = '/exam-screen';
@@ -28,6 +29,7 @@ class ExamScreen extends ConsumerStatefulWidget {
   final int examId;
   final int duration;
   final Function(double) onMarkAsDone;
+  final int exp;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ExamScreenState();
@@ -152,8 +154,12 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                   for (var i = value;
                                       i < snapshot.data!.length;
                                       i++) {
-                                    await saveAnswerQuestion(context, ref,
-                                        snapshot.data![i].questionId, false);
+                                    await saveAnswerQuestion(
+                                        context,
+                                        ref,
+                                        snapshot.data![i].questionId,
+                                        "EXAM",
+                                        false);
                                   }
                                   clearSnackBar(context);
                                   updateCurrentIndexQuestion(
@@ -161,6 +167,14 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                     () {
                                       currentIndexQuestion.value =
                                           _totalQuestionCount - 1;
+                                    },
+                                    () async {
+                                      await increaseExpAfterExam(
+                                          context,
+                                          ref,
+                                          widget.exp,
+                                          _correctAnswerCount,
+                                          _totalQuestionCount);
                                     },
                                     _totalQuestionCount - 1,
                                     _totalQuestionCount,
@@ -186,6 +200,14 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                   () {
                                     currentIndexQuestion.value++;
                                   },
+                                  () async {
+                                    await increaseExpAfterExam(
+                                        context,
+                                        ref,
+                                        widget.exp,
+                                        _correctAnswerCount,
+                                        _totalQuestionCount);
+                                  },
                                   value,
                                   _totalQuestionCount,
                                   [
@@ -201,6 +223,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                               questionId: snapshot.data![value].questionId,
                               questionURL: snapshot.data![value].answerFileURL,
                               addExplanationQuestion: addExplanationQuestion,
+                              makeFor: "EXAM",
                             )
                           : typeNameQuestions[value] == TypeQuestion.fillInBlank
                               ? FillInTheBlankWidget(
@@ -210,6 +233,14 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                       context,
                                       () {
                                         currentIndexQuestion.value++;
+                                      },
+                                      () async {
+                                        await increaseExpAfterExam(
+                                            context,
+                                            ref,
+                                            widget.exp,
+                                            _correctAnswerCount,
+                                            _totalQuestionCount);
                                       },
                                       value,
                                       _totalQuestionCount,
@@ -228,6 +259,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                       inCreaseCorrectAnswerCount,
                                   addExplanationQuestion:
                                       addExplanationQuestion,
+                                  makeFor: "EXAM",
                                 )
                               : typeNameQuestions[value] ==
                                       TypeQuestion.sentenceTransformation
@@ -238,6 +270,14 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                         updateCurrentIndexQuestion(
                                           context,
                                           () => currentIndexQuestion.value++,
+                                          () async {
+                                            await increaseExpAfterExam(
+                                                context,
+                                                ref,
+                                                widget.exp,
+                                                _correctAnswerCount,
+                                                _totalQuestionCount);
+                                          },
                                           value,
                                           _totalQuestionCount,
                                           [
@@ -256,6 +296,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                           inCreaseCorrectAnswerCount,
                                       addExplanationQuestion:
                                           addExplanationQuestion,
+                                      makeFor: "EXAM",
                                     )
                                   : typeNameQuestions[value] ==
                                           TypeQuestion.sentenceUnscramble
@@ -267,6 +308,14 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                               context,
                                               () {
                                                 currentIndexQuestion.value++;
+                                              },
+                                              () async {
+                                                await increaseExpAfterExam(
+                                                    context,
+                                                    ref,
+                                                    widget.exp,
+                                                    _correctAnswerCount,
+                                                    _totalQuestionCount);
                                               },
                                               value,
                                               _totalQuestionCount,
@@ -286,6 +335,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                               inCreaseCorrectAnswerCount,
                                           addExplanationQuestion:
                                               addExplanationQuestion,
+                                          makeFor: "EXAM",
                                         )
                                       : typeNameQuestions[value] ==
                                               TypeQuestion.speaking
@@ -297,6 +347,14 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                                   () {
                                                     currentIndexQuestion
                                                         .value++;
+                                                  },
+                                                  () async {
+                                                    await increaseExpAfterExam(
+                                                        context,
+                                                        ref,
+                                                        widget.exp,
+                                                        _correctAnswerCount,
+                                                        _totalQuestionCount);
                                                   },
                                                   value,
                                                   _totalQuestionCount,
@@ -316,6 +374,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                                   inCreaseCorrectAnswerCount,
                                               addExplanationQuestion:
                                                   addExplanationQuestion,
+                                              makeFor: "EXAM",
                                             )
                                           : ListeningWidget(
                                               height: height,
@@ -325,15 +384,19 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                                     () => {
                                                           currentIndexQuestion
                                                               .value++
-                                                        },
-                                                    value,
-                                                    _totalQuestionCount,
-                                                    [
+                                                        }, () async {
+                                                  await increaseExpAfterExam(
+                                                      context,
+                                                      ref,
+                                                      widget.exp,
                                                       _correctAnswerCount,
-                                                      _totalQuestionCount,
-                                                      [],
-                                                      TypeQuestion.listening,
-                                                    ]);
+                                                      _totalQuestionCount);
+                                                }, value, _totalQuestionCount, [
+                                                  _correctAnswerCount,
+                                                  _totalQuestionCount,
+                                                  [],
+                                                  TypeQuestion.listening,
+                                                ]);
                                               },
                                               questionId: snapshot
                                                   .data![value].questionId,
@@ -343,6 +406,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                                   inCreaseCorrectAnswerCount,
                                               addExplanationQuestion:
                                                   addExplanationQuestion,
+                                              makeFor: "EXAM",
                                             ),
                     ],
                   ),

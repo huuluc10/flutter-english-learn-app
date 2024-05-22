@@ -14,6 +14,7 @@ class FillInTheBlankWidget extends ConsumerStatefulWidget {
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
     required this.addExplanationQuestion,
+    required this.makeFor,
   });
 
   final double height;
@@ -22,6 +23,7 @@ class FillInTheBlankWidget extends ConsumerStatefulWidget {
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
   final Function(ExplanationQuestion) addExplanationQuestion;
+  final String makeFor;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -57,21 +59,23 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
     } else {
       List<String> correctAnswers = correctAnswer!.split('/');
       if (correctAnswers.contains(controller.text.trim())) {
-        await saveAnswerQuestion(context, ref, widget.questionId, true);
+        await saveAnswerQuestion(
+            context, ref, widget.questionId, widget.makeFor, true);
         widget.inCreaseCorrectAnswerCount();
       } else {
-        await saveAnswerQuestion(context, ref, widget.questionId, false);
+        await saveAnswerQuestion(
+            context, ref, widget.questionId, widget.makeFor, false);
       }
       widget.addExplanationQuestion(
         ExplanationQuestion(
-          question: question,
-          questionImage: null,
-          answer: correctAnswer!,
-          answerImage: null,
-          selectedAnswer: controller.text.trim(),
-          selectedAnswerImage: null,
-          explanation: explanation,
-        ),
+            question: question,
+            questionImage: null,
+            answer: correctAnswer!,
+            answerImage: null,
+            selectedAnswer: controller.text.trim(),
+            selectedAnswerImage: null,
+            explanation: explanation,
+            isCorrect: correctAnswers.contains(controller.text.trim())),
       );
       widget.updateCurrentIndex();
       controller.clear();

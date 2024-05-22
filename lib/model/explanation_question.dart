@@ -7,6 +7,7 @@ class ExplanationQuestion {
   String? selectedAnswer;
   String? selectedAnswerImage;
   String? explanation;
+  bool isCorrect;
 
   ExplanationQuestion({
     required this.question,
@@ -16,5 +17,6 @@ class ExplanationQuestion {
     required this.selectedAnswer,
     required this.selectedAnswerImage,
     required this.explanation,
+    required this.isCorrect,
   });
 }

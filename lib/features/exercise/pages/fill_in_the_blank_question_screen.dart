@@ -41,6 +41,7 @@ class _FillInTheBlankQuestionScreenState
       setState(() {});
     });
   }
+
   int _totalQuestionCount = 0;
 
   final List<ExplanationQuestion> _explanationQuestions = [];
@@ -94,6 +95,7 @@ class _FillInTheBlankQuestionScreenState
                     () {
                       currentIndexQuestion.value++;
                     },
+                    () {},
                     value,
                     _totalQuestionCount,
                     [
@@ -108,6 +110,7 @@ class _FillInTheBlankQuestionScreenState
                 questionURl: widget.questions[value].answerFileURL,
                 inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                 addExplanationQuestion: addExplanationQuestion,
+                makeFor: "LESSON",
               ),
             ],
           ),

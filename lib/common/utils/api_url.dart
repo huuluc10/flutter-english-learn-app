@@ -1,6 +1,6 @@
 class APIUrl {
   // IP ADDRESS SERVER AND PORT
-  static const String ip = "192.168.1.174";
+  static const String ip = "192.168.143.233";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -97,6 +97,8 @@ class APIUrl {
 
   // PATH GET EXAM API
   static const String pathGetExamByTopic = "/api/v1/exam";
+  // PATH TO INCREASE EXP FOR USER WHEN COMPLETE EXAM
+  static const String pathIncreaseExpAfterCompletingExam = "/api/v1/exam/increase-experience-point";
 
   // PATH GET NAME OF QUESTION TYPE API
   static const String pathGetNameOfQuestionType = "/api/v1/question-type";

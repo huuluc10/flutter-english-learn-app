@@ -19,6 +19,7 @@ class SpeakingWidget extends ConsumerStatefulWidget {
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
     required this.addExplanationQuestion,
+    required this.makeFor,
   });
 
   final double height;
@@ -27,6 +28,7 @@ class SpeakingWidget extends ConsumerStatefulWidget {
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
   final Function(ExplanationQuestion) addExplanationQuestion;
+  final String makeFor;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SpeakingWidgetState();
@@ -230,6 +232,7 @@ class _SpeakingWidgetState extends ConsumerState<SpeakingWidget> {
                               context,
                               ref,
                               widget.questionId,
+                              widget.makeFor,
                               pronounce,
                               widget.inCreaseCorrectAnswerCount,
                               widget.addExplanationQuestion,

@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_englearn/common/helper/helper.dart';
+import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/exercise/repository/exercise_repository.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/request/answer_question_request.dart';
@@ -99,12 +102,33 @@ class ExerciseService {
     return result.data;
   }
 
-  Future<String?> saveAnswerQuestion(int questionId, bool isCorrect) async {
+  Future<String?> saveAnswerQuestion(
+      int questionId, String makeFor, bool isCorrect) async {
     AnswerQuestionRequest request = AnswerQuestionRequest(
-        questionId: questionId, isCorrect: isCorrect );
+        questionId: questionId, makeFor: makeFor, isCorrect: isCorrect);
     ResultReturn resultReturn =
         await exerciseRepository.saveAnswerQuestion(request.toJson());
 
     return resultReturn.data;
+  }
+
+  Future<void> increaseExpAfterCompletingExam(BuildContext context,
+      int expOfExam, int correctAnswer, int totalQuestion) async {
+    double expGained = correctAnswer / totalQuestion * expOfExam;
+    ResultReturn resultReturn = await exerciseRepository
+        .increaseExpAfterCompletingExam(int.parse(expGained.toStringAsFixed(0).toString()));
+
+    if (resultReturn.httpStatusCode == 401) {
+      if (context.mounted) {
+        showSnackBar(
+            context, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!");
+        Navigator.pushNamedAndRemoveUntil(
+            context, WelcomeScreen.routeName, (route) => false);
+      }
+    } else if (resultReturn.httpStatusCode != 200) {
+      if (context.mounted) {
+        showSnackBar(context, "Có lỗi xảy ra khi cập nhập điểm kinh nghiệm!");
+      }
+    }
   }
 }

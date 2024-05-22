@@ -32,8 +32,8 @@ const Map<String, String> httpHeaders = {
 class TypeQuestion {
   static const String multipleChoice = 'Multiple choice';
   static const String fillInBlank = 'Fill in the blank';
-  static const String sentenceUnscramble = 'Sentence transformation';
-  static const String sentenceTransformation = 'Sentence unscramble';
+  static const String sentenceUnscramble = 'Sentence unscramble';
+  static const String sentenceTransformation = 'Sentence transformation';
   static const String listening = 'Listening';
   static const String speaking = 'Speaking';
   static const String exam = 'Exam';

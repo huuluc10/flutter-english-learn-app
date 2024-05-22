@@ -98,6 +98,7 @@ class _SpeakingQuestionScreenState
                         () {
                           currentIndexQuestion.value++;
                         },
+                        () {},
                         value,
                         _totalQuestionCount,
                         [
@@ -112,6 +113,7 @@ class _SpeakingQuestionScreenState
                     questionURL: widget.questions[value].answerFileURL,
                     inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                     addExplanationQuestion: addExplanationQuestion,
+                    makeFor: "LESSON",
                   ),
                 ],
               ),

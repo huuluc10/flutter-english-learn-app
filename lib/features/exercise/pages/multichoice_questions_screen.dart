@@ -93,6 +93,7 @@ class _MultichoiceQuestionScreenState
                     () {
                       currentIndexQuestion.value++;
                     },
+                    () {},
                     value,
                     _totalQuestionCount,
                     [
@@ -107,6 +108,7 @@ class _MultichoiceQuestionScreenState
                 questionURL: widget.questions[value].answerFileURL,
                 inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                 addExplanationQuestion: addExplanationQuestion,
+                makeFor: "LESSON",
               ),
             ],
           ),

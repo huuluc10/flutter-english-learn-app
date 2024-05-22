@@ -199,10 +199,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               ));
 
     case SentenceTransformQuestionScreen.routeName:
-      final lessonId = settings.arguments as int;
+      final question = settings.arguments as List<QuestionResponse>;
       return MaterialPageRoute(
           builder: (context) => SentenceTransformQuestionScreen(
-                lessonId: lessonId,
+                questions: question,
               ));
 
     case FillInTheBlankQuestionScreen.routeName:
@@ -256,11 +256,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final int examId = arguments[0] as int;
       final int duration = arguments[1] as int;
       final onMarkAsDone = arguments[2] as Function(double);
+      final int exp = arguments[3] as int;
       return MaterialPageRoute(
         builder: (context) => ExamScreen(
           examId: examId,
           duration: duration,
           onMarkAsDone: onMarkAsDone,
+          exp: exp,
         ),
       );
 

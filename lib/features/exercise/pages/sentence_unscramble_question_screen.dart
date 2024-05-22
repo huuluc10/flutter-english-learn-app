@@ -94,6 +94,7 @@ class _SentenceUnscrambleQuestionScreenState
                     () {
                       currentIndexQuestion.value++;
                     },
+                    () {},
                     value,
                     _totalQuestionCount,
                     [
@@ -108,6 +109,7 @@ class _SentenceUnscrambleQuestionScreenState
                 questionURL: widget.questions[value].answerFileURL,
                 inCreaseCorrectAnswerCount: inCreaseCorrectAnswerCount,
                 addExplanationQuestion: addExplanationQuestion,
+                makeFor: "LESSON",
               ),
             ],
           ),

@@ -538,4 +538,49 @@ class ExerciseRepository {
       }
     }
   }
+
+  Future<ResultReturn> increaseExpAfterCompletingExam(int exp) async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'ExerciseRepository', time: DateTime.now());
+      return ResultReturn(httpStatusCode: 401, data: null);
+    } else {
+      log("Increase exp for user when completing exam",
+          name: 'ExerciseRepository', time: DateTime.now());
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = Map.from(httpHeaders);
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathIncreaseExpAfterCompletingExam;
+
+      Map<String, String> body = {};
+      body['exp'] = exp.toString();
+
+      Uri uri = Uri.http(authority, unencodedPath);
+
+      var request = http.MultipartRequest('POST', uri)
+        ..headers.addAll(headers)
+        ..fields.addAll(body);
+
+      var response = await request.send();
+
+      if (response.statusCode == 401) {
+        log('Token is expired',
+            name: 'ExerciseRepository', time: DateTime.now());
+        await authRepository.removeJWT();
+        return ResultReturn(httpStatusCode: 401, data: null);
+      } else if (response.statusCode == 200) {
+        log("Save answer question successfully", name: "ExerciseRepository");
+
+        return ResultReturn(httpStatusCode: 200, data: "Ok");
+      } else {
+        log("Increase exp successfully", name: "ExerciseRepository");
+        return ResultReturn(httpStatusCode: 400, data: null);
+      }
+    }
+  }
 }

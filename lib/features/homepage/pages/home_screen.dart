@@ -172,6 +172,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       nameTopic:
                                           'Topic ${listTopic[index].topicId}: ${listTopic[index].topicName}',
                                       percent: listTopic[index].successRate,
+                                      imageUrl: listTopic[index].imageUrl,
                                     ),
                                   ),
                                 ),

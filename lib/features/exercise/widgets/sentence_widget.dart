@@ -19,6 +19,7 @@ class SentenceWidget extends ConsumerStatefulWidget {
     required this.updateCurrentIndex,
     required this.inCreaseCorrectAnswerCount,
     required this.addExplanationQuestion,
+    required this.makeFor,
   });
 
   final bool isUnscrambl;
@@ -28,6 +29,7 @@ class SentenceWidget extends ConsumerStatefulWidget {
   final Function() updateCurrentIndex;
   final Function() inCreaseCorrectAnswerCount;
   final Function(ExplanationQuestion) addExplanationQuestion;
+  final String makeFor;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SentenceWidgetState();
@@ -50,41 +52,42 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
   void changeQuestion(Answer answer) async {
     _answer = null;
     String stringAnswer = listWordIsChosen.join(' ');
-    if (wordsAnswer.isEmpty) {
-      if (wordsAnswer.isEmpty &&
-          stringAnswer.length == answer.correctAnswer!.length) {
-        if (stringAnswer == answer.correctAnswer) {
-          await saveAnswerQuestion(
-            context,
-            ref,
-            widget.questionId,
-            true,
-          );
-          widget.inCreaseCorrectAnswerCount();
-        } else {
-          await saveAnswerQuestion(
-            context,
-            ref,
-            widget.questionId,
-            false,
-          );
-          
-        }
-        widget.addExplanationQuestion(
-            ExplanationQuestion(
-              question: answer.question,
-              questionImage: answer.questionImage,
-              answer: answer.correctAnswer,
-              answerImage: answer.correctImage,
-              selectedAnswer: stringAnswer,
-              selectedAnswerImage: null,
-              explanation: answer.explanation,
-            ),
-          );
-        widget.updateCurrentIndex();
-        listWordIsChosen.clear();
-        setState(() {});
+
+    if (wordsAnswer.isEmpty &&
+        stringAnswer.length == answer.correctAnswer!.length) {
+      if (stringAnswer == answer.correctAnswer) {
+        await saveAnswerQuestion(
+          context,
+          ref,
+          widget.questionId,
+          widget.makeFor,
+          true,
+        );
+        widget.inCreaseCorrectAnswerCount();
+      } else {
+        await saveAnswerQuestion(
+          context,
+          ref,
+          widget.questionId,
+          widget.makeFor,
+          false,
+        );
       }
+      widget.addExplanationQuestion(
+        ExplanationQuestion(
+          question: answer.question,
+          questionImage: answer.questionImage,
+          answer: answer.correctAnswer,
+          answerImage: answer.correctImage,
+          selectedAnswer: stringAnswer,
+          selectedAnswerImage: null,
+          explanation: answer.explanation,
+          isCorrect: stringAnswer == answer.correctAnswer,
+        ),
+      );
+      widget.updateCurrentIndex();
+      listWordIsChosen.clear();
+      setState(() {});
     } else {
       showSnackBar(context, 'Vui lòng hoàn thành câu trả lời');
     }
@@ -125,14 +128,17 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                     );
                   }
                   Answer answer = snapshot.data!;
-                  if (wordsAnswer.isEmpty) {
+                  if (wordsAnswer.isEmpty && listWordIsChosen.isEmpty) {
                     wordsAnswer = widget.isUnscrambl
                         ? getWordsUnscramble(answer.question)
                         : getWordsTransform(answer.correctAnswer!);
                   }
-                  for (String word in listWordIsChosen) {
-                    wordsAnswer.remove(word);
-                  }
+                  // for (String word in listWordIsChosen) {
+                  //   int index = wordsAnswer.indexOf(word);
+                  //   if (index > -1) {
+                  //     wordsAnswer.removeAt(index);
+                  //   }
+                  // }
 
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -186,7 +192,10 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                                       return SentenceAnswerSelectWidget(
                                         word: word,
                                         onTap: (value) {
-                                          listWordIsChosen.remove(value);
+                                          int indexValueIsChosen =
+                                              listWordIsChosen.indexOf(value);
+                                          listWordIsChosen
+                                              .removeAt(indexValueIsChosen);
                                           wordsAnswer.add(value);
                                           WidgetsBinding.instance
                                               .addPostFrameCallback((_) {
@@ -228,6 +237,7 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                                             .addPostFrameCallback((_) {
                                           setState(() {
                                             listWordIsChosen.add(e);
+                                            wordsAnswer.remove(e);
                                           });
                                         });
                                       },
