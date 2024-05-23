@@ -70,11 +70,7 @@ class LearnService {
 
   Future<void> markLessonAsLearned(
       BuildContext context, int lessonId, Function() updateIsComplete) async {
-    // Get current username
-    String username = await authRepository.getUserName();
-
     UserLesson userLesson = UserLesson(
-      username: username,
       lessonId: lessonId,
       dateLearned: DateTime.now(),
     );
