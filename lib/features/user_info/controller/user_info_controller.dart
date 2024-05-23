@@ -182,7 +182,6 @@ Future<void> changePassword(
   String newPasswword,
 ) async {
   ChangePasswordRequest request = ChangePasswordRequest(
-    username: '',
     oldPassword: oldPassword,
     newPassword: newPasswword,
   );

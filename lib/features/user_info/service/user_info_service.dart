@@ -26,13 +26,7 @@ class UserInfoService {
 
   Future<int> changePassword(ChangePasswordRequest request) async {
     log('Change password', name: 'UserInfoService');
-    String username = await userInfoRepository.getUsername();
 
-    if (username.isEmpty) {
-      return 401;
-    }
-
-    request.username = username;
     String body = request.toJson();
     return await userInfoRepository.changePassword(body);
   }
