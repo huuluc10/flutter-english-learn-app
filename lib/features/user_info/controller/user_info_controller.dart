@@ -133,12 +133,12 @@ Future<Map<String, Object>> getInfo(
     }
 
     final countHistoryLearnedLesson =
-        await ref.read(userInfoServiceProvider).countHistoryLearnedLesson();
+        await ref.read(userInfoServiceProvider).countHistoryLearnedLesson(username);
 
     final countLessonExercisesDone =
-        await ref.read(userInfoServiceProvider).getLessonExerciseDone();
+        await ref.read(userInfoServiceProvider).getLessonExerciseDone(username);
     final countExamExercisesDone =
-        await ref.read(userInfoServiceProvider).getExamExerciseDone();
+        await ref.read(userInfoServiceProvider).getExamExerciseDone(username);
 
     Map<String, Object> result = {
       'userInfo': userInfo,

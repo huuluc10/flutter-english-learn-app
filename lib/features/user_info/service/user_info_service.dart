@@ -201,19 +201,19 @@ class UserInfoService {
         );
   }
 
-  Future<ResultReturn> countHistoryLearnedLesson() {
+  Future<ResultReturn> countHistoryLearnedLesson(String username) {
     log('Count history learned lesson', name: 'UserInfoService');
-    return userInfoRepository.countHistoryLearnedLesson();
+    return userInfoRepository.countHistoryLearnedLesson(username);
   }
 
-  Future<ResultReturn> getLessonExerciseDone() {
+  Future<ResultReturn> getLessonExerciseDone(String username) {
     log('Get exercise lesson history', name: 'UserInfoService');
-    return userInfoRepository.getLessonExerciseDone();
+    return userInfoRepository.getLessonExerciseDone(username);
   }
 
-  Future<ResultReturn> getExamExerciseDone() {
+  Future<ResultReturn> getExamExerciseDone(String username) {
     log('Get exercise exam history', name: 'UserInfoService');
-    return userInfoRepository.getExamExerciseDone();
+    return userInfoRepository.getExamExerciseDone(username);
   }
 
   Future<ResultReturn> updateAvatar(

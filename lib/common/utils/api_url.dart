@@ -1,6 +1,6 @@
 class APIUrl {
   // IP ADDRESS SERVER AND PORT
-  static const String ip = "192.168.143.233";
+  static const String ip = "192.168.1.174";
   static const String portEngLearn = "8080";
   static const String portSocket = "8082";
 
@@ -53,9 +53,9 @@ class APIUrl {
 
   // PATH GET HISTORY LEARN EXERCISE API
   static const String pathGetExerciseLessonHistory =
-      "/api/v1/user-question/count-lesson-have-exercises-done";
+      "/api/v1/user-question/count-lesson-have-exercises-done/";
   static const String pathGetExerciseExamHistory =
-      "/api/v1/user-question/count-exam-have-exercises-done";
+      "/api/v1/user-question/count-exam-have-exercises-done/";
   static const String pathSaveAnswerQuestion =
       "/api/v1/user-question/save-user-question";
 
@@ -98,7 +98,8 @@ class APIUrl {
   // PATH GET EXAM API
   static const String pathGetExamByTopic = "/api/v1/exam";
   // PATH TO INCREASE EXP FOR USER WHEN COMPLETE EXAM
-  static const String pathIncreaseExpAfterCompletingExam = "/api/v1/exam/increase-experience-point";
+  static const String pathIncreaseExpAfterCompletingExam =
+      "/api/v1/exam/increase-experience-point";
 
   // PATH GET NAME OF QUESTION TYPE API
   static const String pathGetNameOfQuestionType = "/api/v1/question-type";

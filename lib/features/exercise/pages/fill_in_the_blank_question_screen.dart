@@ -65,7 +65,7 @@ class _FillInTheBlankQuestionScreenState
           valueListenable: currentIndexQuestion,
           builder: (context, value, child) => Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
