@@ -74,7 +74,7 @@ class UserInfoRepository {
   }
 
   Future<ResultReturn> getInfo(String username) async {
-    // Get JWY token of current user
+    // Get JWT token of current user
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');

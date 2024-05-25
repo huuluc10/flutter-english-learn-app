@@ -145,24 +145,26 @@ class _DictionaryScreenState extends ConsumerState<DictionaryScreen> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Consumer(builder: (context, ref, child) {
-                    //Get source dictionary
-                    sourceDictionary = ref.watch(controlSourceDictionary);
-                    if (sourceDictionary == ControlSourceDictionary.enViDic) {
-                      return SingleChildScrollView(
-                        child: EnViDicWidget(
-                          vocabulary: vocabulary,
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      //Get source dictionary
+                      sourceDictionary = ref.watch(controlSourceDictionary);
+                      if (sourceDictionary == ControlSourceDictionary.enViDic) {
+                        return SingleChildScrollView(
+                          child: EnViDicWidget(
+                            vocabulary: vocabulary,
+                            isSearch: isSearch!,
+                          ),
+                        );
+                      } else {
+                        return APIDictionaryWidget(
+                          vocabulary: vocabularyAPI,
                           isSearch: isSearch!,
-                        ),
-                      );
-                    } else {
-                      return APIDictionaryWidget(
-                        vocabulary: vocabularyAPI,
-                        isSearch: isSearch!,
-                        height: height - 255,
-                      );
-                    }
-                  }),
+                          height: height - 255,
+                        );
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
