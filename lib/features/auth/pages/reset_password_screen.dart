@@ -20,10 +20,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.transparent,
-        elevation: 0.0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

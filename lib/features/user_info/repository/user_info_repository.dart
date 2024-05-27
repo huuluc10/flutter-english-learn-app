@@ -214,8 +214,7 @@ class UserInfoRepository {
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
-      String unencodedPath =
-          APIUrl.pathCountHistoryLearnedLesson + username;
+      String unencodedPath = APIUrl.pathCountHistoryLearnedLesson + username;
 
       var response = await http.get(
         Uri.http(authority, unencodedPath),
