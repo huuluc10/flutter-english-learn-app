@@ -98,8 +98,7 @@ class _ResultExerciseScreenState extends State<ResultExerciseScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              if (widget.correctAnswerCount < widget.totalQuestionCount &&
-                  widget.explanationQuestions != null &&
+              if (widget.explanationQuestions != null &&
                   widget.explanationQuestions!.isNotEmpty)
                 Column(
                   children: [

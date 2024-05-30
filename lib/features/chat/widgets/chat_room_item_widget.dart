@@ -18,9 +18,15 @@ class ChatRoomItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String avatar = chatRoom.lastMessage!.sender != currentUsername
-        ? chatRoom.lastMessage!.senderAvatar
-        : chatRoom.lastMessage!.receiverAvatar;
+    String avatar;
+    if (chatRoom.lastMessage == null) {
+      avatar = currentUsername;
+    } else {
+      avatar = chatRoom.lastMessage!.sender != currentUsername
+          ? chatRoom.lastMessage!.senderAvatar
+          : chatRoom.lastMessage!.receiverAvatar;
+    }
+
     avatar = transformLocalURLMediaToURL(avatar);
 
     final username = chatRoom.lastMessage!.sender != currentUsername

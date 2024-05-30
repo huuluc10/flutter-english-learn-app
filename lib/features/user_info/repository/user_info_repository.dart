@@ -74,7 +74,7 @@ class UserInfoRepository {
   }
 
   Future<ResultReturn> getInfo(String username) async {
-    // Get JWY token of current user
+    // Get JWT token of current user
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
@@ -201,7 +201,7 @@ class UserInfoRepository {
     }
   }
 
-  Future<ResultReturn> countHistoryLearnedLesson() async {
+  Future<ResultReturn> countHistoryLearnedLesson(String username) async {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
@@ -214,8 +214,7 @@ class UserInfoRepository {
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
-      String unencodedPath =
-          APIUrl.pathCountHistoryLearnedLesson + jwtResponse.username;
+      String unencodedPath = APIUrl.pathCountHistoryLearnedLesson + username;
 
       var response = await http.get(
         Uri.http(authority, unencodedPath),
@@ -241,7 +240,7 @@ class UserInfoRepository {
     }
   }
 
-  Future<ResultReturn> getLessonExerciseDone() async {
+  Future<ResultReturn> getLessonExerciseDone(String username) async {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
@@ -254,7 +253,7 @@ class UserInfoRepository {
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
-      String unencodedPath = APIUrl.pathGetExerciseLessonHistory;
+      String unencodedPath = APIUrl.pathGetExerciseLessonHistory + username;
 
       var response = await http.get(
         Uri.http(authority, unencodedPath),
@@ -280,7 +279,7 @@ class UserInfoRepository {
     }
   }
 
-  Future<ResultReturn> getExamExerciseDone() async {
+  Future<ResultReturn> getExamExerciseDone(String username) async {
     JwtResponse? jwtResponse = await authRepository.getJWTCurrent();
     if (jwtResponse == null) {
       log('Token is null', name: 'UserInfoRepository');
@@ -293,7 +292,7 @@ class UserInfoRepository {
       headers['Authorization'] = 'Bearer $jwt';
 
       String authority = APIUrl.baseUrl;
-      String unencodedPath = APIUrl.pathGetExerciseExamHistory;
+      String unencodedPath = APIUrl.pathGetExerciseExamHistory + username;
 
       var response = await http.get(
         Uri.http(authority, unencodedPath),
