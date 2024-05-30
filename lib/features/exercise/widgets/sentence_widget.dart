@@ -8,6 +8,7 @@ import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/common/helper/helper.dart';
 import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 class SentenceWidget extends ConsumerStatefulWidget {
   const SentenceWidget({
@@ -50,7 +51,6 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
   }
 
   void changeQuestion(Answer answer) async {
-    _answer = null;
     String stringAnswer = listWordIsChosen.join(' ');
 
     if (wordsAnswer.isEmpty &&
@@ -85,9 +85,15 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
           isCorrect: stringAnswer == answer.correctAnswer,
         ),
       );
-      widget.updateCurrentIndex();
+      _answer = null;
       listWordIsChosen.clear();
-      setState(() {});
+      wordsAnswer.clear();
+
+      widget.updateCurrentIndex();
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {});
+      });
     } else {
       showSnackBar(context, 'Vui lòng hoàn thành câu trả lời');
     }
@@ -178,32 +184,31 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                                   ],
                                 ),
                                 Expanded(
-                                  child: GridView.builder(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      crossAxisSpacing: 5,
-                                      mainAxisSpacing: 5,
-                                      childAspectRatio: 2,
+                                  child: ResponsiveGridList(
+                                    desiredItemWidth:
+                                        MediaQuery.of(context).size.width *
+                                            0.25,
+                                    minSpacing: 10,
+                                    children: List.generate(
+                                      listWordIsChosen.length,
+                                      (index) {
+                                        String word = listWordIsChosen[index];
+                                        return SentenceAnswerSelectWidget(
+                                          word: word,
+                                          onTap: (value) {
+                                            int indexValueIsChosen =
+                                                listWordIsChosen.indexOf(value);
+                                            listWordIsChosen
+                                                .removeAt(indexValueIsChosen);
+                                            wordsAnswer.add(value);
+                                            WidgetsBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              setState(() {});
+                                            });
+                                          },
+                                        );
+                                      },
                                     ),
-                                    itemCount: listWordIsChosen.length,
-                                    itemBuilder: (context, index) {
-                                      String word = listWordIsChosen[index];
-                                      return SentenceAnswerSelectWidget(
-                                        word: word,
-                                        onTap: (value) {
-                                          int indexValueIsChosen =
-                                              listWordIsChosen.indexOf(value);
-                                          listWordIsChosen
-                                              .removeAt(indexValueIsChosen);
-                                          wordsAnswer.add(value);
-                                          WidgetsBinding.instance
-                                              .addPostFrameCallback((_) {
-                                            setState(() {});
-                                          });
-                                        },
-                                      );
-                                    },
                                   ),
                                 ),
                               ],
@@ -223,11 +228,10 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
                           child: MediaQuery.removePadding(
                             context: context,
                             removeTop: true,
-                            child: GridView.count(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 5,
-                              mainAxisSpacing: 5,
-                              childAspectRatio: 3,
+                            child: ResponsiveGridList(
+                              desiredItemWidth:
+                                  MediaQuery.of(context).size.width * 0.25,
+                              minSpacing: 8,
                               children: List.of(
                                 wordsAnswer.map(
                                   (e) {

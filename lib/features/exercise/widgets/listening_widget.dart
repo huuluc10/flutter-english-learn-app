@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:developer';
 
+import 'package:responsive_grid/responsive_grid.dart';
+
 class ListeningWidget extends ConsumerStatefulWidget {
   const ListeningWidget({
     super.key,
@@ -241,11 +243,14 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
-                                            child: Text(
-                                              _selectedAnswer,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
+                                            child: FittedBox(
+                                              fit: BoxFit.cover,
+                                              child: Text(
+                                                _selectedAnswer,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
                                           )
@@ -269,10 +274,10 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                           child: MediaQuery.removePadding(
                             context: context,
                             removeTop: true,
-                            child: GridView.count(
-                              crossAxisCount: 3,
-                              childAspectRatio: 3.2,
-                              mainAxisSpacing: 5,
+                            child: ResponsiveGridList(
+                              desiredItemWidth:
+                                  MediaQuery.of(context).size.width * 0.4,
+                              minSpacing: 10,
                               children: List.of(
                                 answer.answers!.map(
                                   (e) {
@@ -293,11 +298,14 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
                                               BorderRadius.circular(8),
                                         ),
                                         child: Center(
-                                          child: Text(
-                                            e.text!,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
+                                          child: FittedBox(
+                                            fit: BoxFit.cover,
+                                            child: Text(
+                                              e.text!,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              ),
                                             ),
                                           ),
                                         ),

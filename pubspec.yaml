@@ -51,6 +51,7 @@ dependencies:
   flutter_tts: ^4.0.2
   speech_to_text: ^6.6.1  
   circular_countdown_timer: ^0.2.3
+  responsive_grid: ^2.4.4
   
 dev_dependencies:
   build_runner: ^2.4.8

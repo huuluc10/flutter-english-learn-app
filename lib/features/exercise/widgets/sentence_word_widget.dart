@@ -18,11 +18,14 @@ class SentenceWordWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
+        child: FittedBox(
+          fit: BoxFit.cover,
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
           ),
         ),
       ),
