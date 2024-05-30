@@ -4,6 +4,7 @@ import 'package:flutter_englearn/features/exercise/controller/exercise_controlle
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 class AnswerChoiceWidget extends ConsumerWidget {
   const AnswerChoiceWidget({
@@ -25,13 +26,9 @@ class AnswerChoiceWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return GridView.count(
-      crossAxisCount: 2,
-      childAspectRatio: 1.3,
-      scrollDirection: Axis.vertical,
-      mainAxisSpacing: 5,
-      crossAxisSpacing: 5,
-      shrinkWrap: true,
+    return ResponsiveGridList(
+      desiredItemWidth: MediaQuery.of(context).size.width * 0.4,
+      minSpacing: 10,
       children: List.generate(
         answer.answers!.length,
         (index) => TextButton(

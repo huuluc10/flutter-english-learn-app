@@ -18,20 +18,22 @@ class SentenceAnswerSelectWidget extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(left: 3),
         padding: const EdgeInsets.all(3),
-        height: 80, // Add this
-        width: 80,
+        height: 50, // Add this
         decoration: BoxDecoration(
           color: Colors.blue,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Center(
-          child: Text(
-            word,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Text(
+              word,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+              ),
+              textAlign: TextAlign.justify,
             ),
-            textAlign: TextAlign.justify,
           ),
         ),
       ),
