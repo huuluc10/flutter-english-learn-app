@@ -16,7 +16,6 @@ class MessageChatRoom {
   });
 
   factory MessageChatRoom.fromMap(Map<String, dynamic> map) {
-    print("Par: " + List<String>.from(map['participants']).toString());
     return MessageChatRoom(
       chatId: map['chatId'] as String,
       participants: List<String>.from(map['participants']),

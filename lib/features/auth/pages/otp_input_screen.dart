@@ -22,6 +22,18 @@ class OTPInputScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: !iSResetPassword
+          ? AppBar(
+              backgroundColor: const Color.fromARGB(169, 0, 141, 211),
+              title: const Text('Hủy'),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            )
+          : null,
       body: LineGradientBackgroundWidget(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),

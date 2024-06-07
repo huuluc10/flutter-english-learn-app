@@ -73,7 +73,7 @@ class UserInfoService {
     } else {
       log('Update user info successfully', name: 'UserInfoService');
       if (!context.mounted) return;
-      showSnackBar(context, 'Update user info successfully');
+      showSnackBar(context, 'Cập nhật thông tin thành công!');
     }
   }
 
