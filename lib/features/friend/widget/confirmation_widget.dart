@@ -14,15 +14,15 @@ class ConfirmationFriendRequestWidget extends ConsumerStatefulWidget {
       _ConfirmationFriendRequestWidgetState();
 }
 
-class _ConfirmationFriendRequestWidgetState extends ConsumerState<ConfirmationFriendRequestWidget> {
+class _ConfirmationFriendRequestWidgetState
+    extends ConsumerState<ConfirmationFriendRequestWidget> {
   List<MainUserInfoResponse> listFriendRequest = [];
 
   Future<List<MainUserInfoResponse>> fetchFriendRequest() async {
-    if (listFriendRequest.isEmpty) {
-      listFriendRequest = await ref
-          .read(friendServiceProvider)
-          .getListWaitForAcceptFriendRequest(context);
-    }
+    listFriendRequest = await ref
+        .read(friendServiceProvider)
+        .getListWaitForAcceptFriendRequest(context);
+
     return listFriendRequest;
   }
 
@@ -88,11 +88,34 @@ class _ConfirmationFriendRequestWidgetState extends ConsumerState<ConfirmationFr
                     listFriendRequest[index].fullName,
                     style: const TextStyle(fontSize: 14),
                   ),
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      acceptFriendRequest(listFriendRequest[index].username);
-                    },
-                    child: const Text('Xác nhận'),
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.cancel,
+                            color: Colors.red,
+                          ),
+                          onPressed: () async {
+                            await ref.read(friendServiceProvider).unFriend(
+                                context, listFriendRequest[index].username);
+                            setState(() {});
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.check,
+                            color: Colors.green,
+                          ),
+                          onPressed: () {
+                            acceptFriendRequest(
+                                listFriendRequest[index].username);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

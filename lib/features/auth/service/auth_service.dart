@@ -112,6 +112,7 @@ class AuthService {
       if (!context.mounted) return;
       // Navigate to home screen
       log("Sign up successfully", name: "AuthService");
+      showSnackBar(context, "Đăng ký thành công!");
       Navigator.pushNamedAndRemoveUntil(
         context,
         LoginScreen.routeName,
