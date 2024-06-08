@@ -5,7 +5,6 @@ import 'package:flutter_englearn/features/exercise/widgets/sentence_answer_selec
 import 'package:flutter_englearn/features/exercise/widgets/sentence_word_widget.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
-import 'package:flutter_englearn/common/helper/helper.dart';
 import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -53,49 +52,54 @@ class _SentenceWidgetState extends ConsumerState<SentenceWidget> {
   void changeQuestion(Answer answer) async {
     String stringAnswer = listWordIsChosen.join(' ');
 
-    if (wordsAnswer.isEmpty &&
-        stringAnswer.length == answer.correctAnswer!.length) {
-      if (stringAnswer == answer.correctAnswer) {
-        await saveAnswerQuestion(
-          context,
-          ref,
-          widget.questionId,
-          widget.makeFor,
-          true,
-        );
-        widget.inCreaseCorrectAnswerCount();
-      } else {
-        await saveAnswerQuestion(
-          context,
-          ref,
-          widget.questionId,
-          widget.makeFor,
-          false,
-        );
-      }
-      widget.addExplanationQuestion(
-        ExplanationQuestion(
-          question: answer.question,
-          questionImage: answer.questionImage,
-          answer: answer.correctAnswer,
-          answerImage: answer.correctImage,
-          selectedAnswer: stringAnswer,
-          selectedAnswerImage: null,
-          explanation: answer.explanation,
-          isCorrect: stringAnswer == answer.correctAnswer,
-        ),
+    int correctAnswerStreak = ref.watch(userProgressProvider);
+
+    if (stringAnswer == answer.correctAnswer) {
+      ref.read(userProgressProvider.notifier).state = correctAnswerStreak + 1;
+      await saveAnswerQuestion(
+        context,
+        ref,
+        widget.questionId,
+        widget.makeFor,
+        true,
       );
-      _answer = null;
-      listWordIsChosen.clear();
-      wordsAnswer.clear();
-
-      widget.updateCurrentIndex();
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
-      });
+      widget.inCreaseCorrectAnswerCount();
     } else {
-      showSnackBar(context, 'Vui lòng hoàn thành câu trả lời');
+      ref.read(userProgressProvider.notifier).state = 0;
+      await saveAnswerQuestion(
+        context,
+        ref,
+        widget.questionId,
+        widget.makeFor,
+        false,
+      );
+    }
+    widget.addExplanationQuestion(
+      ExplanationQuestion(
+        question: answer.question,
+        questionImage: answer.questionImage,
+        answer: answer.correctAnswer,
+        answerImage: answer.correctImage,
+        selectedAnswer: stringAnswer,
+        selectedAnswerImage: null,
+        explanation: answer.explanation,
+        isCorrect: stringAnswer == answer.correctAnswer,
+      ),
+    );
+    _answer = null;
+    listWordIsChosen.clear();
+    wordsAnswer.clear();
+
+    widget.updateCurrentIndex();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+
+    correctAnswerStreak = ref.watch(userProgressProvider);
+
+    if (correctAnswerStreak % 5 == 0) {
+      showCorrectAnswerStreakPopup(context, correctAnswerStreak);
     }
   }
 

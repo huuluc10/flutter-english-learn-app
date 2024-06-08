@@ -92,6 +92,7 @@ class _FillInTheBlankQuestionScreenState
                 updateCurrentIndex: () {
                   updateCurrentIndexQuestion(
                     context,
+                    ref,
                     () {
                       currentIndexQuestion.value++;
                     },

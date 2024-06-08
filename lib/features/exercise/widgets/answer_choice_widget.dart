@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/controller/exercise_controller.dart';
+import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,15 +34,22 @@ class AnswerChoiceWidget extends ConsumerWidget {
         answer.answers!.length,
         (index) => TextButton(
           onPressed: () async {
+            int correctAnswerStreak = ref.watch(userProgressProvider);
+
             if (answer.answers![index].text != null &&
                 answer.answers![index].text == answer.correctAnswer) {
+              ref.read(userProgressProvider.notifier).state =
+                  correctAnswerStreak + 1;
               increaseCorrectAnswerCount();
               await saveAnswerQuestion(context, ref, questionId, makeFor, true);
             } else if (answer.answers![index].answerImage != null &&
                 answer.answers![index].answerImage == answer.correctImage) {
+              ref.read(userProgressProvider.notifier).state =
+                  correctAnswerStreak + 1;
               increaseCorrectAnswerCount();
               await saveAnswerQuestion(context, ref, questionId, makeFor, true);
             } else {
+              ref.read(userProgressProvider.notifier).state = 0;
               await saveAnswerQuestion(
                   context, ref, questionId, makeFor, false);
             }
@@ -60,6 +68,12 @@ class AnswerChoiceWidget extends ConsumerWidget {
               ),
             );
             updateCurrentIndex();
+
+            correctAnswerStreak = ref.watch(userProgressProvider);
+
+            if (correctAnswerStreak % 5 == 0) {
+              showCorrectAnswerStreakPopup(context, correctAnswerStreak);
+            }
           },
           style: TextButton.styleFrom(
             disabledBackgroundColor: Colors.white,

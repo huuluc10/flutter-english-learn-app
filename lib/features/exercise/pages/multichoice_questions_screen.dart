@@ -89,7 +89,8 @@ class _MultichoiceQuestionScreenState
                 height: height,
                 updateCurrentIndex: () {
                   updateCurrentIndexQuestion(
-                    context,
+                    context, 
+                    ref,
                     () {
                       currentIndexQuestion.value++;
                     },

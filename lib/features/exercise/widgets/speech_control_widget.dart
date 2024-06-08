@@ -38,29 +38,29 @@ class _SpeechControlWidgetState extends State<SpeechControlWidget> {
             textAlign: TextAlign.justify,
           ),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         SizedBox(
           width: 150,
           child: Row(
             children: [
               GestureDetector(
-                onLongPress: () {
-                  if (!widget.hasSpeech || widget.isListening) {
-                    return;
-                  }
-                  setState(() {
-                    isListening = true;
-                    widget.startListening();
-                  });
-                },
-                onLongPressEnd: (details) {
+                onTap: () {
                   if (widget.isListening) {
                     setState(() {
                       isListening = false;
                       widget.stopListening();
                     });
+                  } else {
+                    if (!widget.hasSpeech || widget.isListening) {
+                      return;
+                    }
+                    setState(() {
+                      isListening = true;
+                      widget.startListening();
+                    });
                   }
                 },
+                onLongPressEnd: (details) {},
                 child: Stack(
                   children: [
                     Container(
@@ -95,11 +95,20 @@ class _SpeechControlWidgetState extends State<SpeechControlWidget> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               isListening
-                  ? const CircularProgressIndicator()
+                  ? const SizedBox(
+                      width: 60,
+                      child: Text(
+                        'Đang nghe...',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    )
                   : const SizedBox(
                       width: 10,
                     ),

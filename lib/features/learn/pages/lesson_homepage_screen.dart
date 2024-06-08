@@ -13,12 +13,14 @@ class LessonHomePageScreen extends ConsumerStatefulWidget {
     super.key,
     required this.topicId,
     required this.successRate,
+    required this.level,
   });
 
   static const String routeName = '/lesson-homepage-screen';
 
   final int topicId;
   final double successRate;
+  final String? level;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -26,6 +28,33 @@ class LessonHomePageScreen extends ConsumerStatefulWidget {
 }
 
 class _LessonHomePageScreenState extends ConsumerState<LessonHomePageScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Cấp độ hiện tại của bạn là ${widget.level}'),
+            content: const Text(
+              'Để củng cố kiến thức và kỹ năng, bạn nên tiếp tục học các bài học cùng cấp độ. '
+              'Điều này sẽ giúp bạn ôn tập và luyện tập hiệu quả hơn.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Đóng popup
+                },
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;

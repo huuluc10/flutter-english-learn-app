@@ -121,6 +121,7 @@ class LearnRepository {
         headers: headers,
         body: body,
       );
+      log(response.body, name: 'LearnRepository');
       if (response.statusCode == 401) {
         await authRepository.removeJWT();
         log('Token is expired', name: 'LearnRepository');
@@ -179,6 +180,40 @@ class LearnRepository {
                 .map((item) => QuestionType.fromMap(item))
                 .toList();
         return ResultReturn(httpStatusCode: 200, data: listExerciseResponse);
+      }
+    }
+  }
+
+  Future<void> sendFeedback(String text) async {
+    // get jwt token from authRepository
+    final jwtResponse = await authRepository.getJWTCurrent();
+
+    if (jwtResponse == null) {
+      log('Token is null', name: 'LearnRepository');
+    } else {
+      log('Send feedback', name: 'LearnRepository');
+
+      String jwt = jwtResponse.token;
+      Map<String, String> headers = Map.from(httpHeaders);
+      headers['Authorization'] = 'Bearer $jwt';
+
+      String authority = APIUrl.baseUrl;
+      String unencodedPath = APIUrl.pathSendFeedback;
+
+      Uri uri = Uri.http(authority, unencodedPath);
+      final response = await http.post(
+        uri,
+        headers: headers,
+        body: text,
+      );
+
+      if (response.statusCode == 401) {
+        await authRepository.removeJWT();
+        log('Token is expired', name: 'LearnRepository');
+      } else if (response.statusCode == 400) {
+        log('Send feedback failed', name: 'LearnRepository');
+      } else {
+        log("Send feedback successfully", name: 'LearnRepository');
       }
     }
   }

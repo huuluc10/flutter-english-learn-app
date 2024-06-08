@@ -32,7 +32,6 @@ class _FriendState extends ConsumerState<FriendSummaryInfo> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await getCurrentUsername();

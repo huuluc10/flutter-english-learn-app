@@ -12,12 +12,14 @@ class TopicDetailsScreen extends ConsumerWidget {
     required this.topicResponse,
     required this.refresh,
     required this.successRate,
+    required this.level
   });
   static const String routeName = '/topic-details-screen';
 
   final HistoryLearnTopicResponse topicResponse;
   final Function() refresh;
   final double successRate;
+  final String? level;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,7 +75,7 @@ class TopicDetailsScreen extends ConsumerWidget {
                             Navigator.pushNamed(
                               context,
                               LessonHomePageScreen.routeName,
-                              arguments: [topicResponse.topicId, successRate],
+                              arguments: [topicResponse.topicId, successRate, level,],
                             );
                           },
                         ),
@@ -84,7 +86,7 @@ class TopicDetailsScreen extends ConsumerWidget {
                             Navigator.pushNamed(
                               context,
                               ExamHomePageScreen.routeName,
-                              arguments: topicResponse.topicId,
+                              arguments: [topicResponse.topicId, level],
                             );
                           },
                         ),

@@ -82,45 +82,38 @@ class _ListeningWidgetState extends ConsumerState<ListeningWidget> {
   }
 
   void changeQuestion() async {
-    if (_selectedAnswer == '') {
-      // show SnackBar
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Vui lòng chọn câu trả lời',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          backgroundColor: Color.fromARGB(255, 233, 233, 233),
-        ),
-      );
+    int correctAnswerStreak = ref.watch(userProgressProvider);
+
+    if (_selectedAnswer == correctAnswer) {
+      ref.read(userProgressProvider.notifier).state = correctAnswerStreak + 1;
+      await saveAnswerQuestion(
+          context, ref, widget.questionId, widget.makeFor, true);
+      widget.inCreaseCorrectAnswerCount();
     } else {
-      if (_selectedAnswer == correctAnswer) {
-        await saveAnswerQuestion(
-            context, ref, widget.questionId, widget.makeFor, true);
-        widget.inCreaseCorrectAnswerCount();
-      } else {
-        await saveAnswerQuestion(
-            context, ref, widget.questionId, widget.makeFor, false);
-      }
-      widget.addExplanationQuestion(
-        ExplanationQuestion(
-          question: _answer!.question,
-          questionImage: _answer!.questionImage,
-          answer: correctAnswer!,
-          answerImage: _answer!.questionImage,
-          selectedAnswer: _selectedAnswer,
-          selectedAnswerImage: null,
-          explanation: explanation,
-          isCorrect: correctAnswer! == _selectedAnswer,
-        ),
-      );
-      _selectedAnswer = '';
-      _answer = null;
-      widget.updateCurrentIndex();
+      ref.read(userProgressProvider.notifier).state = 0;
+      await saveAnswerQuestion(
+          context, ref, widget.questionId, widget.makeFor, false);
+    }
+    widget.addExplanationQuestion(
+      ExplanationQuestion(
+        question: _answer!.question,
+        questionImage: _answer!.questionImage,
+        answer: correctAnswer!,
+        answerImage: _answer!.questionImage,
+        selectedAnswer: _selectedAnswer,
+        selectedAnswerImage: null,
+        explanation: explanation,
+        isCorrect: correctAnswer! == _selectedAnswer,
+      ),
+    );
+    _selectedAnswer = '';
+    _answer = null;
+    widget.updateCurrentIndex();
+
+    correctAnswerStreak = ref.watch(userProgressProvider);
+
+    if (correctAnswerStreak % 5 == 0) {
+      showCorrectAnswerStreakPopup(context, correctAnswerStreak);
     }
   }
 

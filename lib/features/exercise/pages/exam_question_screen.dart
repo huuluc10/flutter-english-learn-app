@@ -164,6 +164,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                   clearSnackBar(context);
                                   updateCurrentIndexQuestion(
                                     context,
+                                    ref,
                                     () {
                                       currentIndexQuestion.value =
                                           _totalQuestionCount - 1;
@@ -197,6 +198,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                               updateCurrentIndex: () {
                                 updateCurrentIndexQuestion(
                                   context,
+                                  ref,
                                   () {
                                     currentIndexQuestion.value++;
                                   },
@@ -231,6 +233,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                   updateCurrentIndex: () {
                                     updateCurrentIndexQuestion(
                                       context,
+                                      ref,
                                       () {
                                         currentIndexQuestion.value++;
                                       },
@@ -269,6 +272,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                       updateCurrentIndex: () {
                                         updateCurrentIndexQuestion(
                                           context,
+                                          ref,
                                           () => currentIndexQuestion.value++,
                                           () async {
                                             await increaseExpAfterExam(
@@ -306,6 +310,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                           updateCurrentIndex: () {
                                             updateCurrentIndexQuestion(
                                               context,
+                                              ref,
                                               () {
                                                 currentIndexQuestion.value++;
                                               },
@@ -344,6 +349,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                               updateCurrentIndex: () {
                                                 updateCurrentIndexQuestion(
                                                   context,
+                                                  ref,
                                                   () {
                                                     currentIndexQuestion
                                                         .value++;
@@ -381,6 +387,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                                               updateCurrentIndex: () {
                                                 updateCurrentIndexQuestion(
                                                     context,
+                                                    ref,
                                                     () => {
                                                           currentIndexQuestion
                                                               .value++

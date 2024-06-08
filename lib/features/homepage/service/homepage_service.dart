@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/auth/pages/welcome_screen.dart';
 import 'package:flutter_englearn/features/homepage/repository/homepage_repository.dart';
 import 'package:flutter_englearn/features/user_info/service/user_info_service.dart';
+import 'package:flutter_englearn/features/user_info/widgets/streak_congratulation_widget.dart';
 import 'package:flutter_englearn/model/response/history_learn_topic_response.dart';
 import 'dart:developer';
 
@@ -19,7 +20,21 @@ class HomepageService {
   Future<List<HistoryLearnTopicResponse>> fetchTopic(
       BuildContext context) async {
     log("fetchTopic", name: "HomepageService");
-    await userInfoService.updateStreak(context);
+    int newStreak = await userInfoService.updateStreak(context);
+
+    int oldStreak = await homepageRepository.getStreak();
+
+    if (newStreak > oldStreak) {
+      await homepageRepository.setStreak(newStreak);
+      showDialog(
+        context: context,
+        builder: (context) => StreakCongratulationWidget(
+          oldStreak: oldStreak,
+          newStreak: newStreak,
+        ), // Widget chào mừng
+      );
+    }
+
     return await homepageRepository.fetchTopic();
   }
 
@@ -37,5 +52,26 @@ class HomepageService {
       }
     }
     return result.data as List<MainUserInfoResponse>;
+  }
+
+  Future<String?> getEmail() async {
+    return await homepageRepository.getEmail();
+  }
+
+  Future<void> setEmail(String email) async {
+    await homepageRepository.setEmail(email);
+  }
+
+  Future<String?> getEmailFromAPI() async {
+    String? email = await homepageRepository.getEmailFromAPI();
+
+    if (email != null) {
+      return await homepageRepository.getEmailFromAPI();
+    }
+    return email;
+  }
+
+  Future<String?> getLevel() async {
+    return await homepageRepository.getLevel();
   }
 }

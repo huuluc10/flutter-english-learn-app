@@ -134,21 +134,25 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final topicResponse = argruments[0] as HistoryLearnTopicResponse;
       final refresh = argruments[1] as Function();
       final successRate = argruments[2] as double;
+      final level = argruments[3] as String?;
       return MaterialPageRoute(
           builder: (context) => TopicDetailsScreen(
                 topicResponse: topicResponse,
                 refresh: refresh,
                 successRate: successRate,
+                level: level,
               ));
 
     case LessonHomePageScreen.routeName:
       final arguments = settings.arguments as List<dynamic>;
       final topicId = arguments[0] as int;
       final successRate = arguments[1] as double;
+      final level = arguments[2] as String?;
       return MaterialPageRoute(
           builder: (context) => LessonHomePageScreen(
                 topicId: topicId,
                 successRate: successRate,
+                level: level,
               ));
 
     case LessonContentScreen.routeName:
@@ -234,9 +238,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               ));
 
     case ExamHomePageScreen.routeName:
-      final topicId = settings.arguments as int;
+      final arguments = settings.arguments as List<Object?>;
+      final topicId = arguments[0] as int;
+      final String? level = arguments[1] as String?;
       return MaterialPageRoute(
-          builder: (context) => ExamHomePageScreen(topicId: topicId));
+          builder: (context) => ExamHomePageScreen(
+                topicId: topicId,
+                level: level,
+              ));
 
     case ErrorScreen.routeName:
       return MaterialPageRoute(builder: (context) => const ErrorScreen());

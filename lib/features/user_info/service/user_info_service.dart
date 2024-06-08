@@ -222,24 +222,29 @@ class UserInfoService {
     return await userInfoRepository.changeAvatar(imagePath);
   }
 
-  Future<void> updateStreak(BuildContext context) async {
+  Future<int> updateStreak(BuildContext context) async {
     log('Update streak', name: 'UserInfoService');
     ResultReturn resultReturn = await userInfoRepository.updateStreak();
 
-    if (resultReturn.httpStatusCode == 200) {
-      log('Update streak successfully', name: 'UserInfoService');
-    } else if (resultReturn.httpStatusCode == 401) {
+    if (resultReturn.httpStatusCode == 401) {
       log('Token is expired', name: 'UserInfoService');
-      if (!context.mounted) return;
-      showSnackBar(
-          context, 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!');
-      Navigator.pushNamedAndRemoveUntil(
-          context, WelcomeScreen.routeName, (route) => false);
-    } else {
+      if (context.mounted) {
+        showSnackBar(
+            context, 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!');
+        Navigator.pushNamedAndRemoveUntil(
+            context, WelcomeScreen.routeName, (route) => false);
+      }
+    } else if (resultReturn.httpStatusCode != 200) {
       log('Update streak failed', name: 'UserInfoService');
-      if (!context.mounted) return;
-      showSnackBar(context, 'Update streak failed');
+      if (context.mounted) {
+        showSnackBar(context, 'Cập nhật streak thất bại! Vui lòng thử lại!');
+      }
+    } else if (resultReturn.httpStatusCode == 200) {
+      log('Update streak successfully', name: 'UserInfoService');
+      return resultReturn.data;
     }
+
+    return -1;
   }
 
   Future<String?> getAvatar(BuildContext context, WidgetRef ref) async {

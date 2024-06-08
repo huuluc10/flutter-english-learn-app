@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/exercise/pages/result_exercise_screen.dart';
 import 'package:flutter_englearn/features/exercise/provider/exercise_provider.dart';
+import 'package:flutter_englearn/features/exercise/widgets/correct_answer_streak_popup.dart';
 import 'package:flutter_englearn/model/answer.dart';
 import 'package:flutter_englearn/model/explanation_question.dart';
 import 'package:flutter_englearn/model/response/question_response.dart';
@@ -78,6 +79,7 @@ Future<List<QuestionResponse>> fetchExamQuestion(
 
 void updateCurrentIndexQuestion(
     BuildContext context,
+    WidgetRef ref,
     Function() refresh,
     Function increaseExpAfterExam,
     int currentIndex,
@@ -90,6 +92,7 @@ void updateCurrentIndexQuestion(
   } else {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       increaseExpAfterExam();
+      ref.read(userProgressProvider.notifier).state = 0;
       Navigator.pushNamed(
         context,
         ResultExerciseScreen.routeName,
@@ -128,13 +131,18 @@ void changeSpeakingQuestion(
   Answer answer,
 ) async {
   String correctAnswer = answer.correctAnswer!;
+
+  int correctAnswerStreak = ref.watch(userProgressProvider);
+
   if (pronounce == '') {
     showSnackBar(context, 'Vui lòng nói từ bạn đã nghe');
   } else {
     if (pronounce.toLowerCase() == correctAnswer.toLowerCase()) {
+      ref.read(userProgressProvider.notifier).state = correctAnswerStreak + 1;
       await saveAnswerQuestion(context, ref, questionId, makeFor, true);
       inCreaseCorrectAnswerCount();
     } else {
+      ref.read(userProgressProvider.notifier).state = 0;
       await saveAnswerQuestion(context, ref, questionId, makeFor, false);
     }
     if (context.mounted) {
@@ -152,6 +160,12 @@ void changeSpeakingQuestion(
         ),
       );
       updateCurrentIndex();
+
+      correctAnswerStreak = ref.watch(userProgressProvider);
+
+      if (correctAnswerStreak % 5 == 0) {
+        showCorrectAnswerStreakPopup(context, correctAnswerStreak);
+      }
     }
   }
 }
@@ -181,4 +195,13 @@ Future<void> increaseExpAfterExam(BuildContext context, WidgetRef ref,
     int expOfExam, int correctAnswer, int totalQuestion) async {
   await ref.watch(exerciseServiceProvider).increaseExpAfterCompletingExam(
       context, expOfExam, correctAnswer, totalQuestion);
+}
+
+void showCorrectAnswerStreakPopup(BuildContext context, int streakCount) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return CorrectAnswerStreakPopup(streakCount: streakCount);
+    },
+  );
 }

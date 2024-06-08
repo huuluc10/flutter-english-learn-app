@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/common/provider/common_provider.dart';
 import 'package:flutter_englearn/features/homepage/controller/homepage_controller.dart';
+import 'package:flutter_englearn/features/homepage/provider/homepage_provider.dart';
 import 'package:flutter_englearn/features/homepage/widgets/drawer_home_widget.dart';
 import 'package:flutter_englearn/features/homepage/widgets/topic_widget.dart';
 import 'package:flutter_englearn/features/learn/pages/topic_details_screen.dart';
@@ -21,11 +22,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final searchController = TextEditingController();
   Future<List<HistoryLearnTopicResponse>>? _listTopicFuture;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
@@ -159,15 +155,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 children: List.generate(
                                   listTopic.length,
                                   (index) => InkWell(
-                                    onTap: () => Navigator.pushNamed(
-                                        context, TopicDetailsScreen.routeName,
+                                    onTap: () async {
+                                      String? levelOfUser = await ref
+                                          .watch(homepageServiceProvider)
+                                          .getLevel();
+
+                                      Navigator.pushNamed(
+                                        context,
+                                        TopicDetailsScreen.routeName,
                                         arguments: [
                                           listTopic[index],
                                           () {
                                             setState(() {});
                                           },
-                                          listTopic[index].successRate
-                                        ]),
+                                          listTopic[index].successRate,
+                                          levelOfUser,
+                                        ],
+                                      );
+                                    },
                                     child: TopicWidget(
                                       nameTopic:
                                           'Topic ${listTopic[index].topicId}: ${listTopic[index].topicName}',

@@ -4,6 +4,7 @@ import 'package:flutter_englearn/features/auth/repository/auth_repository.dart';
 import 'package:flutter_englearn/features/learn/repository/learn_repository.dart';
 import 'package:flutter_englearn/model/lesson_content.dart';
 import 'package:flutter_englearn/model/question_type.dart';
+import 'package:flutter_englearn/model/request/add_feedback_request.dart';
 import 'package:flutter_englearn/model/response/lesson_response.dart';
 import 'package:flutter_englearn/model/result_return.dart';
 import 'package:flutter_englearn/model/user_lesson.dart';
@@ -114,5 +115,15 @@ class LearnService {
     List<QuestionType> listQuestionType =
         resultReturn.data as List<QuestionType>;
     return listQuestionType;
+  }
+
+  Future<void> sendFeedback(int lessonId, double rating, String text) async {
+    String content =
+        'Nội dung đánh giá: $text\n\nNgười dùng đánh giá $rating sao';
+
+    AddFeedbackRequest addFeedbackRequest =
+        AddFeedbackRequest(lessonId: lessonId, text: content);
+
+    await learnRepository.sendFeedback(addFeedbackRequest.toJson());
   }
 }

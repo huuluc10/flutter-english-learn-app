@@ -1,4 +1,5 @@
 import 'package:flutter_englearn/features/auth/provider/auth_provider.dart';
+import 'package:flutter_englearn/features/homepage/controller/homepage_controller.dart';
 import 'package:flutter_englearn/features/homepage/repository/homepage_repository.dart';
 import 'package:flutter_englearn/features/homepage/service/homepage_service.dart';
 import 'package:flutter_englearn/features/user_info/providers/user_info_provider.dart';
@@ -17,3 +18,7 @@ final homepageServiceProvider = Provider((ref) {
     userInfoService: userInfoService,
   );
 });
+
+final openCountProvider =
+    StateNotifierProvider<OpenCountProvider, int>((ref) => OpenCountProvider());
+

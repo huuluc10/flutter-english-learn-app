@@ -383,7 +383,9 @@ class UserInfoRepository {
 
       if (response.statusCode == 200) {
         log('Update streak successfully', name: 'UserInfoRepository');
-        return ResultReturn(httpStatusCode: 200, data: null);
+        ResponseModel responseModel = ResponseModel.fromJson(response.body);
+        int streak = int.parse(responseModel.data.toString());
+        return ResultReturn(httpStatusCode: 200, data: streak);
       } else if (response.statusCode == 401) {
         log('Token is expired', name: 'UserInfoRepository');
         await authRepository.removeJWT();

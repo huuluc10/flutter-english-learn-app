@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_englearn/features/learn/controller/learn_controller.dart';
 import 'package:flutter_englearn/features/learn/provider/learn_provider.dart';
+import 'package:flutter_englearn/features/learn/widgets/rating_widget.dart';
 import 'package:flutter_englearn/features/learn/widgets/youtube_player_widget.dart';
 import 'package:flutter_englearn/model/lesson_content.dart';
 import 'package:flutter_englearn/common/widgets/future_builder_error_widget.dart';
@@ -29,6 +30,15 @@ class LessonContentScreen extends ConsumerStatefulWidget {
 
 class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
     with SingleTickerProviderStateMixin {
+  void _showRatingDialog(int lessonId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return RatingDialog(lessonId: lessonId);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,6 +194,7 @@ class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
                                     context,
                                     widget.lessonId,
                                     () {
+                                      _showRatingDialog(widget.lessonId);
                                       widget.onMarkAsLearned();
                                     },
                                   );
@@ -199,7 +210,22 @@ class _LessonContentScreenState extends ConsumerState<LessonContentScreen>
                                 ),
                               ),
                             )
-                          : Container(),
+                          : Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  _showRatingDialog(widget.lessonId);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                ),
+                                child: const Text(
+                                  "Đánh giá bài học",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
                     ],
                   );
                 }

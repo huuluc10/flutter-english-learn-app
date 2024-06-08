@@ -42,6 +42,8 @@ class APIUrl {
   static const String pathGetLeaderboard = "/api/v1/user/getLeaderboard";
   static const String pathUpdateStreak = "/api/v1/user/updateStreak";
   static const String pathGetAvatarUrl = "/api/v1/user/getAvatar";
+  static const String pathGetEmail = "/api/v1/user/getEmail";
+  static const String pathGetLevel = "/api/v1/user/getLevel";
 
   // PATH STORAGE API
   static const String pathGetFile = "storage/getfile";
@@ -103,6 +105,9 @@ class APIUrl {
 
   // PATH GET NAME OF QUESTION TYPE API
   static const String pathGetNameOfQuestionType = "/api/v1/question-type";
+
+  // PATH FEEDBACK API
+  static const String pathSendFeedback = "/api/v1/feedback/";
 
   /* ----------------------------------------------------------------------------- */
 

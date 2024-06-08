@@ -41,44 +41,36 @@ class _FillInTheBlankWidgetState extends ConsumerState<FillInTheBlankWidget> {
   String? explanation;
 
   void changeQuestion(String question) async {
-    if (controller.text.isEmpty || controller.text.trim() == '') {
-      // show SnackBar
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Vui lòng chọn câu trả lời',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          backgroundColor: Color.fromARGB(255, 233, 233, 233),
-        ),
-      );
+    int correctAnswerStreak = ref.watch(userProgressProvider);
+    List<String> correctAnswers = correctAnswer!.split('/');
+    if (correctAnswers.contains(controller.text.trim())) {
+      ref.read(userProgressProvider.notifier).state = correctAnswerStreak + 1;
+      await saveAnswerQuestion(
+          context, ref, widget.questionId, widget.makeFor, true);
+      widget.inCreaseCorrectAnswerCount();
     } else {
-      List<String> correctAnswers = correctAnswer!.split('/');
-      if (correctAnswers.contains(controller.text.trim())) {
-        await saveAnswerQuestion(
-            context, ref, widget.questionId, widget.makeFor, true);
-        widget.inCreaseCorrectAnswerCount();
-      } else {
-        await saveAnswerQuestion(
-            context, ref, widget.questionId, widget.makeFor, false);
-      }
-      widget.addExplanationQuestion(
-        ExplanationQuestion(
-            question: question,
-            questionImage: null,
-            answer: correctAnswer!,
-            answerImage: null,
-            selectedAnswer: controller.text.trim(),
-            selectedAnswerImage: null,
-            explanation: explanation,
-            isCorrect: correctAnswers.contains(controller.text.trim())),
-      );
-      widget.updateCurrentIndex();
-      controller.clear();
+      ref.read(userProgressProvider.notifier).state = 0;
+      await saveAnswerQuestion(
+          context, ref, widget.questionId, widget.makeFor, false);
+    }
+    widget.addExplanationQuestion(
+      ExplanationQuestion(
+          question: question,
+          questionImage: null,
+          answer: correctAnswer!,
+          answerImage: null,
+          selectedAnswer: controller.text.trim(),
+          selectedAnswerImage: null,
+          explanation: explanation,
+          isCorrect: correctAnswers.contains(controller.text.trim())),
+    );
+    widget.updateCurrentIndex();
+    controller.clear();
+
+    correctAnswerStreak = ref.watch(userProgressProvider);
+
+    if (correctAnswerStreak % 5 == 0) {
+      showCorrectAnswerStreakPopup(context, correctAnswerStreak);
     }
   }
 

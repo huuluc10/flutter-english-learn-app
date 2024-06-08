@@ -8,14 +8,13 @@ import 'package:flutter_englearn/common/widgets/line_gradient_background_widget.
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExamHomePageScreen extends ConsumerStatefulWidget {
-  const ExamHomePageScreen({
-    super.key,
-    required this.topicId,
-  });
+  const ExamHomePageScreen(
+      {super.key, required this.topicId, required this.level});
 
   static const String routeName = '/exam-homepage-screen';
 
   final int topicId;
+  final String? level;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -25,6 +24,33 @@ class ExamHomePageScreen extends ConsumerStatefulWidget {
 class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
   Future<List<ExamResponse>> getExams() async {
     return await ref.watch(exerciseServiceProvider).getListExam(widget.topicId);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Cấp độ hiện tại của bạn là ${widget.level}'),
+            content: const Text(
+              'Để củng cố kiến thức và kỹ năng, bạn nên thực hiện các bài kiểm tra cùng cấp độ. '
+              'Điều này sẽ giúp bạn ôn tập và luyện tập hiệu quả hơn.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Đóng popup
+                },
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 
   @override
@@ -81,7 +107,7 @@ class _ExamHomePageScreenState extends ConsumerState<ExamHomePageScreen> {
                             return MediaQuery.removePadding(
                               context: context,
                               removeTop: true,
-                              child: Container(
+                              child: SizedBox(
                                 height: height - 140,
                                 child: ListView.builder(
                                   shrinkWrap: true,

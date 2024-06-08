@@ -95,6 +95,7 @@ class _SpeakingQuestionScreenState
                     updateCurrentIndex: () {
                       updateCurrentIndexQuestion(
                         context,
+                        ref,
                         () {
                           currentIndexQuestion.value++;
                         },

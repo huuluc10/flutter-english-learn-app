@@ -91,6 +91,7 @@ class _SentenceTransformQuestionScreenState
                 updateCurrentIndex: () {
                   updateCurrentIndexQuestion(
                     context,
+                    ref,
                     () => currentIndexQuestion.value++,
                     () {},
                     value,
