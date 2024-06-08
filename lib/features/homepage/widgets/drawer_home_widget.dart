@@ -188,6 +188,13 @@ class DrawerWidget extends ConsumerWidget {
                 SettingsScreen.routeName,
               );
             },
+          ),
+          ItemDrawerWidget(
+            title: 'Đăng xuất',
+            image: 'assets/logout.png',
+            onTap: () {
+              ref.watch(authServiceProvicer).logout(context);
+            },
           )
         ],
       ),
