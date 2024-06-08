@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:developer';
@@ -113,9 +114,9 @@ class _SpeakingQuestionTextWidgetState
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Image.network(
-                      widget.imageUrl!,
-                      height: widget.height * 0.20,
+                    CachedNetworkImage(
+                      imageUrl: widget.imageUrl!,
+                      fit: BoxFit.cover,
                     ),
                   ],
                 ),
