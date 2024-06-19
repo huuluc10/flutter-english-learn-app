@@ -13,6 +13,7 @@ To run this project, you will need:
 - Flutter SDK: version 3.16.9
 - Dart SDK: version 3.2.6
 - Android Studio or VS Code with Flutter plugin
+- API for application
 
 ## Installation
 
